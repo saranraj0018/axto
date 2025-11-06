@@ -20,3 +20,27 @@
     --foreground: #ededed;
   }
 }
+
+
+/* Popup overlay */
+.user-popup-overlay {
+  @apply fixed inset-0 bg-black/50 z-999 flex items-center justify-center;
+  backdrop-filter: blur(4px);
+}
+
+/* Popup content */
+.user-popup-content {
+  @apply bg-white w-1/2 max-w-lg p-6 rounded-xl shadow-xl z-1000 transform transition-transform duration-200 ease-out;
+  transform: translateY(-50px);
+  opacity: 0;
+}
+
+/* Active state: slide down */
+.user-popup-open {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.axto-orange-btn {
+  @apply bg-primary hover:bg-white text-white hover:text-primary px-3 py-1 cursor-pointer rounded-3xl text-[10px] md:text-sm  border border-white hover:border-primary transition;
+}
