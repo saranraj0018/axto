@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { searchIcon, userIcon, heartIcon, cartIcon } from "../../all_icons";
-import UserPopup from "./userPopup";
-import SearchPopup from "./searchPopup";
+import SearchPopup from "./SearchPopup";
+import UserPopup from "./UserPopup";
+
 
 const IconNav = () => {
   const [isUserPopupOpen, setIsUserPopupOpen] = useState(false);

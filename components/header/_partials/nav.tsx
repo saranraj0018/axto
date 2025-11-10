@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { menuDownArrow } from "../../all_icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,7 +21,7 @@ const Nav = () => {
         { name: "Graphic Design", url: "/services/graphic-design" },
       ],
     },
-    { name: "Contact", url: "/contact" },
+    { name: "Contact", url: "/contact-us" },
   ];
 
   

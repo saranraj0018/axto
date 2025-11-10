@@ -1,25 +1,31 @@
 const CategoryItems = [
   {
+    id:1,
     img: "/img/home/C1.png",
     url: "#",
   },
   {
+    id:2,
     img: "/img/home/C2.png",
     url: "#",
   },
   {
+    id:3,
     img: "/img/home/C3.png",
     url: "#",
   },
   {
+    id:4,
     img: "/img/home/C4.png",
     url: "#",
   },
   {
+    id:5,
     img: "/img/home/C1.png",
     url: "#",
   },
   {
+    id:6,
     img: "/img/home/C1.png",
     url: "#",
   },
@@ -35,8 +41,8 @@ const Section3 = () => {
           Find perfect scooter accessories in our categories.
         </p>
         <div className="grid grid-cols-12 gap-3">
-          {CategoryItems.map((item, index) => (
-            <div key={index} className="col-span-6 md:col-span-4">
+          {CategoryItems.map((item) => (
+            <div key={item.id} className="col-span-6 md:col-span-4">
               <img src={item.img} alt="" />
             </div>
           ))}

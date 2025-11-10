@@ -1,21 +1,26 @@
 const BrandItems = [
   {
+    id: 1,
     img: "/img/home/Brand1.png",
     url: "#",
   },
   {
+    id: 2,
     img: "/img/home/Brand2.png",
     url: "#",
   },
   {
+    id: 3,
     img: "/img/home/Brand3.png",
     url: "#",
   },
   {
+    id: 4,
     img: "/img/home/Brand4.png",
     url: "#",
   },
 ];
+
 const Section2 = () => {
   return (
     <>
@@ -27,8 +32,8 @@ const Section2 = () => {
           Find perfect scooter accessories in our categories.
         </p>
         <div className="grid grid-cols-12 gap-3">
-          {BrandItems.map((item, index) => (
-            <div key={index} className="col-span-6">
+          {BrandItems.map((item) => (
+            <div key={item.id} className="col-span-6">
               <img src={item.img} alt="" />
             </div>
           ))}

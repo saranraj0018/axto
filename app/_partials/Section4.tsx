@@ -1,6 +1,7 @@
 import { RatingStarIcon, WishlistIcon } from "../../components/all_icons";
 const BSProductItems = [
   {
+    id:1,
     title: "Backrest Support..",
     itemCode: "OLA000040",
     ratings: 4.5,
@@ -11,6 +12,7 @@ const BSProductItems = [
     url: "#",
   },
   {
+    id:2,
     title: "Cushion Backrest Support..",
     itemCode: "OLA000041",
     ratings: 4.5,
@@ -21,6 +23,7 @@ const BSProductItems = [
     url: "#",
   },
   {
+    id:3,
     title: "Break Wire",
     itemCode: "OLA000042",
     ratings: 4.5,
@@ -31,6 +34,7 @@ const BSProductItems = [
     url: "#",
   },
   {
+    id:4,
     title: "EV Battery",
     itemCode: "OLA000043",
     ratings: 4.5,
@@ -41,6 +45,7 @@ const BSProductItems = [
     url: "#",
   },
   {
+    id:5,
     title: "Car Battery",
     itemCode: "OLA000043",
     ratings: 4.5,
@@ -63,8 +68,8 @@ const Section4 = () => {
           Explore our top scooter accessories, selected for you!
         </p>
         <div className="grid grid-cols-12 gap-3 md:gap-5 my-8">
-          {BSProductItems.map((item, index) => (
-            <div key={index} className="col-span-6 md:col-span-4 lg:col-span-3">
+          {BSProductItems.map((item) => (
+            <div key={item.id} className="col-span-6 md:col-span-4 lg:col-span-3">
               <div className="shadow-md rounded-2xl overflow-hidden">
                 <div className="space-y-5 bg-[#F4F4F4] p-3">
                   <div className="flex justify-between">
@@ -90,7 +95,7 @@ const Section4 = () => {
                     </div>
                     <div className="flex gap-1 text-[10px] md:text-[13px] ">
                       <div className="-mt-0.5 md:mt-0.5 scale-75 md:scale-100">
-                        {RatingStarIcon}
+                        <RatingStarIcon/>
                       </div>
                       {item.ratings}
                     </div>
