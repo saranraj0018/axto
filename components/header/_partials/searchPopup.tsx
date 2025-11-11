@@ -146,7 +146,7 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
                       </div>
                       <div className="flex gap-1 text-[10px] md:text-[13px]">
                         <div className="-mt-0.5 md:mt-0.5 scale-75 md:scale-100">
-                          {RatingStarIcon}
+                          <RatingStarIcon/>
                         </div>
                         {item.ratings}
                       </div>
