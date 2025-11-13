@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const Page = () => {
   return (
     <>
-      <CommonBanners title="About us" />
+      <CommonBanners />
 
       <div className="space-y-5 my-5">
         <div className="grid grid-cols-12 gap-5 md:gap-3 axto-container">
