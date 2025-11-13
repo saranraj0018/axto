@@ -12,6 +12,7 @@ const Nav = () => {
   const menuItems = [
     { name: "Home", url: "/" },
     { name: "About", url: "/about" },
+    { name: "Shop", url: "/shop" },
     {
       name: "Services",
       url: "/services",
