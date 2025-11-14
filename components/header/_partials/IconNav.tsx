@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { searchIcon, userIcon, heartIcon, cartIcon } from "../../all_icons";
-import SearchPopup from "./SearchPopup";
-import UserPopup from "./UserPopup";
+import SearchPopup from "./searchPopup";
+import UserPopup from "./userPopup";
 
 
 const IconNav = () => {
