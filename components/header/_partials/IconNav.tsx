@@ -3,6 +3,7 @@ import { useState } from "react";
 import { searchIcon, userIcon, heartIcon, cartIcon } from "../../all_icons";
 import SearchPopup from "./searchPopup";
 import UserPopup from "./userPopup";
+import Link from "next/link";
 
 
 const IconNav = () => {
@@ -39,7 +40,9 @@ const IconNav = () => {
       </div>
 
       <div className="my-auto scale-75 md:scale-100">{heartIcon}</div>
-      <div className="my-auto scale-75 md:scale-100">{cartIcon}</div>
+      <Link href="/cart" className="my-auto scale-75 md:scale-100">
+        <div>{cartIcon}</div>
+      </Link>
 
       <div>
         <p className="text-[10px] md:text-[12px] text-secondary font-medium">
