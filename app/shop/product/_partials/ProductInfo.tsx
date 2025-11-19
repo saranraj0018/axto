@@ -42,7 +42,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       <p className="text-sm text-secondary mb-1 rounded-full border border-secondary w-max py-0.5 px-2">
         {product.brand}
       </p>
-      <h1 className="md:text-2xl font-semibold my-4">{product.title}</h1>
+      <h1 className="md:text-2xl font-medium my-4">{product.title}</h1>
 
       <div className="flex items-center gap-1 mb-4">
         <span className="text-2xl font-medium">₹{product.sellingPrice}</span>
@@ -60,7 +60,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         </span>
       </div>
 
-      <p className="text-[11px] md:text-md text-secondary mb-2">
+      <p className="text-[11px] md:text-[15px] text-secondary mb-2">
         {product.description}
       </p>
 

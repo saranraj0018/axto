@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { shieldIcon, GearIcon, BoxIcon } from "../../all_icons";
+import { shieldIcon, GearIcon, BoxIcon, closeIcon } from "../../all_icons";
 import Userform from "./Userform";
 
 interface UserPopupProps {
@@ -99,6 +99,9 @@ const UserPopup: React.FC<UserPopupProps> = ({ onClose }) => {
 
           {/* Right form section */}
           <div className="col-span-12 lg:col-span-6 p-3 md:p-5 space-y-5 my-auto">
+            <div className="flex justify-end hover:cursor-pointer" onClick={handleClose}>
+              {closeIcon}
+            </div>            
             <Userform />
           </div>
         </div>

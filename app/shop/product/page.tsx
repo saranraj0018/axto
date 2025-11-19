@@ -26,7 +26,7 @@ const ShopProductItems = [
       "/img/home/P1.png",
       "/img/home/B1.png",
       "/img/home/P1.png",
-    ], 
+    ],
     regularPrice: 1200,
     sellingPrice: 950,
     url: "#",

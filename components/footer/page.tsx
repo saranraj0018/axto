@@ -3,10 +3,14 @@ import Section2 from './_partials/section2';
 import Section3 from './_partials/section3';
 const page = () => {
   return (<>
-    <footer className="px-[1em] lg:px-[5em] xl:px-[5em] 2xl:px-[10em]">
+    <footer className="space-y-7">
+      <div className="axto-container">
       <Section1/>
-      <Section2/>
-      <Section3/>
+      </div>
+      <div className="axto-container bg-cover py-4" style={{ backgroundImage: "url('/img/footer/Footer-bg.png')" }}>
+        <Section2/>
+        <Section3/>
+      </div>
     </footer>
     </>
   )

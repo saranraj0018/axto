@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { WishlistIcon, RatingStarIcon } from "../../all_icons"; // update paths as needed
+import { WishlistIcon, RatingStarIcon, closeIcon } from "../../all_icons"; // update paths as needed
 
 const SearchItems = [
   {
@@ -93,9 +93,9 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
         <div className="flex justify-end p-4">
           <button
             onClick={handleClose}
-            className="ml-3 text-red-500 hover:text-red-700 font-semibold"
+            className="ml-3"
           >
-            ✖
+            {closeIcon}
           </button>
         </div>
 
@@ -151,7 +151,7 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
                         {item.ratings}
                       </div>
                     </div>
-                    <h3 className="text-[11px] md:text-[20px] font-medium">
+                    <h3 className="text-[11px] md:text-[18px] font-medium">
                       {item.title}
                     </h3>
                     <div className="flex flex-col md:flex-row gap-2 justify-between">

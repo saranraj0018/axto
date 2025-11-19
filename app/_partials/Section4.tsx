@@ -59,68 +59,71 @@ const BSProductItems = [
 
 const Section4 = () => {
   return (
-    <>
-      <div className="my-14 space-y-2 md:space-y-3">
-        <h2 className="text-center text-md md:text-2xl font-semibold">
-          Best <span className="text-primary">Sellers</span>
-        </h2>
-        <p className="text-center text-secondary text-[10px] md:text-lg">
-          Explore our top scooter accessories, selected for you!
-        </p>
-        <div className="grid grid-cols-12 gap-3 md:gap-5 my-8">
-          {BSProductItems.map((item) => (
-            <div key={item.id} className="col-span-6 md:col-span-4 lg:col-span-3">
-              <div className="shadow-md rounded-2xl overflow-hidden">
-                <div className="space-y-5 bg-[#F4F4F4] p-3">
-                  <div className="flex justify-between">
-                    <p className="text-white bg-primary w-max px-3 py-1 text-[10px] md:text-sm rounded-3xl h-max">
-                      {item.discount} OFF
-                    </p>
-                    <div className="p-1 rounded-3xl bg-white hover:bg-[#f3f3f3] hover:scale-125 transition cursor-pointer">
-                      <WishlistIcon />
-                    </div>
+    <div className="my-14 space-y-2 md:space-y-1">
+      <h2 className="text-center text-md md:text-2xl font-medium">
+        Best <span className="text-primary">Sellers</span>
+      </h2>
+      <p className="text-center font-medium text-secondary text-[10px] md:text-lg">
+        Explore our top scooter accessories, selected for you!
+      </p>
+      <div className="grid grid-cols-12 gap-3 md:gap-5 my-8">
+        {BSProductItems.map((item) => (
+          <div
+            key={item.id}
+            className="col-span-6 md:col-span-4 lg:col-span-3 flex"
+          >
+            {/* Card container flex column */}
+            <div className="shadow-md rounded-2xl overflow-hidden flex flex-col w-full">
+              <div className="space-y-5 bg-[#F4F4F4] p-3">
+                <div className="flex justify-between">
+                  <p className="text-white bg-primary w-max px-3 py-1 text-[10px] md:text-sm rounded-3xl h-max">
+                    {item.discount} OFF
+                  </p>
+                  <div className="p-1 rounded-3xl bg-white hover:bg-[#f3f3f3] hover:scale-125 transition cursor-pointer">
+                    <WishlistIcon />
                   </div>
-                  <img
-                    src={item.img}
-                    alt={item.title}
-                    className="rounded-2xl w-full md:w-3/4 mx-auto"
-                  />
                 </div>
-                <div className="bg-[#fffffd] p-2 md:p-3 space-y-1">
-                  <div className="flex justify-between">
-                    <div className="space-y-2">
-                      <p className="text-secondary text-[9px] md:text-[12px]">
-                        ITEM CODE : {item.itemCode}
-                      </p>
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="rounded-2xl w-full md:w-3/4 mx-auto"
+                />
+              </div>
+
+              <div className="bg-[#fffffd] p-2 md:p-3 space-y-1 mt-auto flex flex-col justify-between flex-1">
+                <div className="flex justify-between">
+                  <div className="space-y-2">
+                    <p className="text-secondary text-[9px] md:text-[12px]">
+                      ITEM CODE : {item.itemCode}
+                    </p>
+                  </div>
+                  <div className="flex gap-1 text-[10px] md:text-[13px] ">
+                    <div className="-mt-0.5 md:mt-0.5 scale-75 md:scale-100">
+                      <RatingStarIcon />
                     </div>
-                    <div className="flex gap-1 text-[10px] md:text-[13px] ">
-                      <div className="-mt-0.5 md:mt-0.5 scale-75 md:scale-100">
-                        <RatingStarIcon/>
-                      </div>
-                      {item.ratings}
+                    {item.ratings}
+                  </div>
+                </div>
+                <h3 className="text-[11px] md:text-[16px] font-medium">
+                  {item.title}
+                </h3>
+                <div className="flex flex-col md:flex-row gap-2 justify-between mt-auto">
+                  <div className="flex gap-1 text-[13px] md:text-md font-medium text-[#332820] my-auto">
+                    ₹{item.sellingPrice}{" "}
+                    <div className="line-through text-sm my-auto text-secondary font-normal">
+                      {item.regularPrice}
                     </div>
                   </div>
-                  <h3 className="text-[11px] md:text-[16px] font-medium">
-                    {item.title}
-                  </h3>
-                  <div className="flex flex-col md:flex-row gap-2 justify-between">
-                    <div className="flex gap-1 text-[13px] md:text-md font-medium text-[#332820] my-auto">
-                      ₹{item.sellingPrice}{" "}
-                      <div className="line-through text-sm my-auto text-secondary font-normal">
-                        {item.regularPrice}
-                      </div>
-                    </div>
-                    <button className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 cursor-pointer rounded-3xl text-[10px] md:text-[15px] border border-white hover:border-primary transition font-medium">
-                      + Add
-                    </button>
-                  </div>
+                  <button className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 cursor-pointer rounded-3xl text-[10px] md:text-[15px] border border-white hover:border-primary transition font-medium">
+                    + Add
+                  </button>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
