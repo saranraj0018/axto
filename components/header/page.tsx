@@ -15,7 +15,7 @@ const page = () => {
           <div className="col-span-4 lg:col-span-5 my-auto">
             <Nav />
           </div>
-          <div className="col-span-12 lg:col-span-4 bg-zinc-200 md:bg-white p-1 md:p-2 lg:p-0">
+          <div className="col-span-12 lg:col-span-4 bg-zinc-100 md:bg-white p-1 md:p-2 lg:p-0">
           <IconNav/>
 
           </div>

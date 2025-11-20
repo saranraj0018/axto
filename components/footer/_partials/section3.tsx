@@ -2,7 +2,7 @@ import {call, mail, whatsapp } from '../../all_icons';
 const Section3 = () => {
   return (
     <>
-        <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-18">
+        <div className="flex flex-col md:flex-row md:items-center justify-center gap-3 md:gap-18">
             <div className="flex gap-1">
                 <div>
                     {call}

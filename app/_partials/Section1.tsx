@@ -10,9 +10,9 @@ type Banner = {
 
 const Section1 = () => {
   const banners: Banner[] = [
-    { id: 1, image: "/img/home/B1.png", link: "#" },
-    { id: 2, image: "/img/home/B1.png", link: "#" },
-    { id: 3, image: "/img/home/B1.png", link: "#" },
+    { id: 1, image: "/img/home/B1.png", link: "/shop" },
+    { id: 2, image: "/img/home/B1.png", link: "/shop" },
+    { id: 3, image: "/img/home/B1.png", link: "/shop" },
   ];
 
   const [current, setCurrent] = useState(0);

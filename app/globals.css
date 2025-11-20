@@ -21,6 +21,10 @@
   }
 }
 
+* {
+  font-family: "Inter Tight", sans-serif;
+  font-optical-sizing: auto;
+}
 
 /* Popup overlay */
 .user-popup-overlay {
@@ -42,10 +46,10 @@
 }
 
 .axto-orange-btn {
-  @apply bg-primary hover:bg-white text-white hover:text-primary px-3 py-1 cursor-pointer rounded-3xl border border-white hover:border-primary transition;
+  @apply bg-primary hover:bg-white text-white hover:text-primary px-3 py-1 text-[10px] md:text-[15px] cursor-pointer rounded-3xl border border-white hover:border-primary transition;
 }
 .axto-white-btn {
-  @apply bg-white hover:bg-primary text-primary hover:text-white px-3 py-1 cursor-pointer rounded-3xl border border-primary hover:border-white transition;
+  @apply bg-white hover:bg-primary text-primary hover:text-white px-3 py-1 text-[10px] md:text-[15px] cursor-pointer rounded-3xl border border-primary hover:border-white transition;
 }
 
 .axto-container{

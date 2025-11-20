@@ -1,3 +1,4 @@
+import Link from "next/link";
 import CommonBanners from "../../components/others/CommonBanners";
 import type { Metadata } from "next";
 
@@ -17,7 +18,7 @@ const Page = () => {
             <h2 className="text-2xl font-medium text-center md:text-start">
               <span className="text-primary">Begin</span>ning
             </h2>
-            <p className="text-justify text-secondary text-sm">
+            <p className="text-justify text-secondary text-[12px] md:text-sm">
               Axto started from chai breaks and endless rides, not from
               air-conditioned offices, It began with one question — why is it so
               hard to find authentic, future-ready accessories for our rides?
@@ -42,7 +43,7 @@ const Page = () => {
           <h2 className="text-2xl font-medium">
             Mission in <span className="text-primary">Action</span>
           </h2>
-          <p className="text-secondary text-[16px] w-full md:w-2/3 mx-auto text-justify md:text-center">
+          <p className="text-secondary text-[12px] md:text-sm w-full md:w-2/3 mx-auto text-justify md:text-center">
             At Axto, our mission has never been just words. Every product we
             offer goes through a simple process — we look for the right fit. we
             test it for quality. and only then does it reach you. For us. the
@@ -59,7 +60,7 @@ const Page = () => {
           <h2 className="text-2xl font-medium">
             The <span className="text-primary">Axto </span>Way
           </h2>
-          <p className="text-secondary text-[16px] w-full md:w-2/3 mx-auto text-justify md:text-center">
+          <p className="text-secondary text-[12px] md:text-sm w-full md:w-2/3 mx-auto text-justify md:text-center">
             At Axto, our mission has never been just words. Every product we
             offer goes through a simple process — we look for the right fit. we
             test it for quality. and only then does it reach you. For us. the
@@ -76,14 +77,18 @@ const Page = () => {
           <h2 className="text-2xl font-medium">
             Our <span className="text-primary">Commitment </span>
           </h2>
-          <p className="text-secondary text-[16px] w-full md:w-2/3 mx-auto text-justify md:text-center">
+          <p className="text-secondary text-[12px] md:text-sm w-full md:w-2/3 mx-auto text-justify md:text-center">
             At Axto, we believe every ride should be safe. simple, and trusted
             Our focus is to bring riders accessories that are tested for quality
             and easy to choose. We are here to make riding better every day.
           </p>
           <div className="flex justify-center gap-2">
+            <Link href="/shop">
             <button className="axto-orange-btn">Shop Now</button>
-            <button className="axto-white-btn">Contact Us</button>
+            </Link>
+            <Link href="/contact-us">
+              <button className="axto-white-btn">Contact Us</button>
+            </Link>
           </div>
         </div>
       </div>

@@ -5,7 +5,6 @@ import SearchPopup from "./searchPopup";
 import UserPopup from "./userPopup";
 import Link from "next/link";
 
-
 const IconNav = () => {
   const [isUserPopupOpen, setIsUserPopupOpen] = useState(false);
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
@@ -18,7 +17,7 @@ const IconNav = () => {
           onClick={() => setIsSearchPopupOpen(true)}
           className="focus:outline-none scale-75 md:scale-100 mb-0 md:-mt-1"
         >
-            {searchIcon}
+          {searchIcon}
         </button>
 
         {isSearchPopupOpen && (
@@ -31,15 +30,16 @@ const IconNav = () => {
           onClick={() => setIsUserPopupOpen(true)}
           className="focus:outline-none scale-75 md:scale-100 mb-0 md:-mt-1"
         >
-            {userIcon}
+          {userIcon}
         </button>
 
         {isUserPopupOpen && (
           <UserPopup onClose={() => setIsUserPopupOpen(false)} />
         )}
       </div>
-
-      <div className="my-auto scale-75 md:scale-100">{heartIcon}</div>
+      <Link href="/profile/wishlist" className="my-auto scale-75 md:scale-100">
+        <div>{heartIcon}</div>
+      </Link>
       <Link href="/cart" className="my-auto scale-75 md:scale-100">
         <div>{cartIcon}</div>
       </Link>
@@ -48,7 +48,9 @@ const IconNav = () => {
         <p className="text-[10px] md:text-[12px] text-secondary font-medium">
           your cart value
         </p>
-        <p className="text-black font-semibold text-[12px] md:text-lg">₹1,526</p>
+        <p className="text-black font-semibold text-[12px] md:text-lg">
+          ₹1,526
+        </p>
       </div>
     </div>
   );

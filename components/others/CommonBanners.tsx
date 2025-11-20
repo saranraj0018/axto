@@ -19,7 +19,7 @@ const CommonBanners = () => {
 
   return (
     <div>
-      <div className="py-8 font-semibold bg-[#FAFAFA] axto-container">
+      <div className="py-8 font-medium bg-[#FAFAFA] axto-container">
         <div className="text-lg text-gray-700">
           <Link href="/" className="hover:underline text-gray-500">
             Home

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
+import {closeIcon} from "../../../../components/all_icons";
 interface ChangeAddressProps {
   isOpen: boolean;
   onClose: () => void;
@@ -57,7 +57,13 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({ isOpen, onClose }) => {
         }}
       >
         <div className="p-6">
-          <h2 className="text-lg font-semibold mb-4">Change Address</h2>
+          <div className="flex justify-between">
+            <h2 className="text-lg font-semibold mb-4">Change Address</h2>
+            <div className="flex justify-end hover:cursor-pointer" onClick={handleClose}>
+                          {closeIcon}
+                        </div>  
+          </div>
+          
           <form className="space-y-4">
             {/* Name */}
             <div className="flex flex-col text-left">
