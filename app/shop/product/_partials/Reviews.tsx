@@ -1,6 +1,7 @@
 import ReviewSlider from "./ReviewSlider";
 import ProgressBar from "./ProgressBar";
 import Link from "next/link";
+import AllReviews from "./AllReviews";
 
 const Reviews = () => {
   return (
@@ -21,7 +22,8 @@ const Reviews = () => {
           </div>
         </div>
         <div className="col-span-12 md:col-span-6 my-auto">
-          <ReviewSlider />
+          {/* <ReviewSlider /> */}
+          <AllReviews/>
         </div>
       </div>
       <div>

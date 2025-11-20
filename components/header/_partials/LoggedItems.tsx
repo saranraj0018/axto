@@ -18,7 +18,7 @@ import {
 } from "../../../components/all_icons";
 import Link from "next/link";
 
-const Sidebar = () => {
+const LoggedItems = () => {
   const pathname = usePathname();
 
   const Sideitems = [
@@ -83,8 +83,10 @@ const Sidebar = () => {
         <div className="flex gap-2">
           <img src="/img/profile/Male-Avatar.png" alt="" className="w-1/5" />
           <div className="my-auto">
-            <h4 className="font-medium text-lg">VasanthKumar</h4>
-            <p className="text-sm text-secondary">uxuidesigner@gmail.com</p>
+            <h4 className="font-medium text-sm md:text-lg">VasanthKumar</h4>
+            <p className="text-[10px] md:text-sm text-secondary">
+              uxuidesigner@gmail.com
+            </p>
           </div>
         </div>
 
@@ -98,17 +100,17 @@ const Sidebar = () => {
             return (
               <div key={items.id}>
                 <div
-                  className={`my-1 lg:my-2 p-0.5 lg:p-2 rounded-full w-4/5 lg:w-full ${
+                  className={`my-1 md:my-2 p-0.5 md:p-2 rounded-full ${
                     isActive ? "bg-primary" : "bg-white"
                   }`}
                 >
                   <Link href={items.path} className="flex gap-2">
-                    <div className="rounded-full py-1 px-2 scale-75 lg:scale-100">
+                    <div className="rounded-full scale-75 md:scale-100 py-1 px-2">
                       {items.icon}
                     </div>
 
                     <div
-                      className={`my-auto text-[12px] lg:text-[15px] font-medium ${
+                      className={`my-auto text-[12px] md:text-[15px] lg:text-md font-medium ${
                         isActive ? "text-white" : "text-black"
                       }`}
                     >
@@ -119,13 +121,13 @@ const Sidebar = () => {
               </div>
             );
           })}
-          <div className="my-1 lg:my-2 p-0.5 lg:p-2 rounded-full">
+          <div className="my-1 md:my-2 p-0.5 md:p-2 rounded-full">
             <Link href="#" className="flex gap-2">
-              <div className="rounded-full scale-75 lg:scale-100 py-1 px-2">
+              <div className="rounded-full scale-75 md:scale-100 py-1 px-2">
                 {logoutIcon}
               </div>
 
-              <div className="my-auto text-[12px] lg:text-[15px] lg:text-md font-medium text-[#ec221f]">
+              <div className="my-auto text-[12px] md:text-[15px] lg:text-md font-medium text-[#ec221f]">
                 Logout
               </div>
             </Link>
@@ -136,4 +138,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default LoggedItems;

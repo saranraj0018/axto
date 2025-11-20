@@ -5,7 +5,6 @@ import Link from "next/link";
 const CommonBanners = () => {
   const pathname = usePathname();
 
-  // Split and format path segments
   const segments = pathname
     .split("/")
     .filter((segment) => segment !== "")
@@ -14,16 +13,16 @@ const CommonBanners = () => {
         segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, " ")
     );
 
-  // Define breadcrumb items (fallback to "Home" if no path)
   const breadcrumbItems = segments.length ? segments : ["Home"];
 
   return (
-    <div>
-      <div className="py-8 font-medium bg-[#FAFAFA] axto-container">
+    <div className="sticky top-0 z-20 bg-[#FAFAFA]">
+      <div className="py-5 font-medium axto-container">
         <div className="text-lg text-gray-700">
           <Link href="/" className="hover:underline text-gray-500">
             Home
           </Link>
+
           {breadcrumbItems.map((item, index) => (
             <span key={index}>
               {" / "}
