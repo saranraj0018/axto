@@ -13,7 +13,6 @@ const Nav = () => {
 
   const menuItems = [
     { name: "Home", url: "/" },
-    { name: "About", url: "/about" },
     { name: "Shop", url: "/shop" },
     {
       name: "Categories",
@@ -25,6 +24,7 @@ const Nav = () => {
       ],
     },
     { name: "Contact", url: "/contact-us" },
+    { name: "About", url: "/about" },
   ];
 
   return (
