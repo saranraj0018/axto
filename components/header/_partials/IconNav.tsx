@@ -17,23 +17,25 @@ const IconNav = () => {
   return (
       <>
         {isLoggedIn ? (
-            // AUTHENTICATED: Profile, Wishlist, Cart
-            <div className="flex justify-end items-center gap-3 h-full">
+            <div className="flex justify-end items-center gap-6 h-full">
               <div className="my-auto">
-                <button
-                    onClick={() => setIsUserPopupOpen(true)}
-                    className="focus:outline-none scale-75 md:scale-100 mb-0 md:-mt-1"
-                >
-                  {userIcon}
-                </button>
-                {isUserPopupOpen && (
-                    <UserPopup onClose={() => setIsUserPopupOpen(false)} />
-                )}
+                    <button
+                        onClick={() => setIsSearchPopupOpen(true)}
+                        className="focus:outline-none"
+                    >
+                      {searchIcon}
+                    </button>
+                    {isSearchPopupOpen && (
+                        <SearchPopup onClose={() => setIsSearchPopupOpen(false)} />
+                    )}
               </div>
-              <Link href="/profile/wishlist" className="my-auto scale-75 md:scale-100">
+              <div className="my-auto">
+                <ProfileNav/>
+              </div>
+              <Link href="/profile/wishlist" className="my-auto">
                 {heartIcon}
               </Link>
-              <Link href="/cart" className="my-auto scale-75 md:scale-100">
+              <Link href="/cart" className="my-auto">
                 {cartIcon}
               </Link>
               <div>
@@ -41,13 +43,12 @@ const IconNav = () => {
                   cart value
                 </p>
                 <p className="text-black font-semibold text-[12px] md:text-lg">
-                  ₹1,526 {/* Replace with cart total from context */}
+                  ₹1,526 
                 </p>
               </div>
             </div>
         ) : (
-            // NOT AUTHENTICATED: Search + Login/Signup
-            <div className="flex justify-end gap-3 md:gap-8 h-full">
+            <div className="flex justify-end gap-3 md:gap-8 h-full items-center">
               <div className="my-auto">
                 <button
                     onClick={() => setIsSearchPopupOpen(true)}
@@ -70,6 +71,7 @@ const IconNav = () => {
               )}
             </div>
         )}
+        
       </>
   );
 };
