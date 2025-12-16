@@ -76,7 +76,62 @@ const Userform = ({ onSuccess }: Props) => {
             form.reset();
             onSuccess?.();
 
+        } catch (e) {
+            console.error(e);
+            toast.error("Server error");
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
+    async function onLoginSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const form = event.currentTarget;
+        const formData = new FormData(event.currentTarget);
+
+        const email = formData.get("email")?.toString().trim();
+        const password = formData.get("password")?.toString().trim();
+
+        let newErrors: any = {};
+
+        if (!email) newErrors.email = "This field is required.";
+        if (!password) newErrors.password = "The password field is required.";
+        // If validation fails, show errors
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+        setErrors({});
+        setIsLoading(true);
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/user/login`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    body: formData,
+                }
+            );
+
+            const data = await response.json();
+            if (!response.ok) {
+                toast.error(data.message || 'Login failed');
+                return; // stop execution
+            }
+
+            toast.success(data.message || 'Login successfully');
+            login(data.data.token, {
+                id: Number(data.data.id),
+                email: data.data.email,
+                phone: data.data.phone_number,
+            });
+
+            form.reset();
+            onSuccess?.();
 
         } catch (e) {
             console.error(e);
