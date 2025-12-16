@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "../components/header/page";
 import Footer from "../components/footer/page";
+import ToastProvider from "../lib/providers/ToastProvider";
+import { AuthProvider } from "@/context/AuthContext";
 export const metadata: Metadata = {
   title: "AXTO | Accessories That Move You",
   description:
@@ -23,9 +25,12 @@ export default function RootLayout({
 
       </head>
       <body>
+      <AuthProvider>
+          <ToastProvider />
         <Header />
         {children}
         <Footer />
+      </AuthProvider>
       </body>
     </html>
   );
