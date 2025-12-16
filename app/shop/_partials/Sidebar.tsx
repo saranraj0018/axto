@@ -72,13 +72,18 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div className="w-full md:w-50 lg:w-64 space-y-3">
-      <h3 className="text-2xl font-semibold text-centre md:text-start">
+      {/* CLIENT SAID TO REMOVE THIS - INCASE IF NEEDED JUST UNCOMMENT IT */}
+
+      {/* <h3 className="text-2xl font-semibold text-centre md:text-start">
         Filter Options
       </h3>
-      <hr className="text-zinc-300 my-5" />
+      <hr className="text-zinc-300 my-5" /> */}
       {/* Categories */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Categories</h3>
+
+      {/* CLIENT SAID TO REMOVE THIS - INCASE IF NEEDED JUST UNCOMMENT IT */}
+      <h3 className="text-lg font-semibold mb-2">Categories</h3>
+      <div className="overflow-auto max-h-30">
+        
         {categories.map((c) => (
           <label
             key={c}
@@ -95,8 +100,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Brands */}
-      <div>
         <h3 className="text-lg font-semibold mb-2">Brands</h3>
+      <div className="overflow-auto max-h-30">
         {brands.map((b) => (
           <label
             key={b}
@@ -113,8 +118,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Discount */}
-      <div>
         <h3 className="text-lg font-semibold mb-2">Discount</h3>
+        <div className="overflow-auto max-h-30">
         {discountRanges.map((range) => (
           <label
             key={range.label}

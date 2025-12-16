@@ -29,9 +29,11 @@ const Page = () => {
               every rider to access.
             </p>
             <div className="flex justify-center md:justify-start">
-              <button className="axto-orange-btn font-medium text-md">
-                Explore Our Story
-              </button>
+              <Link href="/shop">
+                <button className="axto-orange-btn font-medium text-md">
+                  View our Products
+                </button>
+              </Link>
             </div>
           </div>
           <div className="col-span-12 md:col-span-6 my-auto">

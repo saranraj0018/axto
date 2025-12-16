@@ -36,17 +36,31 @@ const Section2 = () => {
         <div className="col-span-12 md:col-span-3 space-y-3">
           <h2 className="font-medium">Legal</h2>
           <ul className="list-disc space-y-1 mx-3 md:mx-0">
+            
             <li className="text-secondary text-[12px] lg:text-[16px]">
+               <Link href="/privacy-policy">
               Privacy Policy
+              </Link>
             </li>
             <li className="text-secondary text-[12px] lg:text-[16px]">
+              <Link href="/terms-and-conditions">
               Terms & Conditions
+              </Link>
             </li>
             <li className="text-secondary text-[12px] lg:text-[16px]">
-              Warranty Policy
-            </li>
-            <li className="text-secondary text-[12px] lg:text-[16px]">
+              <Link href="/cancellation-policy">
               Cancellation Policy
+              </Link>
+            </li>
+            <li className="text-secondary text-[12px] lg:text-[16px]">
+              <Link href="/return-and-refund-policy">
+                Return and Refund Policy
+              </Link>
+            </li>
+            <li className="text-secondary text-[12px] lg:text-[16px]">
+              <Link href="/shipping-policy">
+                Shipping Policy
+              </Link>
             </li>
           </ul>
         </div>

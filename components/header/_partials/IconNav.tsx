@@ -5,6 +5,7 @@ import { searchIcon, userIcon, heartIcon, cartIcon } from "../../all_icons";
 import SearchPopup from "./searchPopup";
 import UserPopup from "./userPopup";
 import Link from "next/link";
+import ProfileNav from "./ProfileNav";
 
 const IconNav = () => {
   const [isUserPopupOpen, setIsUserPopupOpen] = useState(false);
