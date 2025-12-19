@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext"; // adjust path
 import {
   Black_ProfileIcon,
   White_ProfileIcon,
@@ -17,9 +18,17 @@ import {
   logoutIcon,
 } from "../../../components/all_icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const LoggedItems = () => {
   const pathname = usePathname();
+    const { user, logout } = useAuth();
+    const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
 
   const Sideitems = [
     {
@@ -83,16 +92,16 @@ const LoggedItems = () => {
         <div className="flex gap-2">
           <img src="/img/profile/Male-Avatar.png" alt="" className="w-1/5" />
           <div className="my-auto">
-            <h4 className="font-medium text-sm md:text-lg">VasanthKumar</h4>
+            <h4 className="font-medium text-sm md:text-lg">{user?.name}</h4>
             <p className="text-[10px] md:text-sm text-secondary">
-              uxuidesigner@gmail.com
+              {user?.email?.split("@")[0] || "User"}
             </p>
           </div>
         </div>
 
         <div>
           {Sideitems.map((items) => {
-            let isActive =
+            const isActive =
               items.matchType === "exact"
                 ? pathname === items.path
                 : pathname.startsWith(items.path);
@@ -121,16 +130,16 @@ const LoggedItems = () => {
               </div>
             );
           })}
-          <div className="my-1 md:my-2 p-0.5 md:p-2 rounded-full">
-            <Link href="#" className="flex gap-2">
-              <div className="rounded-full scale-75 md:scale-100 py-1 px-2">
-                {logoutIcon}
-              </div>
-
-              <div className="my-auto text-[12px] md:text-[15px] lg:text-md font-medium text-[#ec221f]">
+          <div className="my-2 p-2 rounded-full">
+            <div
+                onClick={handleLogout}
+                className="flex gap-2 cursor-pointer"
+            >
+              <div className="py-1 px-2">{logoutIcon}</div>
+              <div className="my-auto text-sm font-medium text-[#ec221f]">
                 Logout
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>

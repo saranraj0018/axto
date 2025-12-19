@@ -1,36 +1,50 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-const CategoryItems = [
-  { id: 1, img: "/img/home/C1.png", url: "#" },
-  { id: 2, img: "/img/home/C2.png", url: "#" },
-  { id: 3, img: "/img/home/C3.png", url: "#" },
-  { id: 4, img: "/img/home/C4.png", url: "#" },
-  { id: 5, img: "/img/home/C1.png", url: "#" },
-  { id: 6, img: "/img/home/C1.png", url: "#" },
-  { id: 7, img: "/img/home/C1.png", url: "#" },
-  { id: 8, img: "/img/home/C2.png", url: "#" },
-  { id: 9, img: "/img/home/C3.png", url: "#" },
-  { id: 10, img: "/img/home/C4.png", url: "#" },
-  { id: 11, img: "/img/home/C1.png", url: "#" },
-  { id: 12, img: "/img/home/C1.png", url: "#" },
-];
+interface Category {
+  id: number;
+  name: string;
+  image: string;
+}
 
 const Section3 = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [visibleCount, setVisibleCount] = useState(6);
+  const [loading, setLoading] = useState(true);
 
-  // +6 each time
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/user/category/list`
+        );
+        const json = await res.json();
+        setCategories(json.data || []);
+      } catch (error) {
+        console.error("Category fetch failed", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleShowMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 6, CategoryItems.length));
+    setVisibleCount((prev) => Math.min(prev + 6, categories.length));
   };
 
-  // -6 each time
   const handleShowLess = () => {
     setVisibleCount((prev) => Math.max(prev - 6, 6));
   };
 
-  // items to display
-  const visibleItems = CategoryItems.slice(0, visibleCount);
+  const visibleItems = categories.slice(0, visibleCount);
+
+  const slugify = (text: string) =>
+      text.toLowerCase().replace(/\s+/g, "-");
+
+  if (loading) return null;
 
   return (
     <>
@@ -47,14 +61,20 @@ const Section3 = () => {
         <div className="grid grid-cols-12 gap-3 mt-8">
           {visibleItems.map((item) => (
             <div key={item.id} className="col-span-6 md:col-span-4">
-              <img src={item.img} alt="" />
+              <Link href={`/shop/category/${slugify(item.name.toLowerCase())}`}>
+              <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full rounded-lg"
+              />
+              </Link>
             </div>
           ))}
         </div>
 
         {/* Buttons */}
         <div className="flex justify-center gap-3 mt-4">
-          {visibleCount < CategoryItems.length && (
+          {visibleCount < categories.length && (
             <button onClick={handleShowMore} className="axto-orange-btn">
               Show More
             </button>
