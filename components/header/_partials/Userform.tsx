@@ -69,8 +69,10 @@ const Userform = ({ onSuccess }: Props) => {
             toast.success(data.message || 'Registered successfully');
             login(data.data.token, {
                 id: Number(data.data.id),
+                name: data.data.name,
                 email: data.data.email,
                 phone: data.data.phone_number,
+                image: data.data.image,
             });
 
             form.reset();
@@ -90,16 +92,17 @@ const Userform = ({ onSuccess }: Props) => {
         const form = event.currentTarget;
         const formData = new FormData(event.currentTarget);
 
-        const email = formData.get("email")?.toString().trim();
-        const password = formData.get("password")?.toString().trim();
+        const contact = formData.get("contact")?.toString().trim();
+        const login_password = formData.get("login_password")?.toString().trim();
 
-        let newErrors: any = {};
+        let loginErrors: any = {};
 
-        if (!email) newErrors.email = "This field is required.";
-        if (!password) newErrors.password = "The password field is required.";
+        if (!contact) loginErrors.contact = "This field is required.";
+        if (!login_password) loginErrors.login_password = "The password field is required.";
         // If validation fails, show errors
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
+        console.log(loginErrors)
+        if (Object.keys(loginErrors).length > 0) {
+            setErrors(loginErrors);
             return;
         }
         setErrors({});
@@ -126,8 +129,10 @@ const Userform = ({ onSuccess }: Props) => {
             toast.success(data.message || 'Login successfully');
             login(data.data.token, {
                 id: Number(data.data.id),
+                name: data.data.name,
                 email: data.data.email,
                 phone: data.data.phone_number,
+                image: data.data.image,
             });
 
             form.reset();
@@ -147,23 +152,27 @@ const Userform = ({ onSuccess }: Props) => {
         {isLoginOpen && (
         <div>
           <h2 className="text-2xl font-medium">Get Started!</h2>
-          <form className="my-3" >
+          <form className="my-3"  onSubmit={onLoginSubmit}>
             <label className="text-[12px] md:text-[13px] font-medium">
               Enter Email or Mobile Number
             </label>
             <br />
             <input
               type="text"
+              name="contact"
               placeholder="you@example.com or 9876543210"
               className="my-2 text-sm w-full p-2 text-[12px] md:text-[13px] outline-1 outline-zinc-300 focus:outline-orange-300 focus:outline-2 rounded-md"
             />
+              {errors.contact && <p className="text-red-600 text-sm">{errors.contact}</p>}
             <label className="text-[12px] md:text-[13px] font-medium">Password</label>
             <br />
             <input
               type="password"
+              name="login_password"
               placeholder="********"
               className="my-2 text-sm w-full p-2 text-[12px] md:text-[13px] outline-1 outline-zinc-300 focus:outline-orange-300 focus:outline-2 rounded-md"
             />
+              {errors.contact && <p className="text-red-600 text-sm">{errors.contact}</p>}
             <button
               type="submit"
               disabled={isLoading}

@@ -9,7 +9,12 @@ import {
   RatingStarIcon,
   LeftArrowIcon,
   RightArrowIcon,
-} from "../../components/all_icons";
+} from "@/components/all_icons";
+
+type ShopProps = {
+  initialBrand?: string;
+  initialCategory?: string;
+};
 
 // --- Dummy Product Data ---
 const ShopProductItems = [
@@ -231,12 +236,12 @@ const ratingsRanges = [
   },
 ];
 
-const ShopPage = () => {
+const ShopPage = ({ initialBrand, initialCategory }: ShopProps) => {
   const [products] = useState(ShopProductItems);
   const [filteredProducts, setFilteredProducts] = useState(ShopProductItems);
   const [filters, setFilters] = useState({
-    category: [] as string[],
-    brand: [] as string[],
+    category: initialCategory ? [initialCategory.toLowerCase()] : [],
+    brand: initialBrand ? [initialBrand.toLowerCase()] : [],
     discount: [] as string[],
     ratings: [] as string[],
     price: [0, 0] as number[],
@@ -272,12 +277,12 @@ const ShopPage = () => {
 
     if (filters.category.length > 0) {
       tempProducts = tempProducts.filter((p) =>
-        filters.category.includes(p.category)
+        filters.category.includes(p.category.toLowerCase())
       );
     }
     if (filters.brand.length > 0) {
       tempProducts = tempProducts.filter((p) =>
-        filters.brand.includes(p.brand)
+          filters.brand.includes(p.brand.toLowerCase())
       );
     }
     if (filters.discount.length > 0) {

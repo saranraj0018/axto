@@ -1,29 +1,51 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-const BrandItems = [
-  { id: 1, img: "/img/home/Brand1.png", url: "#" },
-  { id: 2, img: "/img/home/Brand2.png", url: "#" },
-  { id: 3, img: "/img/home/Brand3.png", url: "#" },
-  { id: 4, img: "/img/home/Brand4.png", url: "#" },
-  { id: 5, img: "/img/home/Brand3.png", url: "#" },
-  { id: 6, img: "/img/home/Brand4.png", url: "#" },
-  { id: 7, img: "/img/home/Brand3.png", url: "#" },
-  { id: 8, img: "/img/home/Brand4.png", url: "#" },
-];
+type Brand = {
+  id: number;
+  name:string;
+  image: string;
+};
 
 const Section2 = () => {
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [visibleCount, setVisibleCount] = useState(4);
 
-  // Show More → +4  
+
+  // FETCH BRANDS
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/user/brand/list`,
+            { cache: "no-store" }
+        );
+        const json = await res.json();
+        setBrands(json.data || []);
+      } catch (error) {
+        console.error("Brand fetch error:", error);
+      }
+    };
+
+    fetchBrands();
+  }, []);
+
+  // Show More → +4
   const handleShowMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 4, BrandItems.length));
+    setVisibleCount((prev) => Math.min(prev + 4, brands.length));
   };
 
   // Show Less → -4  
   const handleShowLess = () => {
-    setVisibleCount((prev) => Math.max(prev - 4, 4));
+    setVisibleCount(4);
   };
+
+
+  const slugify = (text: string) =>
+      text.toLowerCase().replace(/\s+/g, "-");
+
+  if (brands.length === 0) return null; // or loader
 
   return (
     <>
@@ -38,17 +60,23 @@ const Section2 = () => {
 
         {/* Cards */}
         <div className="grid grid-cols-12 gap-3 mt-8">
-          {BrandItems.slice(0, visibleCount).map((item) => (
-            <div key={item.id} className="col-span-6">
-              <img src={item.img} alt="" />
-            </div>
+          {brands.slice(0, visibleCount).map((item) => (
+              <div key={item.id} className="col-span-6">
+                <Link href={`/shop/brand/${slugify(item.name.toLowerCase())}`}>
+                  <img
+                      src={item.image}
+                      alt={item.name}
+                      className="cursor-pointer hover:scale-105 transition"
+                  />
+                </Link>
+              </div>
           ))}
         </div>
 
         {/* Buttons */}
         <div className="flex justify-center gap-3 mt-4">
 
-          {visibleCount < BrandItems.length && (
+          {visibleCount < brands.length && (
             <button
               onClick={handleShowMore}
               className="axto-orange-btn"

@@ -91,8 +91,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           >
             <input
               type="checkbox"
-              checked={filters.category.includes(c)}
-              onChange={() => handleCheckbox("category", c)}
+              checked={filters.category.includes(c.toLowerCase())}
+              onChange={() => handleCheckbox("category", c.toLowerCase())}
             />
             {c}
           </label>
@@ -100,20 +100,20 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Brands */}
-        <h3 className="text-lg font-semibold mb-2">Brands</h3>
+      <h3 className="text-lg font-semibold mb-2">Brands</h3>
       <div className="overflow-auto max-h-30">
         {brands.map((b) => (
-          <label
-            key={b}
-            className="flex items-center gap-2 mb-1 text-secondary text-sm"
-          >
-            <input
-              type="checkbox"
-              checked={filters.brand.includes(b)}
-              onChange={() => handleCheckbox("brand", b)}
-            />
-            {b}
-          </label>
+            <label
+                key={b}
+                className="flex items-center gap-2 mb-1 text-secondary text-sm"
+            >
+              <input
+                  type="checkbox"
+                  checked={filters.brand.includes(b.toLowerCase())}
+                  onChange={() => handleCheckbox("brand", b.toLowerCase())}
+              />
+              {b}
+            </label>
         ))}
       </div>
 

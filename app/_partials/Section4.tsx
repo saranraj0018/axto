@@ -1,76 +1,41 @@
 "use client";
 
-import { useState, useEffect, useRef  } from "react";
+import { useState, useEffect  } from "react";
 import {
   RatingStarIcon,
   WishlistIcon,
   LeftArrowIcon,
   RightArrowIcon,
-} from "../../components/all_icons";
+} from "@/components/all_icons";
+
+interface BestSellerProduct {
+  id: number;
+  title: string;
+  img: string;
+  item_code: string;
+  ratings: number;
+  regularPrice: number;
+  sellingPrice: number;
+  discount: string;
+}
+
 
 const Section4 = () => {
-  const BSProductItems = [
-    {
-      id: 1,
-      title: "Backrest Support..",
-      itemCode: "OLA000040",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "799",
-      url: "#",
-    },
-    {
-      id: 2,
-      title: "Cushion Backrest Support..",
-      itemCode: "OLA000041",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "799",
-      url: "#",
-    },
-    {
-      id: 3,
-      title: "Break Wire",
-      itemCode: "OLA000042",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "799",
-      url: "#",
-    },
-    {
-      id: 4,
-      title: "EV Battery",
-      itemCode: "OLA000043",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "799",
-      url: "#",
-    },
-    {
-      id: 5,
-      title: "Car Battery",
-      itemCode: "OLA000044",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "8000",
-      url: "#",
-    },
-  ];
 
-  // Slider state
+  const [BSProductItems, setBSProductItems] =  useState<BestSellerProduct[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
 
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/best-seller/list`)
+        .then((res) => res.json())
+        .then((res) => {
+          if (res?.data) setBSProductItems(res.data);
+        })
+        .catch(console.error);
+  }, []);
+
+  // RESPONSIVE SLIDER
   useEffect(() => {
     const updateItems = () => {
       if (window.innerWidth < 640) setItemsPerView(2);
@@ -80,22 +45,21 @@ const Section4 = () => {
 
     updateItems();
     window.addEventListener("resize", updateItems);
-
-    return () => {
-      window.removeEventListener("resize", updateItems);
-    };
+    return () => window.removeEventListener("resize", updateItems);
   }, []);
 
-  // Infinite Loop Functions
   const next = () => {
     setCurrentIndex((prev) => (prev + 1) % BSProductItems.length);
   };
 
   const prev = () => {
     setCurrentIndex((prev) =>
-      prev === 0 ? BSProductItems.length - 1 : prev - 1
+        prev === 0 ? BSProductItems.length - 1 : prev - 1
     );
   };
+
+  if (!BSProductItems.length) return null;
+  console.log(BSProductItems)
   return (
     <div className="my-14 space-y-2 relative">
       <h2 className="text-center text-md md:text-2xl font-medium">
@@ -141,7 +105,7 @@ const Section4 = () => {
                 <div className="bg-[#fffffd] p-2 md:p-3 space-y-1 mt-auto flex flex-col justify-between flex-1">
                   <div className="flex justify-between">
                     <p className="text-secondary text-[9px] md:text-[12px]">
-                      ITEM CODE : {item.itemCode}
+                      ITEM CODE : {item.item_code}
                     </p>
 
                     <div className="flex gap-1 text-[10px] md:text-[13px]">
