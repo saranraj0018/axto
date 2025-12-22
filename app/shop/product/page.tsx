@@ -20,15 +20,23 @@ const ShopProductItems = [
     brand: "OLA",
     ratings: 4.5,
     stock: "In Stock",
-    img: [
-      "/img/home/P1.png",
-      "/img/home/B1.png",
-      "/img/home/P1.png",
-      "/img/home/B1.png",
-      "/img/home/P1.png",
+    img: ["/img/home/P1.png", "/img/home/B1.png"],
+
+    variations: [
+      {
+        id: "Type A",
+        label: "Type A",
+        regularPrice: 1200,
+        sellingPrice: 950,
+      },
+      {
+        id: "Type B",
+        label: "Type B",
+        regularPrice: 1500,
+        sellingPrice: 1180,
+      },
     ],
-    regularPrice: 1200,
-    sellingPrice: 950,
+
     url: "#",
   },
 ];
@@ -42,31 +50,17 @@ const Page = () => {
       <CommonBanners />
       <div className="axto-container">
         <div className="grid grid-cols-12 gap-2 md:gap-8">
-          {/* Pass product images */}
+          {/* Product Images */}
           <div className="col-span-12 lg:col-span-5">
             <ImageGallery images={product.img} />
           </div>
 
+          {/* Product Info */}
           <div className="col-span-12 lg:col-span-7">
-            <ProductInfo
-              product={{
-                id: ShopProductItems[0].id,
-                title: ShopProductItems[0].title,
-                description: ShopProductItems[0].description,
-                itemCode: ShopProductItems[0].itemCode,
-                category: ShopProductItems[0].category,
-                brand: ShopProductItems[0].brand,
-                ratings: ShopProductItems[0].ratings,
-                stock: ShopProductItems[0].stock,
-                regularPrice: ShopProductItems[0].regularPrice,
-                sellingPrice: ShopProductItems[0].sellingPrice,
-                url: ShopProductItems[0].url,
-              }}
-            />
+            <ProductInfo product={product} />
           </div>
         </div>
 
-        {/* Tab Items Goes Here */}
         <div className="mt-8">
           <div className="flex justify-center gap-3 mb-4">
             <button
@@ -79,6 +73,7 @@ const Page = () => {
             >
               Feature/Description
             </button>
+
             <button
               className={`px-4 py-2 -mb-px font-medium text-sm md:text-base transition ${
                 activeTab === 1
@@ -92,16 +87,8 @@ const Page = () => {
           </div>
 
           <div className="text-sm md:text-base text-gray-700">
-            {activeTab === 0 && (
-              <div>
-                <FeatureDescription />
-              </div>
-            )}
-            {activeTab === 1 && (
-              <div>
-                <Reviews />
-              </div>
-            )}
+            {activeTab === 0 && <FeatureDescription />}
+            {activeTab === 1 && <Reviews />}
           </div>
         </div>
 
