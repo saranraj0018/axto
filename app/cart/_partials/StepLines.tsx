@@ -6,7 +6,6 @@ import {
   CartPage_OrangeLocationIcon,
   CartPage_LocationIcon,
   CartPagePaymentIcon,
-  CartPageSuccessIcon,
 } from "../../../components/all_icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -38,24 +37,18 @@ const StepLines = () => {
       path: "#",
       icon: CartPagePaymentIcon,
     },
-    {
-      id: 4,
-      label: "Success",
-      path: "#",
-      icon: CartPageSuccessIcon,
-    },
   ];
 
   return (
     <>
       <CommonBanner />
       <div className="axto-container py-10 md:w-full lg:w-2/3 mx-auto">
-        <div className="grid grid-cols-18 gap-3">
+        <div className="grid grid-cols-16 gap-3">
           {steps.map((step, index) => (
             <>
               <div
                 key={step.id}
-                className="col-span-18 md:col-span-3 flex md:justify-center gap-5 md:gap-3"
+                className="col-span-16 md:col-span-4 flex md:justify-center gap-5 md:gap-3"
               >
                 <Link
                   href={step.path}
