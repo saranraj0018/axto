@@ -52,10 +52,42 @@
   @apply bg-white hover:bg-primary text-primary hover:text-white px-3 py-1 text-[10px] md:text-[15px] cursor-pointer rounded-3xl border border-primary hover:border-white transition;
 }
 
-.axto-container{
-  @apply px-[1em] lg:px-[5em] xl:px-[5em] 2xl:px-[10em]
+.axto-container {
+  @apply px-[1em] lg:px-[5em] xl:px-[5em] 2xl:px-[10em];
 }
 
-.orange-gradient{
-  background: linear-gradient(90deg, #FFE1CC -37.5%, rgba(255, 255, 255, 0.00) 95.08%);
+.orange-gradient {
+  background: linear-gradient(
+    90deg,
+    #ffe1cc -37.5%,
+    rgba(255, 255, 255, 0) 95.08%
+  );
+}
+
+/* Loader styles */
+.app-loader {
+    z-index: 9999;
+    background: #ffffffc4;
+    filter: blur(0.5px);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: fixed;
+    inset: 0;
+}
+.app-loader .spinner {
+  width: 55px;
+  height: 55px;
+  border: 5px solid #000;
+  border-top: 5px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
