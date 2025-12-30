@@ -6,68 +6,25 @@ import {
   WishlistIcon,
   LeftArrowIcon,
   RightArrowIcon,
-} from "../../../../components/all_icons";
+} from "../../../../../components/all_icons";
 
-const RelatedProducts = () => {
-  const BSProductItems = [
-    {
-      id: 1,
-      title: "Backrest Support..",
-      itemCode: "OLA000040",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "799",
-      url: "#",
-    },
-    {
-      id: 2,
-      title: "Cushion Backrest Support..",
-      itemCode: "OLA000041",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "799",
-      url: "#",
-    },
-    {
-      id: 3,
-      title: "Break Wire",
-      itemCode: "OLA000042",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "799",
-      url: "#",
-    },
-    {
-      id: 4,
-      title: "EV Battery",
-      itemCode: "OLA000043",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "799",
-      url: "#",
-    },
-    {
-      id: 5,
-      title: "Car Battery",
-      itemCode: "OLA000044",
-      ratings: 4.5,
-      discount: "10%",
-      img: "/img/home/P1.png",
-      regularPrice: "999",
-      sellingPrice: "8000",
-      url: "#",
-    },
-  ];
+interface RelatedProduct {
+  id: number;
+  title: string;
+  item_code: string;
+  ratings: string | number;
+  img: string;
+  regularPrice: string | number;
+  sellingPrice: string | number;
+  discount: number;
+}
 
-  // Slider state
+
+const RelatedProducts = ({
+                           products = [],
+                         }: {
+  products: RelatedProduct[];
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
 
@@ -80,20 +37,18 @@ const RelatedProducts = () => {
 
     updateItems();
     window.addEventListener("resize", updateItems);
-
-    return () => {
-      window.removeEventListener("resize", updateItems);
-    };
+    return () => window.removeEventListener("resize", updateItems);
   }, []);
 
-  // Infinite Loop Functions
+  if (!products.length) return null;
+
   const next = () => {
-    setCurrentIndex((prev) => (prev + 1) % BSProductItems.length);
+    setCurrentIndex((prev) => (prev + 1) % products.length);
   };
 
   const prev = () => {
     setCurrentIndex((prev) =>
-      prev === 0 ? BSProductItems.length - 1 : prev - 1
+        prev === 0 ? products.length - 1 : prev - 1
     );
   };
   return (
@@ -114,7 +69,7 @@ const RelatedProducts = () => {
             transform: `translateX(-${(currentIndex * 100) / itemsPerView}%)`,
           }}
         >
-          {BSProductItems.map((item) => (
+          {products.map((item) => (
             <div
               key={item.id}
               className="min-w-[50%] sm:min-w-[33.33%] lg:min-w-[25%] p-2 flex"
@@ -132,16 +87,16 @@ const RelatedProducts = () => {
                   </div>
 
                   <img
-                    src={item.img}
-                    alt={item.title}
-                    className="rounded-2xl w-full md:w-3/4 mx-auto"
+                      src={item.img}
+                      alt={item.title}
+                      className="rounded-2xl w-full max-w-[260px] h-[180px] object-contain mx-auto"
                   />
                 </div>
 
                 <div className="bg-[#fffffd] p-2 md:p-3 space-y-1 mt-auto flex flex-col justify-between flex-1">
                   <div className="flex justify-between">
                     <p className="text-secondary text-[9px] md:text-[12px]">
-                      ITEM CODE : {item.itemCode}
+                      ITEM CODE : {item.item_code}
                     </p>
 
                     <div className="flex gap-1 text-[10px] md:text-[13px]">

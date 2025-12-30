@@ -4,182 +4,153 @@ import React from "react";
 import { RatingStarIcon } from "@/components/all_icons";
 
 interface SidebarProps {
-  filters: {
-    category: string[];
-    brand: string[];
-    discount: string[];
-    ratings: string[];
-    price: number[];
-    search: string;
-    sort: string;
-  };
-  setFilters: React.Dispatch<
-    React.SetStateAction<{
-      category: string[];
-      brand: string[];
-      discount: string[];
-      ratings: string[];
-      price: number[];
-      search: string;
-      sort: string;
-    }>
-  >;
-  products: any[];
-  discountRanges: { label: string; min: number; max: number }[];
-  ratingsRanges: {
-    id: string;
-    label: React.ReactNode;
-    min: number;
-    max: number;
-  }[];
-  calculateDiscount: (regularPrice: number, sellingPrice: number) => number;
+    filters: any;
+    setFilters: React.Dispatch<React.SetStateAction<any>>;
+    products: any[];
 }
 
+const ratings = ["5", "4", "3", "2", "1"];
+
 const Sidebar: React.FC<SidebarProps> = ({
-  filters,
-  setFilters,
-  products,
-  discountRanges,
-  ratingsRanges,
-  calculateDiscount,
-}) => {
-  const categories = Array.from(new Set(products.map((p) => p.category)));
-  const brands = Array.from(new Set(products.map((p) => p.brand)));
+                                             filters,
+                                             setFilters,
+                                             products,
+                                         }) => {
+    const toggle = (type: string, value: string) => {
+        setFilters((prev: any) => ({
+            ...prev,
+            [type]: prev[type].includes(value)
+                ? prev[type].filter((v: string) => v !== value)
+                : [...prev[type], value],
+        }));
+    };
 
-  const handleCheckbox = (type: string, value: string) => {
-    const current = filters[type as keyof typeof filters] as string[];
-    if (current.includes(value)) {
-      setFilters({
-        ...filters,
-        [type]: current.filter((v) => v !== value),
-      });
-    } else {
-      setFilters({
-        ...filters,
-        [type]: [...current, value],
-      });
-    }
-  };
+    // 🔥 Dynamic category & brand from API data
+    const categories = Array.from(
+        new Set(products.map((p) => p.category).filter(Boolean))
+    );
 
-  const handlePriceChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const newPrice = [...filters.price];
-    newPrice[index] = parseInt(e.target.value);
-    setFilters({ ...filters, price: newPrice });
-  };
+    const brands = Array.from(
+        new Set(products.map((p) => p.brand).filter(Boolean))
+    );
 
-  return (
-    <div className="w-full md:w-50 lg:w-64 space-y-3">
-      {/* CLIENT SAID TO REMOVE THIS - INCASE IF NEEDED JUST UNCOMMENT IT */}
+    const capitalize = (str: string) =>
+        str.charAt(0).toUpperCase() + str.slice(1);
 
-      {/* <h3 className="text-2xl font-semibold text-centre md:text-start">
-        Filter Options
-      </h3>
-      <hr className="text-zinc-300 my-5" /> */}
-      {/* Categories */}
+    const discountRanges = Array.from(
+        new Set(products.map((p) => p.discount))
+    )
+        .filter((d) => d > 0)
+        .map((d) => {
+            const min = Math.floor(d / 20) * 20;
+            const max = min + 20;
+            return `${min} - ${max}%`;
+        })
+        .filter((v, i, arr) => arr.indexOf(v) === i)
+        .sort((a, b) => Number(a) - Number(b));
 
-      {/* CLIENT SAID TO REMOVE THIS - INCASE IF NEEDED JUST UNCOMMENT IT */}
-      <h3 className="text-lg font-semibold mb-2">Categories</h3>
-      <div className="overflow-auto max-h-30">
-        
-        {categories.map((c) => (
-          <label
-            key={c}
-            className="flex items-center gap-2 mb-1 text-secondary text-sm"
-          >
-            <input
-              type="checkbox"
-              checked={filters.category.includes(c.toLowerCase())}
-              onChange={() => handleCheckbox("category", c.toLowerCase())}
-            />
-            {c}
-          </label>
-        ))}
-      </div>
+    return (
+        <div className="w-full md:w-64 space-y-5">
 
-      {/* Brands */}
-      <h3 className="text-lg font-semibold mb-2">Brands</h3>
-      <div className="overflow-auto max-h-30">
-        {brands.map((b) => (
-            <label
-                key={b}
-                className="flex items-center gap-2 mb-1 text-secondary text-sm"
-            >
-              <input
-                  type="checkbox"
-                  checked={filters.brand.includes(b.toLowerCase())}
-                  onChange={() => handleCheckbox("brand", b.toLowerCase())}
-              />
-              {b}
-            </label>
-        ))}
-      </div>
+            {/* Categories */}
+            {categories.length > 0 && (
+                <div>
+                    <h3 className="text-lg font-semibold mb-2">Categories</h3>
+                    {categories.map((c) => (
+                        <label key={c} className="flex gap-2 items-center text-sm">
+                            <input
+                                type="checkbox"
+                                checked={filters.category.includes(c.toLowerCase())}
+                                onChange={() => toggle("category", c.toLowerCase())}
+                            />
+                            {c}
+                        </label>
+                    ))}
+                </div>
+            )}
 
-      {/* Discount */}
-        <h3 className="text-lg font-semibold mb-2">Discount</h3>
-        <div className="overflow-auto max-h-30">
-        {discountRanges.map((range) => (
-          <label
-            key={range.label}
-            className="flex items-center gap-2 mb-1 text-secondary text-sm"
-          >
-            <input
-              type="checkbox"
-              checked={filters.discount.includes(range.label)}
-              onChange={() => handleCheckbox("discount", range.label)}
-            />
-            {range.label}
-          </label>
-        ))}
-      </div>
+            {/* Brands */}
+            {brands.length > 0 && (
+                <div>
+                    <h3 className="text-lg font-semibold mb-2">Brands</h3>
+                    {brands.map((b) => (
+                        <label key={b} className="flex gap-2 items-center text-sm">
+                            <input
+                                type="checkbox"
+                                checked={filters.brand.includes(b)}
+                                onChange={() => toggle("brand", b)}
+                            />
+                            {capitalize(b)}
+                        </label>
+                    ))}
+                </div>
+            )}
 
-      {/* Ratings */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Ratings</h3>
-        {ratingsRanges.map((range) => (
-          <label
-            key={range.id}
-            className="flex gap-2 items-center mb-1 text-secondary text-sm"
-          >
-            <input
-              type="checkbox"
-              checked={filters.ratings.includes(range.id)}
-              onChange={() => handleCheckbox("ratings", range.id)}
-            />
-            {range.label}
-          </label>
-        ))}
-      </div>
 
-      {/* Price */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Price</h3>
-        <div className="flex gap-2 items-center">
-          <div>
-            <label className="text-sm">Starting Price</label>
-            <input
-              type="number"
-              value={filters.price[0] || 0}
-              onChange={(e) => handlePriceChange(e, 0)}
-              className="w-full outline outline-zinc-300 text-secondary text-sm p-1 rounded focus:outline-1 focus:outline-orange-400 mt-2"
-            />
-          </div>
+            {/* Discount */}
+            {discountRanges.length > 0 && (
+                <div>
+                    <h3 className="text-lg font-semibold mb-2">Discount</h3>
+                    {discountRanges.map((d) => (
+                        <label key={d} className="flex gap-2 items-center text-sm">
+                            <input
+                                type="checkbox"
+                                checked={filters.discount.includes(d)}
+                                onChange={() => toggle("discount", d)}
+                            />
+                            {d}
+                        </label>
+                    ))}
+                </div>
+            )}
 
-          <div>
-            <label className="text-sm">Ending Price</label>
-            <input
-              type="number"
-              value={filters.price[1] || 10000}
-              onChange={(e) => handlePriceChange(e, 1)}
-              className="w-full outline outline-zinc-300 text-secondary text-sm p-1 rounded focus:outline-1 focus:outline-orange-400 mt-2"
-            />
-          </div>
+            {/* Ratings */}
+            <div>
+                <h3 className="text-lg font-semibold mb-2">Ratings</h3>
+                {ratings.map((r) => (
+                    <label key={r} className="flex gap-2 items-center text-sm">
+                        <input
+                            type="checkbox"
+                            checked={filters.ratings.includes(r)}
+                            onChange={() => toggle("ratings", r)}
+                        />
+                        <RatingStarIcon /> {r} Star
+                    </label>
+                ))}
+            </div>
+
+            {/* Price */}
+            <div>
+                <h3 className="text-lg font-semibold mb-2">Price</h3>
+                <div className="flex gap-2">
+                    <input
+                        type="number"
+                        placeholder="Min"
+                        value={filters.price[0]}
+                        onChange={(e) =>
+                            setFilters({
+                                ...filters,
+                                price: [Number(e.target.value), filters.price[1]],
+                            })
+                        }
+                        className="w-full border p-2 rounded"
+                    />
+                    <input
+                        type="number"
+                        placeholder="Max"
+                        value={filters.price[1]}
+                        onChange={(e) =>
+                            setFilters({
+                                ...filters,
+                                price: [filters.price[0], Number(e.target.value)],
+                            })
+                        }
+                        className="w-full border p-2 rounded"
+                    />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Sidebar;
