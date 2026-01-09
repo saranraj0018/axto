@@ -1,7 +1,7 @@
 "use client";
 import CommonBanners from "../../../components/others/CommonBanners";
 import Sidebar from "../_partials/Sidebar";
-import AddAddress from "./_partials/AddAddress";
+
 import ManageAddress from "./_partials/ManageAddress";
 
 const Page = () => {
@@ -15,7 +15,6 @@ const Page = () => {
           </div>
           <div className="col-span-12 md:col-span-8 lg:col-span-9 space-y-5">
             <ManageAddress />
-            <AddAddress />
           </div>
         </div>
       </div>

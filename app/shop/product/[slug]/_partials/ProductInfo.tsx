@@ -4,11 +4,14 @@ import {
   RatingStarIcon,
   MinusIcon,
   PlusIcon,
-} from "../../../../../components/all_icons";
+}  from "@/components/all_icons";
 import ProductShareButton from "@/components/ProductShareButton";
+import { useAddToCart } from "@/lib/useAddToCart";
+import {useAuthModal} from "@/context/AuthModalContext";
 
 /** ---------- TYPES ---------- */
 interface VariantType {
+    variant_id: number;
   name: string;
   regular: number;
   sale: number;
@@ -32,21 +35,24 @@ interface ProductInfoProps {
     discount?: number | null;
     stock?: number;
     url: string;
+    attribute_name: string;
     variants?: VariantType[];
   };
 }
 
 const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const [count, setCount] = useState(1);
-  const [copied, setCopied] = useState(false);
+    const { addToCart } = useAddToCart();
+    const { openAuthModal } = useAuthModal();
 
   /** ---------- DEFAULT VARIANT ---------- */
   const variants = product.variants ?? [];
 
-  const defaultVariant: VariantType =
+  const defaultVariant: VariantType | { name: string; regular: number; sale: number; stock: number | undefined } =
       product.type === "variant" && variants.length > 0
           ? variants[0]
           : {
+              variant_id: 0,
               name: "Default",
               regular: product.regularPrice,
               sale: product.sellingPrice,
@@ -55,12 +61,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
   const [selectedVariant, setSelectedVariant] =
       useState<VariantType>(defaultVariant);
-  /** ---------- COPY LINK ---------- */
 
-
-
-
-
+    const currentStock =
+        product.type === "variant"
+            ? selectedVariant.stock ?? 0
+            : product.stock ?? 0;
     return (
       <div>
         {/* BRAND */}
@@ -70,7 +75,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
         {/* TITLE */}
         <h1 className="md:text-xl font-medium my-4">{product.title}</h1>
-
+          <p className="text-[11px] md:text-[15px] text-secondary mb-2">
+              {product.attribute_name}
+          </p>
         {/* VARIANT SELECT */}
           {product.type === "variant" && variants.length > 0 && (
               <select
@@ -78,15 +85,22 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
                   onChange={(e) => {
                       const v = variants.find((x) => x.name === e.target.value);
                       if (v) setSelectedVariant(v);
+                      setCount(1);
                   }}
               >
                   {variants.map((v) => (
-                      <option key={v.name} value={v.name}>
-                          {v.name}
+                      // 👇 THIS IS WHERE IT GOES
+                      <option
+                          key={v.variant_id}
+                          value={v.name}
+                          disabled={(v.stock ?? 0) <= 0}
+                      >
+                          {v.name} {(v.stock ?? 0) <= 0 ? "(Out of Stock)" : ""}
                       </option>
                   ))}
               </select>
           )}
+
 
 
           {/* PRICE */}
@@ -127,29 +141,51 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         {/* QTY + CTA */}
         <div className="flex gap-2 my-4">
           <div className="flex gap-2 items-center bg-[#EDF0F4] rounded-full p-1">
-            <button
-                onClick={() => setCount((c) => Math.max(1, c - 1))}
-                className="h-5 md:h-8 w-5 md:w-8 rounded-full bg-white hover:bg-gray-200 flex justify-center items-center"
-            >
-              {MinusIcon}
-            </button>
+              <button
+                  onClick={() => setCount((c) => Math.max(1, c - 1))}
+                  disabled={count <= 1}
+                  className="h-5 md:h-8 w-5 md:w-8 rounded-full bg-white hover:bg-gray-200
+             flex justify-center items-center disabled:opacity-50"
+              >
+                  {MinusIcon}
+              </button>
 
-            <span className="text-[12px] md:text-md">{count}</span>
 
-            <button
-                onClick={() => setCount((c) => c + 1)}
-                className="h-5 md:h-8 w-5 md:w-8 rounded-full bg-white hover:bg-gray-200 flex justify-center items-center"
-            >
-              {PlusIcon}
-            </button>
+              <span className="text-[12px] md:text-md">{count}</span>
+
+              <button
+                  onClick={() =>
+                      setCount((c) => (c < currentStock ? c + 1 : c))
+                  }
+                  disabled={count >= currentStock}
+                  className="h-5 md:h-8 w-5 md:w-8 rounded-full bg-white hover:bg-gray-200
+             flex justify-center items-center disabled:opacity-50"
+              >
+                  {PlusIcon}
+              </button>
+
           </div>
 
-          <a href={product.url} className="axto-white-btn text-sm my-auto">
-            Add to Cart
-          </a>
-          <a href={product.url} className="axto-orange-btn text-sm my-auto">
-            Buy Now
-          </a>
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    addToCart({
+                        id: product.id,
+                        variant_id:
+                            product.type === "variant"
+                                ? selectedVariant.variant_id
+                                : 0,
+                        quantity: count,
+                    },{
+                        onAuthRequired: openAuthModal,
+                        buyNow: true,
+                    });
+                }}
+                disabled={currentStock <= 0}
+                className="axto-white-btn text-sm my-auto disabled:opacity-50"
+            >
+                Add to Cart
+            </button>
         </div>
 
         {/* META */}

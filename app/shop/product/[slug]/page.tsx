@@ -9,6 +9,7 @@ import ProductInfo from "./_partials/ProductInfo";
 import RelatedProducts from "./_partials/RelatedProducts";
 import FeatureDescription from "./_partials/FeatureDescription";
 import Reviews from "./_partials/Reviews";
+import {refreshCart} from "@/lib/cartTotal";
 const Page = () => {
   const { slug } = useParams<{ slug: string }>();
 
@@ -17,6 +18,7 @@ const Page = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
+    refreshCart();
     if (!slug) return;
     const match = slug.match(/(.+)-(\d+)$/);
     if (!match) {

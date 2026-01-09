@@ -1,123 +1,219 @@
 "use client";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
-const AddAddress = () => {
-  // Controlled inputs for main profile form
-  const [fullName, setFullName] = useState("VasanthKumar S");
+const AddAddress = ({loadAddresses,}: { loadAddresses: () => void;
+}) => {
+  // Address fields
+  const [name, setName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [country, setCountry] = useState("India");
-  const [street, setStreet] = useState("No. 24, Green Park Avenue");
-  const [city, setCity] = useState("Chennai");
-  const [state, setState] = useState("Tamil Nadu");
-  const [zipCode, setZipCode] = useState("600040");
-  const [mobile, setMobile] = useState("+91 81222 91222");
-  const [email, setEmail] = useState("uiuxdesigner@gmail.com");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = {
-      fullName,
-      country,
-      street,
-      city,
-      state,
-      zipCode,
-      mobile,
-      email,
-    };
-    console.log("Address submitted:", formData);
-    // Add API call here to save the address
+  // Extra states
+  const [isDefault, setIsDefault] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+
+  /* ---------------- Validation ---------------- */
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!name.trim()) newErrors.name = "Full name is required";
+    if (!mobile.trim()) newErrors.mobile = "Mobile number is required";
+    if (!street.trim()) newErrors.street = "Street address is required";
+    if (!city.trim()) newErrors.city = "City is required";
+    if (!state.trim()) newErrors.state = "State is required";
+    if (!zipCode.trim()) newErrors.zipCode = "Zip code is required";
+    if (!country.trim()) newErrors.country = "Country is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
+
+  /* ---------------- Submit ---------------- */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    setLoading(true);
+    setErrors({});
+
+    try {
+      const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/user/address-store`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+            },
+            body: JSON.stringify({
+              name,
+              country,
+              street,
+              city,
+              state,
+              zip_code: zipCode,
+              mobile,
+              is_default: isDefault ? 1 : 0,
+            }),
+          }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.errors) {
+          const formattedErrors: Record<string, string> = {};
+          Object.keys(data.errors).forEach((key) => {
+            formattedErrors[key] = data.errors[key][0];
+          });
+          setErrors(formattedErrors);
+        }
+        return;
+      }
+
+      toast.success("Address added successfully");
+      loadAddresses();
+      // Reset form
+      setName("");
+      setMobile("");
+      setStreet("");
+      setCity("");
+      setState("");
+      setZipCode("");
+      setCountry("India");
+      setIsDefault(false);
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ---------------- UI ---------------- */
   return (
-    <>
-      <h2 className="text-xl font-medium">Add Address</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="text-sm font-medium">Full Name</label>
-        <br />
-        <input
-          type="text"
-          className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-        />
-        <br />
+      <>
+        <h2 className="text-xl font-medium mb-3 mt-4">Add Address</h2>
 
-        <label className="text-sm font-medium">Country</label>
-        <br />
-        <input
-          type="text"
-          className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-        />
-        <br />
+        <form onSubmit={handleSubmit} className="max-w-3xl">
 
-        <label className="text-sm font-medium">Street Address</label>
-        <br />
-        <input
-          type="text"
-          className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
-          value={street}
-          onChange={(e) => setStreet(e.target.value)}
-        />
-        <br />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <label className="text-sm font-medium">City</label>
-        <br />
-        <input
-          type="text"
-          className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <br />
+            {/* Full Name */}
+            <div>
+              <label className="text-sm font-medium">Full Name</label>
+              <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+              />
+              {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
+            </div>
 
-        <label className="text-sm font-medium">State</label>
-        <br />
-        <input
-          type="text"
-          className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-        />
-        <br />
+            {/* Mobile */}
+            <div>
+              <label className="text-sm font-medium">Mobile Number</label>
+              <input
+                  type="number"
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+              />
+              {errors.mobile && <p className="text-xs text-red-500">{errors.mobile}</p>}
+            </div>
 
-        <label className="text-sm font-medium">Zip Code</label>
-        <br />
-        <input
-          type="text"
-          className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
-          value={zipCode}
-          onChange={(e) => setZipCode(e.target.value)}
-        />
-        <br />
+            {/* Street */}
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium">Street Address</label>
+              <input
+                  type="text"
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+              />
+              {errors.street && <p className="text-xs text-red-500">{errors.street}</p>}
+            </div>
 
-        <label className="text-sm font-medium">Mobile Number</label>
-        <br />
-        <input
-          type="text"
-          className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
-          value={mobile}
-          onChange={(e) => setMobile(e.target.value)}
-        />
-        <br />
+            {/* Country */}
+            <div>
+              <label className="text-sm font-medium">Country</label>
+              <input
+                  type="text"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+              />
+              {errors.country && <p className="text-xs text-red-500">{errors.country}</p>}
+            </div>
 
-        <label className="text-sm font-medium">Email</label>
-        <br />
-        <input
-          type="text"
-          className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
+            {/* State */}
+            <div>
+              <label className="text-sm font-medium">State</label>
+              <input
+                  type="text"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+              />
+              {errors.state && <p className="text-xs text-red-500">{errors.state}</p>}
+            </div>
 
-        <input
-          type="submit"
-          className="axto-orange-btn text-sm my-2"
-          value="Add Address"
-        />
-      </form>
-    </>
+            {/* City */}
+            <div>
+              <label className="text-sm font-medium">City</label>
+              <input
+                  type="text"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+              />
+              {errors.city && <p className="text-xs text-red-500">{errors.city}</p>}
+            </div>
+
+            {/* Zip */}
+            <div>
+              <label className="text-sm font-medium">Zip Code</label>
+              <input
+                  type="number"
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+              />
+              {errors.zipCode && <p className="text-xs text-red-500">{errors.zipCode}</p>}
+            </div>
+          </div>
+
+          {/* Default Address */}
+          <div className="flex items-center gap-2 mt-4">
+            <input
+                type="checkbox"
+                checked={isDefault}
+                onChange={(e) => setIsDefault(e.target.checked)}
+                className="accent-orange-500"
+            />
+            <span className="text-sm">Make this my default address</span>
+          </div>
+
+          {/* Submit */}
+          <button
+              type="submit"
+              disabled={loading}
+              className="axto-orange-btn mt-5 px-6 py-2"
+          >
+            {loading ? "Saving..." : "Add Address"}
+          </button>
+        </form>
+
+      </>
   );
 };
 

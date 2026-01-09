@@ -90,7 +90,6 @@ const LoggedItems = () => {
     <>
       <div className="space-y-5">
         <div className="flex gap-2">
-          <img src="/img/profile/Male-Avatar.png" alt="" className="w-1/5" />
           <div className="my-auto">
             <h4 className="font-medium text-sm md:text-lg">{user?.name}</h4>
             <p className="text-[10px] md:text-sm text-secondary">

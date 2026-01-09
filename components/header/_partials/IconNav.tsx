@@ -1,17 +1,41 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { searchIcon, heartIcon, cartIcon } from "../../all_icons";
+import {searchIcon, heartIcon, cartIcon, userIcon} from "../../all_icons";
 import SearchPopup from "./searchPopup";
 import UserPopup from "./userPopup";
 import Link from "next/link";
 import ProfileNav from "./ProfileNav";
 
+
 const IconNav = () => {
   const [isUserPopupOpen, setIsUserPopupOpen] = useState(false);
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
   const { token,user } = useAuth();
+  const [cartTotal, setCartTotal] = useState(0);
   const isLoggedIn = !!token;
+
+
+  useEffect(() => {
+    const fetchCart = () => {
+      const headers: any = { Accept: "application/json" };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/cart/total`, { headers })
+          .then(res => res.json())
+          .then(res => setCartTotal(res.totalAmount || 0))
+          .catch(console.error);
+    };
+
+    fetchCart(); // initial load
+
+    window.addEventListener("cart-refresh", fetchCart);
+    return () => window.removeEventListener("cart-refresh", fetchCart);
+  }, [token]);
+
 
   return (
       <>
@@ -29,7 +53,10 @@ const IconNav = () => {
                     )}
               </div>
               <div className="my-auto">
-                <ProfileNav/>
+                <Link href="/profile" className="my-auto">
+                  {userIcon}
+                </Link>
+                {/*<ProfileNav/>*/}
               </div>
               <Link href="/profile/wishlist" className="my-auto">
                 {heartIcon}
@@ -42,7 +69,7 @@ const IconNav = () => {
                   cart value
                 </p>
                 <p className="text-black font-semibold text-[12px] md:text-lg">
-                  ₹1,526 
+                  ₹{cartTotal}
                 </p>
               </div>
             </div>

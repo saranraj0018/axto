@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {
   Black_ProfileIcon,
   White_ProfileIcon,
@@ -15,11 +15,18 @@ import {
   Black_SupportIcon,
   White_SupportIcon,
   logoutIcon,
-} from "../../../components/all_icons";
+} from "@/components/all_icons";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const { user, logout } = useAuth();
+  const router = useRouter();
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
 
   const Sideitems = [
     {
@@ -57,15 +64,15 @@ const Sidebar = () => {
         : White_LocationIcon,
       matchType: "starts",
     },
-    {
-      id: 5,
-      label: "Notification",
-      path: "/profile/notification",
-      icon: pathname.startsWith("/profile/notification")
-        ? Black_BellIcon
-        : White_BellIcon,
-      matchType: "starts",
-    },
+    // {
+    //   id: 5,
+    //   label: "Notification",
+    //   path: "/profile/notification",
+    //   icon: pathname.startsWith("/profile/notification")
+    //     ? Black_BellIcon
+    //     : White_BellIcon,
+    //   matchType: "starts",
+    // },
     {
       id: 6,
       label: "Raise a Ticket",
@@ -81,10 +88,10 @@ const Sidebar = () => {
     <>
       <div className="space-y-5">
         <div className="flex gap-2">
-          <img src="/img/profile/Male-Avatar.png" alt="" className="w-1/5" />
+          <img src={user?.image || "/img/profile/Male-Avatar.png"} alt="" className="w-20 h-20 rounded-full object-cover" />
           <div className="my-auto">
-            <h4 className="font-medium text-lg">VasanthKumar</h4>
-            <p className="text-sm text-secondary">uxuidesigner@gmail.com</p>
+            <h4 className="font-medium text-lg">{user?.name}</h4>
+            <p className="text-sm text-secondary">{user?.email}</p>
           </div>
         </div>
 
@@ -120,7 +127,10 @@ const Sidebar = () => {
             );
           })}
           <div className="my-1 lg:my-2 p-0.5 lg:p-2 rounded-full">
-            <Link href="#" className="flex gap-2">
+            <div
+                onClick={handleLogout}
+                className="flex gap-2 cursor-pointer"
+            >
               <div className="rounded-full scale-75 lg:scale-100 py-1 px-2">
                 {logoutIcon}
               </div>
@@ -128,7 +138,7 @@ const Sidebar = () => {
               <div className="my-auto text-[12px] lg:text-[15px] lg:text-md font-medium text-[#ec221f]">
                 Logout
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>

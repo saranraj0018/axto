@@ -8,13 +8,14 @@ type User = {
     email?: string;
     phone?: number;
     image?: string;
-
 };
 
 type AuthContextType = {
     token: string | null;
     user: User | null;
+    isAuthenticated: boolean;
     login: (token: string, user?: User) => void;
+    updateUser: (user: User) => void;
     logout: () => void;
 };
 
@@ -23,7 +24,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
-    // 🔄 restore from localStorage
+
+    // 🔄 Restore auth on refresh
     useEffect(() => {
         const savedToken = localStorage.getItem("auth_token");
         const savedUser = localStorage.getItem("auth_user");
@@ -39,6 +41,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (user) localStorage.setItem("auth_user", JSON.stringify(user));
     };
 
+    const updateUser = (updated: Partial<User>) => {
+        setUser(prev => {
+            const merged = { ...(prev || {}), ...updated }; // merge with empty if prev is null
+            localStorage.setItem("auth_user", JSON.stringify(merged)); // sync to localStorage
+            return merged;
+        });
+    };
+
+
+
     const logout = () => {
         setToken(null);
         setUser(null);
@@ -47,7 +59,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ token, user, login, logout }}>
+        <AuthContext.Provider
+            value={{
+                token,
+                user,
+                isAuthenticated: !!token, // ⭐ IMPORTANT
+                login,
+                updateUser,
+                logout,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

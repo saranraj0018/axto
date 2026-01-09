@@ -6,6 +6,7 @@ import Topbar from "./_partials/Topbar";
 import Content from "./_partials/Content";
 import CommonBanners from "@/components/others/CommonBanners";
 import { LeftArrowIcon, RightArrowIcon } from "@/components/all_icons";
+import {refreshCart} from "@/lib/cartTotal";
 
 type Product = {
   id: number;
@@ -18,6 +19,8 @@ type Product = {
   brand: string;
   discount: number;
   img: string;
+  type:string;
+  is_wishlisted:boolean;
 };
 
 type ShopPageProps = {
@@ -58,14 +61,24 @@ const ShopPage = ({ initialCategory, initialBrand }: ShopPageProps) => {
 
   /* Fetch products */
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/product/list`)
+    refreshCart();
+    const token = localStorage.getItem("auth_token"); // or from Zustand
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/product/list`, {
+      headers: {
+        Accept: "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    })
         .then((res) => res.json())
         .then((res) => {
           setProducts(res.data || []);
           setFilteredProducts(res.data || []);
         })
+        .catch(console.error)
         .finally(() => setLoading(false));
   }, []);
+
 
   /* Filtering */
   useEffect(() => {
