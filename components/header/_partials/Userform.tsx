@@ -60,7 +60,6 @@ const Userform = ({ onSuccess }: Props) => {
             );
 
             const data = await response.json();
-            console.log()
             if (!response.ok) {
                 toast.error(data.message || 'Registration failed');
                 return; // stop execution

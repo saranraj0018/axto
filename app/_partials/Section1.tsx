@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import {refreshCart} from "@/lib/cartTotal";
 
 type Banner = {
   id: number;
@@ -27,6 +28,7 @@ const Section1 = () => {
         };
 
         fetchBanners();
+        refreshCart();
     }, []);
 
     useEffect(() => {

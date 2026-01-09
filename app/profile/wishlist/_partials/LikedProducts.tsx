@@ -1,68 +1,74 @@
-import { RatingStarIcon, LikedIcon } from "../../../../components/all_icons";
-const BSProductItems = [
-  {
-    id: 1,
-    title: "Backrest Support..",
-    itemCode: "OLA000040",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "799",
-    url: "#",
-  },
-  {
-    id: 2,
-    title: "Cushion Backrest Support..",
-    itemCode: "OLA000041",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "799",
-    url: "#",
-  },
-  {
-    id: 3,
-    title: "Break Wire",
-    itemCode: "OLA000042",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "799",
-    url: "#",
-  },
-  {
-    id: 4,
-    title: "EV Battery",
-    itemCode: "OLA000043",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "799",
-    url: "#",
-  },
-  {
-    id: 5,
-    title: "Car Battery",
-    itemCode: "OLA000043",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "8000",
-    url: "#",
-  },
-];
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { RatingStarIcon } from "@/components/all_icons";
+import {WishlistIcon} from "@/components/WishlistIcon";
+
+interface WishlistVariant {
+  variant_id: number;
+  name: string;
+  stock: number;
+  regular: number;
+  sale: number;
+  discount: number | null;
+}
+
+interface WishlistProduct {
+  id: number;
+  title: string;
+  item_code: string;
+  ratings: number;
+  img: string;
+  regularPrice: number;
+  sellingPrice: number;
+  discount: number | null;
+  variants: WishlistVariant[];
+  category: string;
+  brand: string;
+  type: "single" | "variant";
+  is_wishlisted: boolean;
+}
+
 
 const LikedProducts = () => {
+  const [products, setProducts] = useState<WishlistProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+
+  const fetchWishlist = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/wishlist`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+        },
+      });
+
+      const result = await res.json();
+      setProducts(result.data || []);
+    } catch (error) {
+      console.error("Wishlist fetch error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <p className="text-center my-10">Loading wishlist...</p>;
+  }
+
+  if (!products.length) {
+    return <p className="text-center my-10">No wishlist items found</p>;
+  }
+
   return (
     <div className="my-14 space-y-2 md:space-y-3">
       <h2 className="text-xl font-medium mb-4">Wishlist</h2>
       <div className="grid grid-cols-12 gap-3 md:gap-5 my-8">
-        {BSProductItems.map((item) => (
+        {products.map((item) => (
           <div
             key={item.id}
             className="col-span-6 lg:col-span-3 flex"
@@ -75,7 +81,16 @@ const LikedProducts = () => {
                     {item.discount} OFF
                   </p>
                   <div className="p-1 rounded-3xl bg-white hover:bg-[#f3f3f3] hover:scale-125 transition cursor-pointer">
-                    <LikedIcon />
+                    <WishlistIcon
+                        productId={item.id}
+                        initialLiked={true}
+                        onChange={(liked) => {
+                          if (!liked) {
+                            setProducts((prev) => prev.filter((p) => p.id !== item.id));
+                          }
+                        }}
+                    />
+
                   </div>
                 </div>
                 <img
@@ -88,7 +103,7 @@ const LikedProducts = () => {
                 <div className="flex justify-between">
                   <div className="space-y-2">
                     <p className="text-secondary text-[9px] md:text-[12px]">
-                      ITEM CODE : {item.itemCode}
+                      ITEM CODE : {item.item_code}
                     </p>
                   </div>
                   <div className="flex gap-1 text-[10px] md:text-[13px] ">

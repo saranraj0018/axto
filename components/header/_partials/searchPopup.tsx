@@ -1,56 +1,41 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { WishlistIcon, RatingStarIcon, closeIcon } from "../../all_icons"; // update paths as needed
+import Link from "next/link";
+import { RatingStarIcon, closeIcon } from "../../all_icons"; // update paths as needed
+import { useAddToCart } from "@/lib/useAddToCart";
+import {WishlistIcon} from "@/components/WishlistIcon";
+import {useAuthModal} from "@/context/AuthModalContext";
 
-const SearchItems = [
-  {
-    title: "Backrest Support..",
-    itemCode: "OLA000040",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "799",
-    url: "#",
-  },
-  {
-    title: "Cushion Backrest Support..",
-    itemCode: "OLA000041",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "799",
-    url: "#",
-  },
-  {
-    title: "Break Wire",
-    itemCode: "OLA000042",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "799",
-    url: "#",
-  },
-  {
-    title: "EV Battery",
-    itemCode: "OLA000043",
-    ratings: 4.5,
-    discount: "10%",
-    img: "/img/home/P1.png",
-    regularPrice: "999",
-    sellingPrice: "799",
-    url: "#",
-  },
-];
+interface Product {
+  id: number;
+  title: string;
+  item_code: string;
+  ratings: number;
+  discount: string;
+  img: string;
+  regularPrice: string;
+  sellingPrice: string;
+  type:string;
+  is_wishlisted:boolean;
+}
 
 interface SearchPopupProps {
   onClose: () => void;
 }
 
+const slugify = (text: string) =>
+    text
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]+/g, "");
+
 const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
+  const { addToCart } = useAddToCart();
+  const { openAuthModal } = useAuthModal();
   const [query, setQuery] = useState("");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   // Slide-in effect on mount
@@ -64,11 +49,43 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
     setTimeout(() => onClose(), 300); // wait for slide-out
   };
 
-  const handleClear = () => setQuery("");
+  const handleClear = () => {
+    setQuery("");
+    setProducts([]);
+  };
 
-  const filteredProducts = SearchItems.filter((item) =>
-    item.title.toLowerCase().includes(query.toLowerCase())
-  );
+  useEffect(() => {
+    if (!query.trim()) {
+      setProducts([]);
+      return;
+    }
+
+    const delay = setTimeout(async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("auth_token");
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/user/search-products?query=${query}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+              },
+            }
+        );
+
+        const data = await res.json();
+        setProducts(data.data || []);
+      } catch (error) {
+        console.error("Search error:", error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 400); // debounce
+
+    return () => clearTimeout(delay);
+  }, [query]);
 
   return (
     <>
@@ -102,11 +119,10 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
         {/* Search input */}
         <div className="flex justify-between items-center p-4">
           <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products..."
-            className="p-2 w-full rounded-lg outline-1 outline-orange-200 focus:outline-orange-500"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search products..."
+              className="p-2 w-full rounded-lg outline-orange-300 focus:outline-orange-500"
           />
           <button
             onClick={handleClear}
@@ -118,9 +134,16 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
 
         {/* Search results */}
         <div className="grid grid-cols-12 gap-3 p-4 max-h-[70vh] overflow-y-auto">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((item) => (
-              <div key={item.itemCode} className="col-span-6 md:col-span-12">
+          {loading && (
+              <p className="col-span-12 text-center">Searching...</p>
+          )}
+          {!loading && products.length === 0 && query && (
+              <p className="col-span-12 text-center text-red-500">
+                No products found
+              </p>
+          )}
+          {products.map((item) => (
+              <div key={item.id} className="col-span-6 md:col-span-12">
                 <div className="shadow-md rounded-2xl overflow-hidden flex flex-col md:flex-row">
                   <div className="space-y-5 bg-[#F4F4F4] p-3 w-full md:w-1/3">
                     <div className="flex justify-between">
@@ -128,7 +151,8 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
                         {item.discount} OFF
                       </p>
                       <div className="p-1 rounded-3xl bg-white hover:bg-[#f3f3f3] hover:scale-125 focus:scale-125 transition cursor-pointer">
-                        <WishlistIcon />
+                        <WishlistIcon productId={item.id}
+                                      initialLiked={item.is_wishlisted} />
                       </div>
                     </div>
                     <img
@@ -141,7 +165,7 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
                     <div className="flex justify-between">
                       <div className="space-y-2">
                         <p className="text-secondary text-[9px] md:text-[12px]">
-                          ITEM CODE : {item.itemCode}
+                          ITEM CODE : {item.item_code}
                         </p>
                       </div>
                       <div className="flex gap-1 text-[10px] md:text-[13px]">
@@ -151,9 +175,11 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
                         {item.ratings}
                       </div>
                     </div>
+                    <Link href={`/shop/product/${slugify(item.title)}-${item.id}`} onClick={handleClose}>
                     <h3 className="text-[11px] md:text-[18px] font-medium">
                       {item.title}
                     </h3>
+                    </Link>
                     <div className="flex flex-col md:flex-row gap-2 justify-between">
                       <div className="flex gap-1 text-[14px] md:text-md font-medium text-[#332820] my-auto">
                         ₹{item.sellingPrice}{" "}
@@ -161,19 +187,36 @@ const SearchPopup: React.FC<SearchPopupProps> = ({ onClose }) => {
                           {item.regularPrice}
                         </div>
                       </div>
-                      <button className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 cursor-pointer rounded-3xl text-[10px] md:text-[15px] border border-white hover:border-primary transition font-medium">
-                        + Add
-                      </button>
+                      {item.type === "single" ? (
+                          <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                addToCart({
+                                  id: item.id,
+                                  variant_id: 0,
+                                  quantity: 1,
+                                },{
+                                  onAuthRequired: openAuthModal,
+                                  buyNow: true,
+                                });
+                              }}
+                              className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
+                          >
+                            + Add
+                          </button>
+                      ) : (
+                          <Link
+                              href={`/shop/product/${slugify(item.title)}-${item.id}`}
+                              className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium inline-block"
+                          >
+                            Select
+                          </Link>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <p className="col-span-12 text-center text-red-500">
-              No products found
-            </p>
-          )}
+          ))}
         </div>
       </div>
     </>

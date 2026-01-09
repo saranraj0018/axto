@@ -1,13 +1,40 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { menuDownArrow, closeIcon } from "../../all_icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+type Category = {
+  id: number;
+  name: string;
+};
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openSub, setOpenSub] = useState<number | null>(null);
   const pathname = usePathname();
+  const [categories, setCategories] = useState<Category[]>([]);
+
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/user/category/list`
+        );
+        const json = await res.json();
+
+        if (json.status === 200) {
+          setCategories(json.data);
+        }
+      } catch (error) {
+        console.error("Category fetch error", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
 
   const isActive = (url: string) => pathname === url;
 
@@ -17,11 +44,10 @@ const Nav = () => {
     {
       name: "Categories",
       url: "/shop",
-      submenu: [
-        { name: "Web Development", url: "/shop" },
-        { name: "SEO", url: "/shop" },
-        { name: "Graphic Design", url: "/shop" },
-      ],
+      submenu: categories.map((cat) => ({
+        name: cat.name,
+        url: `/shop/category/${cat.name}`, // or /shop/category/${slug}
+      })),
     },
     { name: "Contact", url: "/contact-us" },
     { name: "About", url: "/about" },

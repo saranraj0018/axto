@@ -339,43 +339,6 @@ export const RatingStarIcon = () => {
   );
 };
 
-export const WishlistIcon = () => {
-  const [liked, setLiked] = useState(false);
-
-  return (
-    <svg
-      onClick={() => setLiked(!liked)}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      className={`cursor-pointer transition-colors duration-300 ${
-        liked ? "fill-[#ff3144]" : "fill-gray-400 hover:fill-red-500"
-      }`}
-    >
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 3.99 4 6.5 4c1.74 0 3.41.81 4.5 2.09C12.09 4.81 13.76 4 15.5 4 18.01 4 20 6 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-    </svg>
-  );
-};
-export const LikedIcon = () => {
-  const [liked, setLiked] = useState(false);
-
-  return (
-    <svg
-      onClick={() => setLiked(!liked)}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      className={`cursor-pointer transition-colors duration-300 ${
-        liked ? "fill-gray-400" : "fill-[#ff3144] hover:fill-gray-500"
-      }`}
-    >
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 3.99 4 6.5 4c1.74 0 3.41.81 4.5 2.09C12.09 4.81 13.76 4 15.5 4 18.01 4 20 6 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-    </svg>
-  );
-};
-
 export const PoweredByInnovationIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"

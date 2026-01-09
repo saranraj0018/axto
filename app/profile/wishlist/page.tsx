@@ -12,7 +12,7 @@ const page = () => {
             <Sidebar />
           </div>
           <div className="col-span-12 md:col-span-8 lg:col-span-9">
-<LikedProducts/>
+            <LikedProducts/>
           </div>
         </div>
       </div>
