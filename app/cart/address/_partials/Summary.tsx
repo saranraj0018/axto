@@ -68,7 +68,7 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
             }
 
             const cashfree = (window as any).Cashfree({
-                mode: "sandbox", // change to production later
+                mode: "production", // change to production later
             });
 
             cashfree.checkout({
