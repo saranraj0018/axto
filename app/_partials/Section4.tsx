@@ -106,12 +106,12 @@ const Section4 = () => {
 
             <div
               key={item.id}
-              className="min-w-[50%] sm:min-w-[33.33%] lg:min-w-[25%] p-2 flex"
+              className="w-1/2 md:w-1/4 p-2 flex"
             >
               {/* YOUR EXACT UI */}
               <div className="shadow-md rounded-2xl overflow-hidden flex flex-col w-full">
-                <div className="space-y-5 bg-[#F4F4F4] p-3">
-                  <div className="flex justify-between">
+                <div className="space-y-5 bg-[#F4F4F4] p-2 relative">
+                  <div className="flex justify-between w-8/9 absolute t-1">
                     <p className="text-white bg-primary w-max px-3 py-1 text-[10px] md:text-sm rounded-3xl h-max">
                       {item.discount} OFF
                     </p>
@@ -124,7 +124,7 @@ const Section4 = () => {
                   <img
                     src={item.img}
                     alt={item.title}
-                    className="rounded-2xl w-full md:w-3/4 mx-auto"
+                      className="rounded-2xl w-full h-60 mx-auto"
                   />
                 </div>
 

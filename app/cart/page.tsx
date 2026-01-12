@@ -205,7 +205,7 @@ const page = () => {
                         <div className="flex gap-2 items-center bg-[#EDF0F4] rounded-full p-3 w-max">
                           <button
                               disabled={item.quantity <= 1}
-                              className="h-8 w-8 rounded-full bg-white disabled:opacity-50"
+                              className="h-8 w-8 rounded-full flex justify-center items-center bg-white disabled:opacity-50"
                               onClick={() => updateQuantity(index, "dec")}
                           >
                             {MinusIcon}
@@ -214,7 +214,7 @@ const page = () => {
                           <span className="px-2">{item.quantity}</span>
 
                           <button
-                              className="h-8 w-8 rounded-full bg-white"
+                              className="h-8 w-8 rounded-full flex justify-center items-center bg-white"
                               onClick={() => updateQuantity(index, "inc")}
                           >
                             {PlusIcon}

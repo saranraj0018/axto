@@ -180,7 +180,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
               <div>
                 <label>Name</label>
                 <input
-                    className="w-full border rounded-lg p-2"
+                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
@@ -193,7 +193,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
                 <label>Mobile</label>
                 <input
                     type="number"
-                    className="w-full border rounded-lg p-2"
+                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
                     value={phone_number}
                     onChange={(e) => setMobile(e.target.value)}
                 />
@@ -209,7 +209,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
                 <label>Address</label>
                 <textarea
                     rows={3}
-                    className="w-full border rounded-lg p-2"
+                    className="mt-1 w-full p-2 rounded-md border border-gray-300 focus:border-orange-400 outline-none"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 />
@@ -221,7 +221,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
               <div>
                 <label>City</label>
                 <input
-                    className="w-full border rounded-lg p-2"
+                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                 />
@@ -232,7 +232,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
               <div>
                 <label>State</label>
                 <input
-                    className="w-full border rounded-lg p-2"
+                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
                 />
@@ -243,7 +243,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
               <div>
                 <label>Country</label>
                 <input
-                    className="w-full border rounded-lg p-2"
+                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                 />
@@ -256,7 +256,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
                 <label>Pincode</label>
                 <input
                     type="number"
-                    className="w-full border rounded-lg p-2"
+                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value)}
                 />
