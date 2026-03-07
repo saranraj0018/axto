@@ -8,6 +8,7 @@ import { PlusIcon, MinusIcon, closeIcon } from "@/components/all_icons";
 import Link from "next/link";
 import toast from "react-hot-toast";
 
+
 interface CartItem {
   id: number;
   name: string;
@@ -27,6 +28,7 @@ interface CartItem {
 const page = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [billSummary, setBillSummary] = useState<any>(null);
+  const [shippingMessage, setShippingMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
 
@@ -51,6 +53,7 @@ const page = () => {
       if (data.status === 200) {
         setCartItems(data.productData);
         setBillSummary(data.billSummary);
+        setShippingMessage(data.shippingMessage);
       }
     } catch (err) {
       console.error("Cart fetch failed", err);
@@ -74,7 +77,7 @@ const page = () => {
   ) => {
     const item = cartItems[index];
 
-    // 🔑 SEND ONLY DELTA
+    // SEND ONLY DELTA
     const deltaQty = type === "inc" ? 1 : -1;
 
     // Prevent going below 1
@@ -94,13 +97,12 @@ const page = () => {
             body: JSON.stringify({
               product_id: item.id,
               variant_id: item.variation?.id ?? 0,
-              quantity: deltaQty, // ✅ ONLY +1 or -1
+              quantity: deltaQty, // ONLY +1 or -1
             }),
           }
       );
       if (res.status === 422 || res.status === 400) {
         const data = await res.json();
-        console.log("Error data:", data);
         toast.error(data?.message ?? "Unable to add to cart");
         return false;
       }
@@ -152,7 +154,6 @@ const page = () => {
         <div className="grid grid-cols-12 gap-3 md:gap-8">
           {/* LEFT SECTION */}
           <div className="col-span-12 md:col-span-8">
-
             {/* RESPONSIVE WRAPPER */}
             <div className="w-full overflow-x-auto rounded-2xl border border-gray-200">
               <table className="w-full min-w-[750px]">
@@ -166,23 +167,23 @@ const page = () => {
                 </thead>
 
                 <tbody>
-                {cartItems.map((item, index) => (
+                  {cartItems.map((item, index) => (
                     <tr
-                        key={`${item.id}-${item.variation?.id ?? "default"}`}
-                        className="border-b border-gray-200"
+                      key={`${item.id}-${item.variation?.id ?? "default"}`}
+                      className="border-b border-gray-200"
                     >
                       <td className="p-2 flex items-center gap-3 min-w-[240px]">
                         <button
-                            className="text-red-500 ml-2"
-                            onClick={() => removeItem(item)}
+                          className="text-red-500 ml-2"
+                          onClick={() => removeItem(item)}
                         >
                           {closeIcon}
                         </button>
 
                         <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-12 h-12 object-contain"
+                          src={item.image}
+                          alt={item.name}
+                          className="w-12 h-12 object-contain"
                         />
 
                         <div>
@@ -190,23 +191,23 @@ const page = () => {
                             {item.name}
                           </div>
                           {item.variation && (
-                              <div className="text-xs text-gray-500">
-                                {item.attribute_name}: {item.variation.name}
-                              </div>
+                            <div className="text-xs text-gray-500">
+                              {item.attribute_name}: {item.variation.name}
+                            </div>
                           )}
                         </div>
                       </td>
 
                       <td className="p-2">
-                        ₹{item.discountedPrice /  item.quantity}
+                        ₹{item.discountedPrice / item.quantity}
                       </td>
 
                       <td className="p-2">
                         <div className="flex gap-2 items-center bg-[#EDF0F4] rounded-full p-3 w-max">
                           <button
-                              disabled={item.quantity <= 1}
-                              className="h-8 w-8 rounded-full flex justify-center items-center bg-white disabled:opacity-50"
-                              onClick={() => updateQuantity(index, "dec")}
+                            disabled={item.quantity <= 1}
+                            className="h-8 w-8 rounded-full flex justify-center items-center bg-white disabled:opacity-50"
+                            onClick={() => updateQuantity(index, "dec")}
                           >
                             {MinusIcon}
                           </button>
@@ -214,8 +215,8 @@ const page = () => {
                           <span className="px-2">{item.quantity}</span>
 
                           <button
-                              className="h-8 w-8 rounded-full flex justify-center items-center bg-white"
-                              onClick={() => updateQuantity(index, "inc")}
+                            className="h-8 w-8 rounded-full flex justify-center items-center bg-white"
+                            onClick={() => updateQuantity(index, "inc")}
                           >
                             {PlusIcon}
                           </button>
@@ -229,18 +230,20 @@ const page = () => {
                   ))}
                 </tbody>
               </table>
-
             </div>
             <Link href="/shop">
               <button className="axto-orange-btn w-1/4 mt-3">
-               Continue To Shop
+                Continue To Shop
               </button>
             </Link>
           </div>
 
           {/* RIGHT SECTION */}
           <div className="col-span-12 md:col-span-4">
-            <OrderSummary billSummary={billSummary} />
+            <OrderSummary
+              billSummary={billSummary}
+              shippingMessage={shippingMessage}
+            />
           </div>
         </div>
       </div>

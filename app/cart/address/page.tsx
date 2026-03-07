@@ -34,6 +34,7 @@ const page = () => {
     const [billSummary, setBillSummary] = useState<BillSummary | null>(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+    const [shippingMessage, setShippingMessage] = useState("");
     const [editAddress, setEditAddress] = useState<Address | null>(null);
 
 
@@ -94,6 +95,7 @@ const page = () => {
 
             if (data.status === 200 && data.billSummary) {
                 setBillSummary(data.billSummary);
+                setShippingMessage(data.shippingMessage);
             }
         } catch (err) {
             console.error("Bill summary fetch failed", err);
@@ -195,7 +197,9 @@ const page = () => {
                     <div className="col-span-12 md:col-span-4">
                         <OrderSummary
                             billSummary={billSummary}
-                            addressId={selectedAddress?.id ?? null}
+                            shippingMessage={shippingMessage}
+                            addressId={selectedAddress?.id ?? null
+                            }
                         />
                     </div>
                 </div>
