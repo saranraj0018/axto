@@ -12,7 +12,6 @@ import Reviews from "./_partials/Reviews";
 import {refreshCart} from "@/lib/cartTotal";
 const Page = () => {
   const { slug } = useParams<{ slug: string }>();
-
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
