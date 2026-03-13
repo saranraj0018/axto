@@ -24,6 +24,7 @@ type BillSummary = {
     deliveryCharge: number;
     SGST: string;
     IGST: string;
+    discount: number;
     platformFee: number;
     totalAmount: string;
 };
@@ -80,13 +81,17 @@ const page = () => {
         try {
             const token = localStorage.getItem("auth_token");
             if (!token) return;
-
+            const guestToken = localStorage.getItem("guest_token");
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/get/cart`,
                 {
+                    method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        ...(token && { Authorization: `Bearer ${token}` }),
+                        ...(guestToken && {
+                            "guest-token": guestToken,
+                        }),
                     },
                 }
             );
@@ -143,8 +148,8 @@ const page = () => {
 
                                             {addr.set_default === 1 && (
                                                 <span className="text-xs bg-green-100 text-green-700 px-2 rounded-full">
-              Default
-            </span>
+                                                  Default
+                                                </span>
                                             )}
                                         </div>
                                         <p className="text-sm text-secondary">+91 {addr.phone_number}</p>
@@ -186,7 +191,7 @@ const page = () => {
                                 }}
                                 className="border border-gray-300 text-sm font-medium py-1 px-3 rounded-md"
                             >
-                                Change / Add Address
+                                Add Address
                             </button>
 
                         </div>

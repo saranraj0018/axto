@@ -15,6 +15,7 @@ const Page = () => {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState<any>(null);
 
   useEffect(() => {
     refreshCart();
@@ -37,8 +38,15 @@ const Page = () => {
         .finally(() => setLoading(false));
   }, [slug]);
 
+
+
   if (loading) return <div className="text-center py-10">Loading...</div>;
   if (!product) return <div className="text-center py-10">Product not found</div>;
+
+  const galleryImages =
+      selectedVariant?.images?.length
+          ? selectedVariant.images
+          : [product?.cover_image, ...(product?.list_image || [])].filter(Boolean);
 
   return (
     <>
@@ -47,14 +55,16 @@ const Page = () => {
         <div className="grid grid-cols-12 gap-2 md:gap-8">
           {/* Product Images */}
           <div className="col-span-12 lg:col-span-5">
-            <ImageGallery
-                images={[product.cover_image, ...(product.list_image || [])]}
-            />
+            <ImageGallery images={galleryImages} />
           </div>
 
           {/* Product Info */}
           <div className="col-span-12 lg:col-span-7">
-            <ProductInfo product={product} />
+            <ProductInfo
+                product={product}
+                selectedVariant={selectedVariant}
+                setSelectedVariant={setSelectedVariant}
+            />
           </div>
         </div>
 

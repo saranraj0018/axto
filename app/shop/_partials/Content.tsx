@@ -44,12 +44,13 @@ const Content: React.FC<ContentProps> = ({ products }) => {
                                             initialLiked={item.is_wishlisted} />
                           </div>
                         </div>
-
+                          <Link href={`/shop/product/${slugify(item.title)}-${item.id}`}>
                         <img
                             src={item.img}
                             alt={item.title}
                             className="rounded-2xl w-full h-60 mx-auto"
                         />
+                          </Link>
                       </div>
 
                       {/* Bottom Section */}
