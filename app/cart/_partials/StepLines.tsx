@@ -6,7 +6,7 @@ import {
   CartPage_OrangeLocationIcon,
   CartPage_LocationIcon,
   CartPagePaymentIcon,
-} from "../../../components/all_icons";
+} from "@/components/all_icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -25,7 +25,7 @@ const StepLines = () => {
     {
       id: 2,
       label: "Address",
-      path: "/cart/address",
+      path: "#",
       icon:
         pathname === "/cart/address" || pathname.startsWith("/cart/address")
           ? CartPage_OrangeLocationIcon

@@ -57,6 +57,38 @@ const ManageAddress = () => {
   useEffect(() => {
     loadAddresses();
   }, []);
+
+    /* ---------------- Auto Fill From Pincode (Edit Mode) ---------------- */
+    useEffect(() => {
+        if (!editingId || !editForm?.pincode) return;
+
+        if (editForm.pincode.length !== 6) return;
+
+        const fetchLocation = async () => {
+            try {
+                const res = await fetch(
+                    `https://api.postalpincode.in/pincode/${editForm.pincode}`
+                );
+                const data = await res.json();
+
+                if (data[0]?.Status === "Success") {
+                    const postOffice = data[0].PostOffice[0];
+                    setEditForm((prev: any) => ({
+                        ...prev,
+                        city: postOffice.Name,
+                        state: postOffice.State,
+                        country: postOffice.Country,
+                    }));
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchLocation();
+    }, [editForm?.pincode, editingId]);
+
+
   /* ---------------- Delete ---------------- */
   const confirmDelete = async () => {
 
@@ -171,31 +203,42 @@ const ManageAddress = () => {
                             value={editForm.address}
                             onChange={(e) => setEditForm({ ...editForm, address: e.target.value })}
                         />
+                          <input
+                              type="text"
+                              maxLength={6}
+                              className="border p-2 rounded"
+                              placeholder="Zip Code"
+                              value={editForm.pincode}
+                              onChange={(e) =>
+                                  setEditForm({
+                                      ...editForm,
+                                      pincode: e.target.value.replace(/\D/g, ""),
+                                  })
+                              }
+                          />
 
                         <input
-                            className="border p-2 rounded"
+                            className="w-full border rounded-lg p-2 bg-gray-100 cursor-not-allowed"
                             placeholder="City"
+                            disabled
                             value={editForm.city}
                             onChange={(e) => setEditForm({ ...editForm, city: e.target.value })}
                         />
 
                         <input
-                            className="border p-2 rounded"
+                            className="w-full border rounded-lg p-2 bg-gray-100 cursor-not-allowed"
                             placeholder="State"
+                            disabled
                             value={editForm.state}
                             onChange={(e) => setEditForm({ ...editForm, state: e.target.value })}
                         />
 
-                        <input
-                            className="border p-2 rounded"
-                            placeholder="Zip Code"
-                            value={editForm.pincode}
-                            onChange={(e) => setEditForm({ ...editForm, pincode: e.target.value })}
-                        />
+
 
                         <input
-                            className="border p-2 rounded"
+                            className="w-full border rounded-lg p-2 bg-gray-100 cursor-not-allowed"
                             placeholder="Country"
+                            disabled
                             value={editForm.country}
                             onChange={(e) => setEditForm({ ...editForm, country: e.target.value })}
                         />

@@ -1,10 +1,12 @@
 "use client";
-import Link from "next/link";
+
+import { useState } from "react";
 
 interface BillSummary {
     totalItems: number;
     itemsAmount: number;
     deliveryCharge: number;
+    discount: number
     SGST: string;
     IGST: string;
     platformFee: number;
@@ -21,6 +23,8 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
     if (!billSummary) return null;
 
     const isDisabled = !addressId;
+    const [loading, setLoading] = useState(false);
+
 
     const {
         totalItems,
@@ -28,16 +32,22 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
         deliveryCharge,
         SGST,
         IGST,
+        discount,
         platformFee,
         totalAmount,
     } = billSummary;
+
+    const igst = parseFloat(IGST || "0");
+    const sgst = parseFloat(SGST || "0");
+
+    const gst =(igst + sgst);
 
 
     const handlePayment = async () => {
         try {
             const token = localStorage.getItem("auth_token");
             if (!token || !addressId) return;
-
+            setLoading(true);
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/payment/create`,
                 {
@@ -54,9 +64,9 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
             );
 
             const data = await res.json();
-            console.log("Cashfree response:", data);
 
             if (!data.payment_session_id) {
+                setLoading(false);
                 alert("Payment session missing");
                 return;
             }
@@ -68,7 +78,7 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
             }
 
             const cashfree = (window as any).Cashfree({
-                mode: "production", // change to production later
+                mode: "sandbox", // change to production later
             });
 
             cashfree.checkout({
@@ -77,6 +87,7 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
             });
 
         } catch (err) {
+            setLoading(false);
             console.error("Payment error", err);
         }
     };
@@ -100,20 +111,24 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
                 <span>Sub Total</span>
                 <span>₹{itemsAmount}</span>
             </div>
-
+            {discount > 0 && (
+                <div className="bg-green-50 border border-green-200 p-2 rounded-lg text-sm mb-3 flex justify-between">
+                    <span>Coupon Applied </span> <span className="justify-end">-₹{discount}</span>
+                </div>
+            )}
             <div className="flex justify-between mb-2">
                 <span>Shipping</span>
                 <span>₹{deliveryCharge}</span>
             </div>
 
-            <div className="flex justify-between mb-2">
-                <span>SGST</span>
-                <span>₹{SGST}</span>
-            </div>
+            {/*<div className="flex justify-between mb-2">*/}
+            {/*    <span>SGST</span>*/}
+            {/*    <span>₹{SGST}</span>*/}
+            {/*</div>*/}
 
             <div className="flex justify-between mb-2">
-                <span>IGST</span>
-                <span>₹{IGST}</span>
+                <span>GST</span>
+                <span>₹{gst}</span>
             </div>
 
             {platformFee > 0 && (
@@ -139,8 +154,8 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
                 </button>
             ) : (
 
-                    <button  onClick={handlePayment} className="axto-orange-btn w-full mt-3">
-                        Proceed to Buy
+                    <button   disabled={loading} onClick={handlePayment} className="axto-orange-btn w-full mt-3">
+                        {loading ? "Processing..." : "Proceed to Buy"}
                     </button>
             )}
         </div>

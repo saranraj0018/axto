@@ -12,6 +12,7 @@ type Order = {
   item_code: string;
   title: string;
   price: number;
+  track_id:string;
   invoice_url?: string;
   view_order_url?: string;
 };
@@ -47,7 +48,6 @@ const OrderData: React.FC = () => {
   if (loading) {
     return <p className="text-center">Loading orders...</p>;
   }
-
   return (
     <div className="space-y-6">
       {orders.map((order) => (
@@ -80,6 +80,9 @@ const OrderData: React.FC = () => {
                 </p>
               </div>
               <p className="font-semibold mt-1">₹{order.price}</p>
+              <h3 className="text-secondary text-[11px] md:text-[13px]">
+                Track ID: {order.track_id}
+              </h3>
             </div>
           </div>
 

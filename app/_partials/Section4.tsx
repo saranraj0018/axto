@@ -26,7 +26,7 @@ interface BestSellerProduct {
 
 
 const Section4 = () => {
-  const { addToCart } = useAddToCart();
+  const { addToCart, loading } = useAddToCart();
   const { openAuthModal } = useAuthModal();
   const [BSProductItems, setBSProductItems] =  useState<BestSellerProduct[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -82,7 +82,7 @@ const Section4 = () => {
         prev === 0 ? BSProductItems.length - 1 : prev - 1
     );
   };
-
+  console.log(BSProductItems)
   if (!BSProductItems.length) return null;
   return (
     <div className="my-14 space-y-2 relative">
@@ -120,12 +120,13 @@ const Section4 = () => {
                                     initialLiked={item.is_wishlisted} />
                     </div>
                   </div>
-
+                  <Link href={`/shop/product/${slugify(item.title)}-${item.id}`}>
                   <img
                     src={item.img}
                     alt={item.title}
                     className="rounded-2xl w-full md:w-3/4 mx-auto"
                   />
+                  </Link>
                 </div>
 
                 <div className="bg-[#fffffd] p-2 md:p-3 space-y-1 mt-auto flex flex-col justify-between flex-1">
@@ -157,6 +158,7 @@ const Section4 = () => {
                     </div>
                     {item.type === "single" ? (
                         <button
+                            type="button"
                             onClick={(e) => {
                               e.preventDefault();
                               addToCart({
@@ -169,8 +171,8 @@ const Section4 = () => {
                               });
                             }}
                             className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
-                        >
-                          + Add
+                            disabled={loading}>
+                          {loading ? "Adding..." : "+ Add"}
                         </button>
                     ) : (
                         <Link

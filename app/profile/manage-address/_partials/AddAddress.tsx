@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import toast from "react-hot-toast";
 
 const AddAddress = ({loadAddresses,}: { loadAddresses: () => void;
@@ -33,6 +33,35 @@ const AddAddress = ({loadAddresses,}: { loadAddresses: () => void;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  useEffect(() => {
+    if (zipCode.length !== 6) return;
+
+    const fetchLocation = async () => {
+      try {
+        const res = await fetch(
+            `https://api.postalpincode.in/pincode/${zipCode}`
+        );
+        const data = await res.json();
+
+        if (data[0]?.Status === "Success") {
+          const postOffice = data[0].PostOffice[0];
+
+          // 🔥 Use Division for correct TN district
+          setCity(postOffice.Name);
+          setState(postOffice.State);
+          setCountry(postOffice.Country);
+        } else {
+          toast.error("Invalid Pincode");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchLocation();
+  }, [zipCode]);
+
 
   /* ---------------- Submit ---------------- */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -142,15 +171,28 @@ const AddAddress = ({loadAddresses,}: { loadAddresses: () => void;
               />
               {errors.street && <p className="text-xs text-red-500">{errors.street}</p>}
             </div>
-
+            <div>
+              <label className="text-sm font-medium">Zip Code</label>
+              <input
+                  type="text"
+                  maxLength={6}
+                  value={zipCode}
+                  onChange={(e) =>
+                      setZipCode(e.target.value.replace(/\D/g, ""))
+                  }
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+              />
+              {errors.zipCode && <p className="text-xs text-red-500">{errors.zipCode}</p>}
+            </div>
             {/* Country */}
             <div>
               <label className="text-sm font-medium">Country</label>
               <input
+                  disabled
                   type="text"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
-                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none bg-gray-100 cursor-not-allowed"
               />
               {errors.country && <p className="text-xs text-red-500">{errors.country}</p>}
             </div>
@@ -159,10 +201,11 @@ const AddAddress = ({loadAddresses,}: { loadAddresses: () => void;
             <div>
               <label className="text-sm font-medium">State</label>
               <input
+                  disabled
                   type="text"
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none bg-gray-100 cursor-not-allowed"
               />
               {errors.state && <p className="text-xs text-red-500">{errors.state}</p>}
             </div>
@@ -171,25 +214,17 @@ const AddAddress = ({loadAddresses,}: { loadAddresses: () => void;
             <div>
               <label className="text-sm font-medium">City</label>
               <input
+                  disabled
                   type="text"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none bg-gray-100 cursor-not-allowed"
               />
               {errors.city && <p className="text-xs text-red-500">{errors.city}</p>}
             </div>
 
             {/* Zip */}
-            <div>
-              <label className="text-sm font-medium">Zip Code</label>
-              <input
-                  type="number"
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
-                  className="mt-1 w-full p-3 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
-              />
-              {errors.zipCode && <p className="text-xs text-red-500">{errors.zipCode}</p>}
-            </div>
+
           </div>
 
           {/* Default Address */}

@@ -1,9 +1,14 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
+import { useCart } from "@/context/CartContext";
+import { v4 as uuidv4 } from "uuid";
+import React, { useState} from "react";
 
 export const useAddToCart = () => {
     const { token, isAuthenticated } = useAuth();
+    const { fetchCartTotal } = useCart();
+    const [loading, setLoading] = useState(false);
 
     const addToCart = async (
         item: { id: number; variant_id?: number; quantity: number },
@@ -13,19 +18,28 @@ export const useAddToCart = () => {
             onSuccess?: () => void;
         }
     ): Promise<boolean> => {
-        if (!token || !isAuthenticated) {
-            config?.onAuthRequired?.();
-            return false;
-        }
-
         try {
+            setLoading(true);
+            let guestToken = localStorage.getItem("guest_token");
+
+            // ✅ Create guest token if not exists
+            if (!guestToken && !isAuthenticated) {
+                guestToken = uuidv4();
+                if (guestToken != null) {
+                    localStorage.setItem("guest_token", guestToken);
+                }
+            }
+
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/cart/add`,
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        ...(token && { Authorization: `Bearer ${token}` }),
+                        ...(!isAuthenticated && guestToken && {
+                            "guest-token": guestToken,
+                        }),
                     },
                     body: JSON.stringify({
                         product_id: item.id,
@@ -35,31 +49,22 @@ export const useAddToCart = () => {
                 }
             );
 
-
-            // 🔴 AUTH
-            if (res.status === 401) {
-                config?.onAuthRequired?.();
-                return false;
-            }
-
+            const data = await res.json();
+            setLoading(false);
             // 🔴 VALIDATION / STOCK ERRORS
             if (res.status === 422 || res.status === 400) {
-                const data = await res.json();
-                console.log("Error data:", data);
                 toast.error(data?.message ?? "Unable to add to cart");
                 return false;
             }
 
             // 🔴 OTHER ERRORS
             if (!res.ok) {
-                toast.error("Add to cart failed");
+                toast.error(data?.message ?? "Add to cart failed");
                 return false;
             }
 
-            // 🟢 BUY NOW
-            if (config?.buyNow) {
-                window.location.href = "/cart";
-            }
+            // 🟢 Refresh cart count
+            await fetchCartTotal();
 
             toast.success("Added to cart");
             config?.onSuccess?.();
@@ -69,8 +74,10 @@ export const useAddToCart = () => {
             console.error("Add to cart error:", error);
             toast.error("Something went wrong");
             return false;
+        } finally {
+            setLoading(false);
         }
     };
 
-    return { addToCart };
+    return { addToCart,loading };
 };
