@@ -47,11 +47,11 @@ const Userform = ({ onSuccess }: Props) => {
         if (password && confirm && password !== confirm)
             newErrors.confirm_password = "Passwords do not match.";
 
-        // If validation fails, show errors
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            return;
-        }
+    // If validation fails, show errors
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
         setErrors({});
         setIsLoading(true);

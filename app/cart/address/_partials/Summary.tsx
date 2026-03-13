@@ -14,12 +14,16 @@ interface BillSummary {
 }
 
 interface OrderSummaryProps {
-    billSummary: BillSummary | null;
-    addressId: number | null;
+  billSummary: BillSummary | null;
+  addressId: number | null;
+  shippingMessage?: string;
 }
 
 
-const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
+const Summary = ({ billSummary,
+                     addressId,
+                     shippingMessage
+}: OrderSummaryProps) => {
     if (!billSummary) return null;
 
     const isDisabled = !addressId;
@@ -78,7 +82,7 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
             }
 
             const cashfree = (window as any).Cashfree({
-                mode: "sandbox", // change to production later
+                mode: "production", // change to production later
             });
 
             cashfree.checkout({
@@ -96,6 +100,11 @@ const Summary = ({ billSummary, addressId }: OrderSummaryProps) => {
 
     return (
         <div className="border border-gray-200 p-6 rounded-2xl shadow-lg">
+            {shippingMessage && (
+                <div className="bg-green-100 text-green-700 text-sm p-3 rounded-lg mb-4">
+                    {shippingMessage}
+                </div>
+            )}
             <h2 className="text-sm md:text-lg font-semibold mb-4">
                 Order Summary
             </h2>

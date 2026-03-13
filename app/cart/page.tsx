@@ -32,6 +32,7 @@ interface CartItem {
 const page = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [billSummary, setBillSummary] = useState<any>(null);
+  const [shippingMessage, setShippingMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [couponLoading, setCouponLoading] = useState(false);
   const { fetchCartTotal } = useCart();
@@ -150,6 +151,7 @@ const page = () => {
       if (data.status === 200) {
         setCartItems(data.productData);
         setBillSummary(data.billSummary);
+        setShippingMessage(data.shippingMessage);
       }
     } catch (err) {
       console.error("Cart fetch failed", err);
@@ -572,7 +574,7 @@ const page = () => {
             </div>
             <div className="mt-4">
               <OrderSummary billSummary={billSummary}
-                            removeCoupon={removeCoupon} />
+                            removeCoupon={removeCoupon} shippingMessage={shippingMessage} />
             </div>
           </div>
         </div>

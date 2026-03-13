@@ -18,9 +18,10 @@ interface BillSummary {
 interface OrderSummaryProps {
     billSummary: BillSummary | null;
     removeCoupon: () => void;
+    shippingMessage?: string;
 }
 
-const OrderSummary = ({ billSummary,removeCoupon }: OrderSummaryProps) => {
+const OrderSummary = ({ billSummary,removeCoupon,shippingMessage }: OrderSummaryProps) => {
     if (!billSummary) return null;
     const { openAuthModal } = useAuthModal();
     const { token, isAuthenticated } = useAuth();
@@ -53,6 +54,11 @@ const OrderSummary = ({ billSummary,removeCoupon }: OrderSummaryProps) => {
     };
     return (
         <div className="border border-gray-200 p-6 rounded-2xl shadow-lg">
+            {shippingMessage && (
+                <div className="bg-green-100 text-green-700 text-sm p-3 rounded-lg mb-4">
+                    {shippingMessage}
+                </div>
+            )}
             <h2 className="text-sm md:text-lg font-semibold mb-4">
                 Order Summary
             </h2>
