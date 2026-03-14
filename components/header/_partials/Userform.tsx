@@ -85,7 +85,6 @@ const Userform = ({ onSuccess }: Props) => {
             });
             if (data.data.id) {
                 window.location.reload();
-                localStorage.removeItem("guest_token");
             }
 
             form.reset();
@@ -154,7 +153,7 @@ const Userform = ({ onSuccess }: Props) => {
 
             if (data.data.id) {
                 window.location.reload();
-                localStorage.removeItem("guest_token");
+
             }
             form.reset();
             onSuccess?.();

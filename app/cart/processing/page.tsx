@@ -36,6 +36,7 @@ const ProcessingPage = () => {
 
                 if (data.status === "PAID") {
                     clearInterval(interval);
+                    localStorage.removeItem("guest_token");
                     router.replace("/cart/success");
                 } else if (data.status === "FAILED") {
                     clearInterval(interval);
