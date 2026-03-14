@@ -38,7 +38,7 @@ export const useAddToCart = () => {
                         "Content-Type": "application/json",
                         ...(token && { Authorization: `Bearer ${token}` }),
                         ...(!isAuthenticated && guestToken && {
-                            "guest-token": guestToken,
+                            "guest_token": guestToken,
                         }),
                     },
                     body: JSON.stringify({

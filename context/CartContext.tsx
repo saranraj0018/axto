@@ -30,7 +30,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                         "Content-Type": "application/json",
                         ...(token && { Authorization: `Bearer ${token}` }),
                         ...(guestToken && {
-                            "guest-token": guestToken,
+                            "guest_token": guestToken,
                         }),
                     },
                     cache: "no-store", // 🔥 THIS IS CRITICAL

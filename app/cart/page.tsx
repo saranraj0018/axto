@@ -61,7 +61,7 @@ const page = () => {
             headers: {
               "Content-Type": "application/json",
               ...(token && { Authorization: `Bearer ${token}` }),
-              ...(guestToken && { "guest-token": guestToken }),
+              ...(guestToken && { "guest_token": guestToken }),
             },
             body: JSON.stringify({
               coupon_code: code,
@@ -95,7 +95,7 @@ const page = () => {
             headers: {
               "Content-Type": "application/json",
               ...(token && { Authorization: `Bearer ${token}` }),
-              ...(guestToken && { "guest-token": guestToken }),
+              ...(guestToken && { "guest_token": guestToken }),
             },
             body: JSON.stringify({
               coupon_id: 'remove_coupon'
@@ -140,7 +140,7 @@ const page = () => {
               "Content-Type": "application/json",
               ...(token && { Authorization: `Bearer ${token}` }),
               ...(guestToken && {
-                "guest-token": guestToken,
+                "guest_token": guestToken,
               }),
             },
           }
@@ -172,7 +172,7 @@ const page = () => {
               "Content-Type": "application/json",
               ...(token && { Authorization: `Bearer ${token}` }),
               ...(guestToken && {
-                "guest-token": guestToken,
+                "guest_token": guestToken,
               }),
             },
           }
@@ -220,7 +220,7 @@ const page = () => {
               "Content-Type": "application/json",
               ...(token && { Authorization: `Bearer ${token}` }),
               ...(guestToken && {
-                "guest-token": guestToken,
+                "guest_token": guestToken,
               }),
             },
             body: JSON.stringify({
@@ -276,7 +276,7 @@ const page = () => {
               "Content-Type": "application/json",
               ...(token && { Authorization: `Bearer ${token}` }),
               ...(guestToken && {
-                "guest-token": guestToken,
+                "guest_token": guestToken,
               }),
             },
             body: JSON.stringify({
@@ -317,7 +317,7 @@ const page = () => {
               "Content-Type": "application/json",
               ...(token && { Authorization: `Bearer ${token}` }),
               ...(guestToken && {
-                "guest-token": guestToken,
+                "guest_token": guestToken,
               }),
             },
             body: JSON.stringify({
