@@ -33,7 +33,7 @@ const RelatedProducts = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
-  const { addToCart, loading } = useAddToCart();
+  const { addToCart, loadingId } = useAddToCart();
   const { openAuthModal } = useAuthModal();
   useEffect(() => {
     const updateItems = () => {
@@ -151,8 +151,8 @@ const RelatedProducts = ({
                               });
                             }}
                             className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
-                                 disabled={loading} >
-                          {loading ? "Adding..." : "+ Add"}
+                                 disabled={loadingId === item.id}>
+                          {loadingId === item.id ? "Adding..." : "+ Add"}
                         </button>
                     ) : (
                         <Link

@@ -42,7 +42,7 @@ const CommonBanners = () => {
   }, [pathname]);
 
   return (
-      <div className="sticky top-28 md:top-36 lg:top-20 z-20 bg-[#FAFAFA]">
+      <div className="sticky top-28 md:top-36 lg:top-20 z-10 bg-[#FAFAFA]">
         <div className="py-5 font-medium axto-container">
           <div className="text-lg text-gray-700">
             <Link href="/" className="hover:underline text-gray-500">

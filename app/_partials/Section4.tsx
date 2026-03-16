@@ -26,7 +26,7 @@ interface BestSellerProduct {
 
 
 const Section4 = () => {
-  const { addToCart, loading } = useAddToCart();
+  const { addToCart, loadingId } = useAddToCart();
   const { openAuthModal } = useAuthModal();
   const [BSProductItems, setBSProductItems] =  useState<BestSellerProduct[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -82,7 +82,6 @@ const Section4 = () => {
         prev === 0 ? BSProductItems.length - 1 : prev - 1
     );
   };
-  console.log(BSProductItems)
   if (!BSProductItems.length) return null;
   return (
     <div className="my-14 space-y-2 relative">
@@ -171,8 +170,8 @@ const Section4 = () => {
                               });
                             }}
                             className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
-                            disabled={loading}>
-                          {loading ? "Adding..." : "+ Add"}
+                            disabled={loadingId === item.id}>
+                          {loadingId === item.id ? "Adding..." : "+ Add"}
                         </button>
                     ) : (
                         <Link

@@ -8,7 +8,7 @@ import React, { useState} from "react";
 export const useAddToCart = () => {
     const { token, isAuthenticated } = useAuth();
     const { fetchCartTotal } = useCart();
-    const [loading, setLoading] = useState(false);
+    const [loadingId, setLoadingId] = useState<number | null>(null);
 
     const addToCart = async (
         item: { id: number; variant_id?: number; quantity: number },
@@ -19,7 +19,7 @@ export const useAddToCart = () => {
         }
     ): Promise<boolean> => {
         try {
-            setLoading(true);
+            setLoadingId(item.id);
             let guestToken = localStorage.getItem("guest-token");
 
 
@@ -51,7 +51,7 @@ export const useAddToCart = () => {
             );
 
             const data = await res.json();
-            setLoading(false);
+            setLoadingId(null);
             // 🔴 VALIDATION / STOCK ERRORS
             if (res.status === 422 || res.status === 400) {
                 toast.error(data?.message ?? "Unable to add to cart");
@@ -76,9 +76,9 @@ export const useAddToCart = () => {
             toast.error("Something went wrong");
             return false;
         } finally {
-            setLoading(false);
+            setLoadingId(null);
         }
     };
 
-    return { addToCart,loading };
+    return { addToCart, loadingId };
 };
