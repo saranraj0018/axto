@@ -21,6 +21,7 @@ export const useAddToCart = () => {
         try {
             setLoading(true);
             let guestToken = localStorage.getItem("guest_token");
+            console.log(guestToken);
 
             // ✅ Create guest token if not exists
             if (!guestToken && !isAuthenticated) {
