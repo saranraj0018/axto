@@ -20,18 +20,17 @@ export const useAddToCart = () => {
     ): Promise<boolean> => {
         try {
             setLoading(true);
-            let guestToken = localStorage.getItem("guest_token");
+            let guestToken = localStorage.getItem("guest-token");
 
 
             // ✅ Create guest token if not exists
             if (!guestToken && !isAuthenticated) {
                 guestToken = uuidv4();
                 if (guestToken != null) {
-                    localStorage.setItem("guest_token", guestToken);
+                    localStorage.setItem("guest-token", guestToken);
                 }
             }
-            console.log(guestToken);
-            console.log('fd');
+
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/cart/add`,
                 {
@@ -40,7 +39,7 @@ export const useAddToCart = () => {
                         "Content-Type": "application/json",
                         ...(token && { Authorization: `Bearer ${token}` }),
                         ...(!isAuthenticated && guestToken && {
-                            "guest_token": guestToken,
+                            "guest-token": guestToken,
                         }),
                     },
                     body: JSON.stringify({

@@ -21,7 +21,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const fetchCartTotal = useCallback(async () => {
 
-        const guestToken = localStorage.getItem("guest_token");
+        const guestToken = localStorage.getItem("guest-token");
         try {
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/cart/total`,
@@ -30,7 +30,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                         "Content-Type": "application/json",
                         ...(token && { Authorization: `Bearer ${token}` }),
                         ...(guestToken && {
-                            "guest_token": guestToken,
+                            "guest-token": guestToken,
                         }),
                     },
                     cache: "no-store", // 🔥 THIS IS CRITICAL

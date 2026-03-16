@@ -55,7 +55,7 @@ const Userform = ({ onSuccess }: Props) => {
 
         setErrors({});
         setIsLoading(true);
-        const guestToken = localStorage.getItem("guest_token");
+        const guestToken = localStorage.getItem("guest-token");
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/register`,
@@ -63,7 +63,7 @@ const Userform = ({ onSuccess }: Props) => {
                     method: 'POST',
                     headers: {
                         Accept: "application/json",
-                        ...(guestToken && { "guest_token": guestToken }),
+                        ...(guestToken && { "guest-token": guestToken }),
                     },
                     body: formData,
                 }
@@ -119,7 +119,7 @@ const Userform = ({ onSuccess }: Props) => {
         }
         setErrors({});
         setIsLoading(true);
-        const guestToken = localStorage.getItem("guest_token");
+        const guestToken = localStorage.getItem("guest-token");
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/login`,
@@ -127,7 +127,7 @@ const Userform = ({ onSuccess }: Props) => {
                     method: 'POST',
                     headers: {
                         Accept: "application/json",
-                        ...(guestToken && { "guest_token": guestToken }),
+                        ...(guestToken && { "guest-token": guestToken }),
                     },
                     body: formData,
                 }

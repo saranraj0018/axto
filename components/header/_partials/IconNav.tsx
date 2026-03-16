@@ -20,7 +20,7 @@ const IconNav = () => {
   const { cartTotalItem, fetchCartTotal } = useCart();
 
   useEffect(() => {
-    const guestToken = localStorage.getItem("guest_token");
+    const guestToken = localStorage.getItem("guest-token");
     if (token || guestToken) {
       fetchCartTotal();
     }

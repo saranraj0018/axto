@@ -81,7 +81,7 @@ const page = () => {
         try {
             const token = localStorage.getItem("auth_token");
             if (!token) return;
-            const guestToken = localStorage.getItem("guest_token");
+            const guestToken = localStorage.getItem("guest-token");
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/get/cart`,
                 {
@@ -90,7 +90,7 @@ const page = () => {
                         "Content-Type": "application/json",
                         ...(token && { Authorization: `Bearer ${token}` }),
                         ...(guestToken && {
-                            "guest_token": guestToken,
+                            "guest-token": guestToken,
                         }),
                     },
                 }
