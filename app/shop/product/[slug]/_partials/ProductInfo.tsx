@@ -33,7 +33,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                                                      setSelectedVariant,
                                                  }) => {
     const [count, setCount] = useState(1);
-    const { addToCart, loading } = useAddToCart();
+    const { addToCart, loadingId } = useAddToCart();
     const { openAuthModal } = useAuthModal();
 
     const variants: VariantType[] = useMemo(
@@ -192,12 +192,12 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                             }
                         );
                     }}
-                    disabled={currentStock <= 0 || loading}
+                    disabled={currentStock <= 0 || loadingId === product.id}
                     className="axto-white-btn text-sm my-auto disabled:opacity-50"
                 >
                     {currentStock <= 0
                         ? "Out of Stock"
-                        : loading
+                        : loadingId === product.id
                             ? "Adding..."
                             : "+ Add to Cart"}
                 </button>
