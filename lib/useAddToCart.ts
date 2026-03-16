@@ -21,7 +21,7 @@ export const useAddToCart = () => {
         try {
             setLoading(true);
             let guestToken = localStorage.getItem("guest_token");
-            console.log(guestToken);
+
 
             // ✅ Create guest token if not exists
             if (!guestToken && !isAuthenticated) {
@@ -30,7 +30,8 @@ export const useAddToCart = () => {
                     localStorage.setItem("guest_token", guestToken);
                 }
             }
-
+            console.log(guestToken);
+            console.log('fd');
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/cart/add`,
                 {
