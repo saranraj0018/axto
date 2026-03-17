@@ -65,7 +65,7 @@ const Section3 = () => {
               <img
                   src={item.image}
                   alt={item.name}
-                  className="w-full rounded-lg"
+                  className="w-full rounded-lg h-[90px] md:h-[150px] lg:h-[190px] object-cover"
               />
               </Link>
             </div>

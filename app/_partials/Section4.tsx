@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import {
   RatingStarIcon,
   LeftArrowIcon,
   RightArrowIcon,
 } from "@/components/all_icons";
 import { useAddToCart } from "@/lib/useAddToCart";
-import {WishlistIcon} from "@/components/WishlistIcon";
-import {useAuthModal} from "@/context/AuthModalContext";
+import { WishlistIcon } from "@/components/WishlistIcon";
+import { useAuthModal } from "@/context/AuthModalContext";
 import Link from "next/link";
 
 interface BestSellerProduct {
@@ -20,45 +20,43 @@ interface BestSellerProduct {
   regularPrice: number;
   sellingPrice: number;
   discount: string;
-  type:string;
-  is_wishlisted:boolean;
+  type: string;
+  is_wishlisted: boolean;
 }
-
 
 const Section4 = () => {
   const { addToCart } = useAddToCart();
   const { openAuthModal } = useAuthModal();
-  const [BSProductItems, setBSProductItems] =  useState<BestSellerProduct[]>([]);
+  const [BSProductItems, setBSProductItems] = useState<BestSellerProduct[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
 
   const slugify = (text: string) =>
-      text
-          .toLowerCase()
-          .trim()
-          .replace(/\s+/g, "-")
-          .replace(/[^\w-]+/g, "");
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "");
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token"); // or from Zustand
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/best-seller/list`, {
       headers: token
-          ? {
+        ? {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
           }
-          : {
+        : {
             Accept: "application/json",
           },
     })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res?.data) setBSProductItems(res.data);
-        })
-        .catch(console.error);
+      .then((res) => res.json())
+      .then((res) => {
+        if (res?.data) setBSProductItems(res.data);
+      })
+      .catch(console.error);
   }, []);
-
 
   // RESPONSIVE SLIDER
   useEffect(() => {
@@ -79,7 +77,7 @@ const Section4 = () => {
 
   const prev = () => {
     setCurrentIndex((prev) =>
-        prev === 0 ? BSProductItems.length - 1 : prev - 1
+      prev === 0 ? BSProductItems.length - 1 : prev - 1,
     );
   };
 
@@ -103,28 +101,30 @@ const Section4 = () => {
           }}
         >
           {BSProductItems.map((item) => (
-
             <div
               key={item.id}
-              className="w-1/2 md:w-1/4 p-2 flex"
+              className="p-2 flex shrink-0"
+              style={{ width: `${100 / itemsPerView}%` }}
             >
               {/* YOUR EXACT UI */}
               <div className="shadow-md rounded-2xl overflow-hidden flex flex-col w-full">
                 <div className="space-y-5 bg-[#F4F4F4] p-2 relative">
-                  <div className="flex justify-between w-8/9 absolute t-1">
+                  <div className="flex justify-between w-full px-2 absolute top-2 left-0 right-0">
                     <p className="text-white bg-primary w-max px-3 py-1 text-[10px] md:text-sm rounded-3xl h-max">
-                      {item.discount} OFF
+                      {item.discount}% OFF
                     </p>
                     <div className="p-1 rounded-3xl bg-white hover:bg-[#f3f3f3] hover:scale-125 transition cursor-pointer">
-                      <WishlistIcon productId={item.id}
-                                    initialLiked={item.is_wishlisted} />
+                      <WishlistIcon
+                        productId={item.id}
+                        initialLiked={item.is_wishlisted}
+                      />
                     </div>
                   </div>
 
                   <img
                     src={item.img}
                     alt={item.title}
-                      className="rounded-2xl w-full h-60 mx-auto"
+                    className="rounded-2xl w-full h-32 md:h-60 mx-auto object-cover"
                   />
                 </div>
 
@@ -142,7 +142,9 @@ const Section4 = () => {
                     </div>
                   </div>
 
-                  <Link href={`/shop/product/${slugify(item.title)}-${item.id}`}>
+                  <Link
+                    href={`/shop/product/${slugify(item.title)}-${item.id}`}
+                  >
                     <h3 className="text-[11px] md:text-[16px] font-medium">
                       {item.title}
                     </h3>
@@ -156,29 +158,32 @@ const Section4 = () => {
                       </span>
                     </div>
                     {item.type === "single" ? (
-                        <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              addToCart({
-                                id: item.id,
-                                variant_id: 0,
-                                quantity: 1,
-                              },{
-                                onAuthRequired: openAuthModal,
-                                buyNow: true,
-                              });
-                            }}
-                            className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
-                        >
-                          + Add
-                        </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addToCart(
+                            {
+                              id: item.id,
+                              variant_id: 0,
+                              quantity: 1,
+                            },
+                            {
+                              onAuthRequired: openAuthModal,
+                              buyNow: true,
+                            },
+                          );
+                        }}
+                        className="bg-primary hover:bg-white text-white text-center hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
+                      >
+                        + Add
+                      </button>
                     ) : (
-                        <Link
-                            href={`/shop/product/${slugify(item.title)}-${item.id}`}
-                            className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium inline-block"
-                        >
-                          Select
-                        </Link>
+                      <Link
+                        href={`/shop/product/${slugify(item.title)}-${item.id}`}
+                        className="bg-primary hover:bg-white text-white text-center hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium inline-block"
+                      >
+                        Select
+                      </Link>
                     )}
                   </div>
                 </div>
