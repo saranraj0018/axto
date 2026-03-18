@@ -5,7 +5,7 @@ import Link from "next/link";
 const page = () => {
   return (
     <>
-      <header className="sticky top-0 z-20 px-0 lg:px-[5em] xl:px-[5em] 2xl:px-[10em] py-4 bg-white">
+      <header className="px-0 lg:px-[5em] xl:px-[5em] 2xl:px-[10em] pt-4 pb-0 md:pb-2 lg:pb-4">
         <div className="grid grid-cols-12 gap-3">
           <div className="col-span-8 lg:col-span-3">
             <Link href="/">
