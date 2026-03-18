@@ -95,7 +95,7 @@ const IconNav = () => {
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Search products..."
-                            className="w-80 md:w-82 p-2 border rounded-lg shadow-lg"
+                            className="w-80 md:w-65 p-2 border rounded-lg shadow-lg"
                         />
 
                         <SearchDropdown

@@ -48,7 +48,7 @@ const Content: React.FC<ContentProps> = ({ products }) => {
                         <img
                             src={item.img}
                             alt={item.title}
-                            className="rounded-2xl w-full h-32 md:h-60 mx-auto"
+                            className="rounded-2xl w-full h-32 lg:h-60 mx-auto object-cover"
                         />
                           </Link>
                       </div>

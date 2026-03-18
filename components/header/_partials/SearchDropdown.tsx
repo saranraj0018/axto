@@ -96,11 +96,16 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({
                     key={item.id}
                     className="flex gap-3 p-3 border-b hover:bg-gray-50 transition"
                 >
+                  <Link
+                      href={`/shop/product/${slugify(item.title)}-${item.id}`}
+                      onClick={onClose}
+                  >
                   <img
                       src={item.img}
                       alt={item.title}
                       className="w-16 h-16 object-contain rounded-lg bg-gray-100"
                   />
+                  </Link>
 
                   <div className="flex-1">
                     <Link
@@ -120,27 +125,27 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({
                   </span>
                       </div>
 
-                      {item.type === "single" && (
-                          <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                addToCart(
-                                    {
-                                      id: item.id,
-                                      variant_id: 0,
-                                      quantity: 1,
-                                    },
-                                    {
-                                      onAuthRequired: openAuthModal,
-                                      buyNow: false,
-                                    }
-                                );
-                              }}
-                              className="text-xs bg-primary text-white px-3 py-1 rounded-full"
-                          >
-                            + Add
-                          </button>
-                      )}
+                      {/*{item.type === "single" && (*/}
+                      {/*    <button*/}
+                      {/*        onClick={(e) => {*/}
+                      {/*          e.preventDefault();*/}
+                      {/*          addToCart(*/}
+                      {/*              {*/}
+                      {/*                id: item.id,*/}
+                      {/*                variant_id: 0,*/}
+                      {/*                quantity: 1,*/}
+                      {/*              },*/}
+                      {/*              {*/}
+                      {/*                onAuthRequired: openAuthModal,*/}
+                      {/*                buyNow: false,*/}
+                      {/*              }*/}
+                      {/*          );*/}
+                      {/*        }}*/}
+                      {/*        className="text-xs bg-primary text-white px-3 py-1 rounded-full"*/}
+                      {/*    >*/}
+                      {/*      + Add*/}
+                      {/*    </button>*/}
+                      {/*)}*/}
                     </div>
                   </div>
                 </div>
