@@ -6,6 +6,7 @@ import ToastProvider from "../lib/providers/ToastProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import { AuthModalProvider } from "@/context/AuthModalContext";
 import Script from "next/script";
+import { CartProvider } from "@/context/CartContext";
 
 export const metadata: Metadata = {
     title: "AXTO | Accessories That Move You",
@@ -30,10 +31,12 @@ export default function RootLayout({
         <body>
         <AuthProvider>
             <AuthModalProvider>
-            <ToastProvider />
+                <CartProvider>
+                <ToastProvider />
             <Header />
-            {children}
+                    {children}
             <Footer />
+                </CartProvider>
             </AuthModalProvider>
         </AuthProvider>
 

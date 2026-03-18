@@ -33,7 +33,7 @@ const RelatedProducts = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
-  const { addToCart } = useAddToCart();
+  const { addToCart, loadingId } = useAddToCart();
   const { openAuthModal } = useAuthModal();
   useEffect(() => {
     const updateItems = () => {
@@ -100,12 +100,13 @@ const RelatedProducts = ({
                                     initialLiked={item.is_wishlisted} />
                     </div>
                   </div>
-
+                  <Link href={`/shop/product/${slugify(item.title)}-${item.id}`}>
                   <img
                       src={item.img}
                       alt={item.title}
                       className="rounded-2xl w-full h-60 mx-auto"
                   />
+                  </Link>
                 </div>
 
                 <div className="bg-[#fffffd] p-2 md:p-3 space-y-1 mt-auto flex flex-col justify-between flex-1">
@@ -137,7 +138,7 @@ const RelatedProducts = ({
                     </div>
 
                     {item.type === "single" ? (
-                        <button
+                        <button  type="button"
                             onClick={(e) => {
                               e.preventDefault();
                               addToCart({
@@ -150,8 +151,8 @@ const RelatedProducts = ({
                               });
                             }}
                             className="bg-primary hover:bg-white text-white hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
-                        >
-                          + Add
+                                 disabled={loadingId === item.id}>
+                          {loadingId === item.id ? "Adding..." : "+ Add"}
                         </button>
                     ) : (
                         <Link

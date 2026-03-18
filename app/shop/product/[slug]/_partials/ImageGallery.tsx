@@ -14,7 +14,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
   const [mainIndex, setMainIndex] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
 
-  // 🔍 Zoom states
+  // Zoom states
   const [zoom, setZoom] = useState(false);
   const [pos, setPos] = useState({ x: 50, y: 50 });
 

@@ -71,6 +71,33 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
     }
   }, [addressData]);
 
+  useEffect(() => {
+    if (pincode.length !== 6) return;
+
+    const fetchLocation = async () => {
+      try {
+        const res = await fetch(
+            `https://api.postalpincode.in/pincode/${pincode}`
+        );
+        const data = await res.json();
+
+        if (data[0]?.Status === "Success") {
+          const postOffice = data[0].PostOffice[0];
+
+          setState(postOffice.State);
+          setCountry(postOffice.Country);
+          setCity(postOffice.Name);
+        } else {
+          toast.error("Invalid Pincode");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchLocation();
+  }, [pincode]);
+
   if (!isOpen && !isVisible) return null;
 
   const handleClose = () => {
@@ -180,7 +207,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
               <div>
                 <label>Name</label>
                 <input
-                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+                    className="w-full border rounded-lg p-2"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
@@ -193,7 +220,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
                 <label>Mobile</label>
                 <input
                     type="number"
-                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+                    className="w-full border rounded-lg p-2"
                     value={phone_number}
                     onChange={(e) => setMobile(e.target.value)}
                 />
@@ -209,7 +236,7 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
                 <label>Address</label>
                 <textarea
                     rows={3}
-                    className="mt-1 w-full p-2 rounded-md border border-gray-300 focus:border-orange-400 outline-none"
+                    className="w-full border rounded-lg p-2"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 />
@@ -218,47 +245,17 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
                 )}
               </div>
 
-              <div>
-                <label>City</label>
-                <input
-                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                />
-                {errors.city && (
-                    <p className="text-red-500 text-xs">{errors.city}</p>
-                )}
-              </div>
-              <div>
-                <label>State</label>
-                <input
-                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                />
-                {errors.state && (
-                    <p className="text-red-500 text-xs">{errors.state}</p>
-                )}
-              </div>
-              <div>
-                <label>Country</label>
-                <input
-                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                />
-                {errors.country && (
-                    <p className="text-red-500 text-xs">{errors.country}</p>
-                )}
-              </div>
 
               <div>
                 <label>Pincode</label>
                 <input
                     type="number"
-                    className="mt-1 w-full p-2 rounded-full border border-gray-300 focus:border-orange-400 outline-none"
+                    className="w-full border rounded-lg p-2"
                     value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, "");
+                      setPincode(value);
+                    }}
                 />
                 {errors.pin_code && (
                     <p className="text-red-500 text-xs">{errors.pin_code}</p>
@@ -267,6 +264,35 @@ const ChangeAddress: React.FC<ChangeAddressProps> = ({
                     <p className="text-red-500 text-xs">{errors.zip_code}</p>
                 )}
               </div>
+              <div>
+                <label>City</label>
+                <input
+                    className="w-full border rounded-lg p-2 bg-gray-100 cursor-not-allowed"
+                    value={city}
+                    disabled
+                    onChange={(e) => setCity(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>State</label>
+                <input
+                    className="w-full border rounded-lg p-2 bg-gray-100 cursor-not-allowed"
+                    value={state}
+                    disabled
+                    onChange={(e) => setState(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Country</label>
+                <input
+                    className="w-full border rounded-lg p-2 bg-gray-100 cursor-not-allowed"
+                    value={country}
+                    disabled
+                    onChange={(e) => setCountry(e.target.value)}
+                />
+              </div>
+
+
 
 
             </div>

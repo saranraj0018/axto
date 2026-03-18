@@ -25,7 +25,7 @@ interface BestSellerProduct {
 }
 
 const Section4 = () => {
-  const { addToCart } = useAddToCart();
+  const { addToCart, loadingId } = useAddToCart();
   const { openAuthModal } = useAuthModal();
   const [BSProductItems, setBSProductItems] = useState<BestSellerProduct[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,19 +43,19 @@ const Section4 = () => {
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/best-seller/list`, {
       headers: token
-        ? {
+          ? {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
           }
-        : {
+          : {
             Accept: "application/json",
           },
     })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res?.data) setBSProductItems(res.data);
-      })
-      .catch(console.error);
+        .then((res) => res.json())
+        .then((res) => {
+          if (res?.data) setBSProductItems(res.data);
+        })
+        .catch(console.error);
   }, []);
 
   // RESPONSIVE SLIDER
@@ -77,10 +77,9 @@ const Section4 = () => {
 
   const prev = () => {
     setCurrentIndex((prev) =>
-      prev === 0 ? BSProductItems.length - 1 : prev - 1,
+        prev === 0 ? BSProductItems.length - 1 : prev - 1
     );
   };
-
   if (!BSProductItems.length) return null;
   return (
     <div className="my-14 space-y-2 relative">
@@ -114,18 +113,17 @@ const Section4 = () => {
                       {item.discount}% OFF
                     </p>
                     <div className="p-1 rounded-3xl bg-white hover:bg-[#f3f3f3] hover:scale-125 transition cursor-pointer">
-                      <WishlistIcon
-                        productId={item.id}
-                        initialLiked={item.is_wishlisted}
-                      />
+                      <WishlistIcon productId={item.id}
+                                    initialLiked={item.is_wishlisted} />
                     </div>
                   </div>
-
+                  <Link href={`/shop/product/${slugify(item.title)}-${item.id}`}>
                   <img
                     src={item.img}
                     alt={item.title}
                     className="rounded-2xl w-full h-32 md:h-60 mx-auto object-cover"
                   />
+                  </Link>
                 </div>
 
                 <div className="bg-[#fffffd] p-2 md:p-3 space-y-1 mt-auto flex flex-col justify-between flex-1">
@@ -142,9 +140,7 @@ const Section4 = () => {
                     </div>
                   </div>
 
-                  <Link
-                    href={`/shop/product/${slugify(item.title)}-${item.id}`}
-                  >
+                  <Link href={`/shop/product/${slugify(item.title)}-${item.id}`}>
                     <h3 className="text-[11px] md:text-[16px] font-medium">
                       {item.title}
                     </h3>
@@ -158,32 +154,30 @@ const Section4 = () => {
                       </span>
                     </div>
                     {item.type === "single" ? (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          addToCart(
-                            {
-                              id: item.id,
-                              variant_id: 0,
-                              quantity: 1,
-                            },
-                            {
-                              onAuthRequired: openAuthModal,
-                              buyNow: true,
-                            },
-                          );
-                        }}
-                        className="bg-primary hover:bg-white text-white text-center hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
-                      >
-                        + Add
-                      </button>
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              addToCart({
+                                id: item.id,
+                                variant_id: 0,
+                                quantity: 1,
+                              },{
+                                onAuthRequired: openAuthModal,
+                                buyNow: true,
+                              });
+                            }}
+                            className="bg-primary hover:bg-white text-white text-center hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium"
+                            disabled={loadingId === item.id}>
+                          {loadingId === item.id ? "Adding..." : "+ Add"}
+                        </button>
                     ) : (
-                      <Link
-                        href={`/shop/product/${slugify(item.title)}-${item.id}`}
-                        className="bg-primary hover:bg-white text-white text-center hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium inline-block"
-                      >
-                        Select
-                      </Link>
+                        <Link
+                            href={`/shop/product/${slugify(item.title)}-${item.id}`}
+                            className="bg-primary hover:bg-white text-white text-center hover:text-primary px-4 py-1 rounded-3xl text-[10px] md:text-[12px] lg:text-[15px] border border-white hover:border-primary transition font-medium inline-block"
+                        >
+                          Select
+                        </Link>
                     )}
                   </div>
                 </div>

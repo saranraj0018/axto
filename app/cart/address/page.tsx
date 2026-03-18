@@ -24,6 +24,7 @@ type BillSummary = {
     deliveryCharge: number;
     SGST: string;
     IGST: string;
+    discount: number;
     platformFee: number;
     totalAmount: string;
 };
@@ -34,6 +35,7 @@ const page = () => {
     const [billSummary, setBillSummary] = useState<BillSummary | null>(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+    const [shippingMessage, setShippingMessage] = useState("");
     const [editAddress, setEditAddress] = useState<Address | null>(null);
 
 
@@ -79,13 +81,17 @@ const page = () => {
         try {
             const token = localStorage.getItem("auth_token");
             if (!token) return;
-
+            const guestToken = localStorage.getItem("guest-token");
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/api/user/get/cart`,
                 {
+                    method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        ...(token && { Authorization: `Bearer ${token}` }),
+                        ...(guestToken && {
+                            "guest-token": guestToken,
+                        }),
                     },
                 }
             );
@@ -94,6 +100,7 @@ const page = () => {
 
             if (data.status === 200 && data.billSummary) {
                 setBillSummary(data.billSummary);
+                setShippingMessage(data.shippingMessage);
             }
         } catch (err) {
             console.error("Bill summary fetch failed", err);
@@ -141,8 +148,8 @@ const page = () => {
 
                                             {addr.set_default === 1 && (
                                                 <span className="text-xs bg-green-100 text-green-700 px-2 rounded-full">
-              Default
-            </span>
+                                                  Default
+                                                </span>
                                             )}
                                         </div>
                                         <p className="text-sm text-secondary">+91 {addr.phone_number}</p>
@@ -184,7 +191,7 @@ const page = () => {
                                 }}
                                 className="border border-gray-300 text-sm font-medium py-1 px-3 rounded-md"
                             >
-                                Change / Add Address
+                                Add Address
                             </button>
 
                         </div>
@@ -195,7 +202,9 @@ const page = () => {
                     <div className="col-span-12 md:col-span-4">
                         <OrderSummary
                             billSummary={billSummary}
-                            addressId={selectedAddress?.id ?? null}
+                            shippingMessage={shippingMessage}
+                            addressId={selectedAddress?.id ?? null
+                            }
                         />
                     </div>
                 </div>
