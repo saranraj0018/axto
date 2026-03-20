@@ -152,7 +152,7 @@ const ShopPage = ({ initialCategory, initialBrand }: ShopPageProps) => {
       <>
         <CommonBanners />
 
-        <div className="axto-container flex flex-col md:flex-row gap-6 my-10">
+        <div className="axto-container flex flex-col md:flex-row gap-6 my-6 md:my-10">
           <Sidebar filters={filters} setFilters={setFilters}  products={products}/>
 
           <div className="flex-1 space-y-4">
