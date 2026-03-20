@@ -38,12 +38,12 @@ const IconNav = () => {
                   </button>
 
                   {showSearch && (
-                      <div className="absolute right-0 bottom-0 mr-8">
+                      <div className="absolute right-0 top-0 md:top-0 mr-8">
                         <input
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Search products..."
-                            className="w-80 md:w-84 p-2 border rounded-lg shadow-lg"
+                            className="h-[29px] lg:h-auto w-[135px] md:w-50 p-2 border rounded-lg shadow-lg outline-gray-200 focus:outline-none"
                         />
 
                         <SearchDropdown
@@ -95,7 +95,7 @@ const IconNav = () => {
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Search products..."
-                            className="w-80 md:w-65 p-2 border rounded-lg shadow-lg"
+                            className="h-[29px] md:h-auto w-[150px] md:w-50 p-2 border rounded-lg shadow-lg outline-gray-200 focus:outline-none"
                         />
 
                         <SearchDropdown

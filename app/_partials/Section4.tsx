@@ -189,14 +189,14 @@ const Section4 = () => {
         {/* Arrows */}
         <button
           onClick={prev}
-          className="absolute top-1/2 left-0 -translate-y-1/2 bg-white shadow px-4 py-3 rounded-full z-10"
+          className="absolute top-1/2 left-0 -translate-y-1/2 bg-white shadow px-4 py-3 rounded-full z-5"
         >
           {LeftArrowIcon}
         </button>
 
         <button
           onClick={next}
-          className="absolute top-1/2 right-0 -translate-y-1/2 bg-white shadow px-4 py-3 rounded-full z-10"
+          className="absolute top-1/2 right-0 -translate-y-1/2 bg-white shadow px-4 py-3 rounded-full z-5"
         >
           {RightArrowIcon}
         </button>

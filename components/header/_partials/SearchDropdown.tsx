@@ -78,7 +78,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({
   if (!query) return null;
 
   return (
-      <div className="absolute right-0 top-12 w-80 md:w-82 bg-white shadow-2xl rounded-xl max-h-96 overflow-y-auto z-50">
+      <div className="absolute md:right-0 top-8 md:top-12 w-80 md:w-82 bg-white shadow-2xl rounded-xl max-h-96 overflow-y-auto z-50">
 
         {loading && (
             <p className="p-4 text-center">Searching...</p>
