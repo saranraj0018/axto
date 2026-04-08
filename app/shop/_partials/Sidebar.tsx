@@ -29,11 +29,15 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     // 🔥 Dynamic category & brand from API data
     const categories = Array.from(
-        new Set(products.map((p) => p.category).filter(Boolean))
+        new Set(
+            products.flatMap((p) => p.category || [])
+        )
     );
 
     const brands = Array.from(
-        new Set(products.map((p) => p.brand).filter(Boolean))
+        new Set(
+            products.flatMap((p) => p.brand || [])
+        )
     );
 
     const capitalize = (str: string) =>
@@ -58,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 className="md:hidden w-max py-1.5 px-2 rounded-md font-medium border border-gray-200 mb-1 text-sm flex gap-2"
                 onClick={() => setIsOpen(true)}
             >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" stroke-linecap="round">
                     <line x1="4" y1="6" x2="20" y2="6"/>
                     <circle cx="12" cy="6" r="1.8" fill="currentColor"/>
 
@@ -100,8 +104,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                         <label key={c} className="flex gap-2 items-center text-sm">
                             <input
                                 type="checkbox"
-                                checked={filters.category.includes(c.toLowerCase())}
-                                onChange={() => toggle("category", c.toLowerCase())}
+                                checked={filters.category.includes(c)}
+                                onChange={() => toggle("category", c)}
                             />
                             {c}
                         </label>

@@ -15,8 +15,8 @@ type Product = {
   ratings: number;
   sellingPrice: number;
   regularPrice: number;
-  category: string;
-  brand: string;
+  category: string[] | null;
+  brand: string[] | null;
   discount: number;
   img: string;
   type:string;
@@ -98,11 +98,19 @@ const ShopPage = ({ initialCategory, initialBrand }: ShopPageProps) => {
 
 
     if (filters.category.length > 0) {
-      temp = temp.filter((p) => filters.category.includes(p.category));
+      temp = temp.filter((p) =>
+          p.category?.some((cat: string) =>
+              filters.category.includes(cat)
+          )
+      );
     }
 
     if (filters.brand.length > 0) {
-      temp = temp.filter((p) => filters.brand.includes(p.brand));
+      temp = temp.filter((p) =>
+          p.brand?.some((b: string) =>
+              filters.brand.includes(b)
+          )
+      );
     }
 
 
