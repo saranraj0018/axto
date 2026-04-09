@@ -374,7 +374,6 @@ const page = () => {
         <div className="grid grid-cols-12 gap-3 md:gap-8">
           {/* LEFT SECTION */}
           <div className="col-span-12 md:col-span-8">
-
             {/* RESPONSIVE WRAPPER */}
             <div className="w-full overflow-x-auto rounded-2xl border border-gray-200">
               <table className="w-full min-w-[750px]">
@@ -388,23 +387,23 @@ const page = () => {
                 </thead>
 
                 <tbody>
-                {cartItems.map((item, index) => (
+                  {cartItems.map((item, index) => (
                     <tr
-                        key={`${item.id}-${item.variation?.id ?? "default"}`}
-                        className="border-b border-gray-200"
+                      key={`${item.id}-${item.variation?.id ?? "default"}`}
+                      className="border-b border-gray-200"
                     >
                       <td className="p-2 flex items-center gap-3 min-w-[240px]">
                         <button
-                            className="text-red-500 ml-2"
-                            onClick={() => removeItem(item)}
+                          className="text-red-500 ml-2"
+                          onClick={() => removeItem(item)}
                         >
                           {closeIcon}
                         </button>
 
                         <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-12 h-12 object-contain"
+                          src={item.image}
+                          alt={item.name}
+                          className="w-12 h-12 object-contain"
                         />
 
                         <div>
@@ -412,38 +411,33 @@ const page = () => {
                             {item.name}
                           </div>
                           {item.variation && (
-                              <div className="text-xs text-gray-500">
-                                {item.attribute_name}: {item.variation.name}
-                              </div>
+                            <div className="text-xs text-gray-500">
+                              {item.attribute_name}: {item.variation.name}
+                            </div>
                           )}
                         </div>
                       </td>
-
                       <td className="p-2">
-                        ₹{item.discountedPrice /  item.quantity}
+                        ₹{item.discountedPrice / item.quantity}
                       </td>
-
                       <td className="p-2">
                         <div className="flex gap-2 items-center bg-[#EDF0F4] rounded-full p-3 w-max">
                           <button
-                              disabled={item.quantity <= 1}
-                              className="h-8 w-8 rounded-full bg-white disabled:opacity-50"
-                              onClick={() => updateQuantity(index, "dec")}
+                            disabled={item.quantity <= 1}
+                            className="h-8 w-8 rounded-full bg-white disabled:opacity-50 flex items-center justify-center"
+                            onClick={() => updateQuantity(index, "dec")}
                           >
                             {MinusIcon}
                           </button>
-
                           <span className="px-2">{item.quantity}</span>
-
                           <button
-                              className="h-8 w-8 rounded-full bg-white"
-                              onClick={() => updateQuantity(index, "inc")}
+                            className="h-8 w-8 rounded-full bg-white flex items-center justify-center"
+                            onClick={() => updateQuantity(index, "inc")}
                           >
                             {PlusIcon}
                           </button>
                         </div>
                       </td>
-
                       <td className="p-2 font-medium">
                         ₹{item.discountedPrice}
                       </td>
@@ -451,20 +445,16 @@ const page = () => {
                   ))}
                 </tbody>
               </table>
-
             </div>
             <Link href="/shop">
               <button className="axto-orange-btn w-1/4 mt-3">
-               Continue To Shop
+                Continue To Shop
               </button>
             </Link>
-
-
           </div>
 
           {/* RIGHT SECTION */}
           <div className="col-span-12 md:col-span-4">
-
             {/* COUPON BOX */}
 
             <div className="bg-white border rounded-xl p-4 mb-4">
@@ -472,29 +462,30 @@ const page = () => {
 
               <div className="flex gap-2">
                 <input
-                    type="text"
-                    placeholder="Enter coupon code"
-                    value={coupon}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setCoupon(value);
+                  type="text"
+                  placeholder="Enter coupon code"
+                  value={coupon}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCoupon(value);
 
-                      if (typingTimeout) {
-                        clearTimeout(typingTimeout);
-                      }
+                    if (typingTimeout) {
+                      clearTimeout(typingTimeout);
+                    }
 
-                      const timeout = setTimeout(() => {
-                        fetchCouponId(value);
-                      }, 500); // wait 500ms after typing stops
+                    const timeout = setTimeout(() => {
+                      fetchCouponId(value);
+                    }, 500); // wait 500ms after typing stops
 
-                      setTypingTimeout(timeout);
-                    }}
-                    className="border rounded-lg px-3 py-2 w-full"
+                    setTypingTimeout(timeout);
+                  }}
+                  className="border rounded-lg px-3 py-2 w-full"
                 />
 
-                <button disabled={couponLoading}
-                        onClick={() => applyCoupon()}
-                    className="axto-orange-btn px-4"
+                <button
+                  disabled={couponLoading}
+                  onClick={() => applyCoupon()}
+                  className="axto-orange-btn px-4"
                 >
                   {couponLoading ? "Applying..." : "Apply"}
                 </button>
@@ -503,11 +494,11 @@ const page = () => {
 
             {/* AVAILABLE COUPONS */}
 
-            <div >
-
+            <div>
               <div
-                  onClick={() => setShowCouponModal(true)}
-                  className="border rounded-lg p-3 flex justify-between items-center cursor-pointer hover:bg-gray-50">
+                onClick={() => setShowCouponModal(true)}
+                className="border rounded-lg p-3 flex justify-between items-center cursor-pointer hover:bg-gray-50"
+              >
                 <span className="text-sm font-medium">
                   View Available Coupons
                 </span>
@@ -518,63 +509,66 @@ const page = () => {
               </div>
 
               {showCouponModal && (
-                  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+                  <div className="bg-white w-[95%] md:w-[450px] rounded-xl p-5">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="font-semibold text-lg">
+                        Available Coupons
+                      </h3>
 
-                    <div className="bg-white w-[95%] md:w-[450px] rounded-xl p-5">
+                      <button
+                        onClick={() => setShowCouponModal(false)}
+                        className="text-gray-500"
+                      >
+                        ✕
+                      </button>
+                    </div>
 
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-semibold text-lg">Available Coupons</h3>
-
-                        <button
-                            onClick={() => setShowCouponModal(false)}
-                            className="text-gray-500"
+                    <div className="space-y-3 max-h-[350px] overflow-y-auto">
+                      {couponList.map((c) => (
+                        <div
+                          key={c.id}
+                          className="border rounded-lg p-3 flex justify-between items-center"
                         >
-                          ✕
-                        </button>
-                      </div>
-
-                      <div className="space-y-3 max-h-[350px] overflow-y-auto">
-
-                        {couponList.map((c) => (
-                            <div
-                                key={c.id}
-                                className="border rounded-lg p-3 flex justify-between items-center"
-                            >
-                              <div>
-                                <div className="font-semibold text-sm">
-                                  {c.coupon_code}
-                                </div>
-
-                                <div className="text-xs text-gray-500">
-                                  {c.description}
-                                </div>
-                              </div>
-
-                              {c.coupon_status ? (
-                                  <button   type="button" className="axto-orange-btn px-3 py-1 text-sm " disabled={couponLoading}  onClick={() => applyCoupon(c.id)}>
-
-                                    {couponLoading ? "Applying..." : "Apply"}
-                                  </button>
-                              ) : (
-                                  <span className="text-xs text-red-500">
-                              {c.apply_for == "1"
-                                  ? `Valid for subtotal between ₹${c.min_price} - ₹${c.max_price}`
-                                  : `Valid after ${c.order_count} orders`}
-                            </span>
-                              )}
+                          <div>
+                            <div className="font-semibold text-sm">
+                              {c.coupon_code}
                             </div>
-                        ))}
 
-                      </div>
+                            <div className="text-xs text-gray-500">
+                              {c.description}
+                            </div>
+                          </div>
 
+                          {c.coupon_status ? (
+                            <button
+                              type="button"
+                              className="axto-orange-btn px-3 py-1 text-sm "
+                              disabled={couponLoading}
+                              onClick={() => applyCoupon(c.id)}
+                            >
+                              {couponLoading ? "Applying..." : "Apply"}
+                            </button>
+                          ) : (
+                            <span className="text-xs text-red-500">
+                              {c.apply_for == "1"
+                                ? `Valid for subtotal between ₹${c.min_price} - ₹${c.max_price}`
+                                : `Valid after ${c.order_count} orders`}
+                            </span>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
+                </div>
               )}
-
             </div>
             <div className="mt-4">
-              <OrderSummary billSummary={billSummary}
-                            removeCoupon={removeCoupon} shippingMessage={shippingMessage} />
+              <OrderSummary
+                billSummary={billSummary}
+                removeCoupon={removeCoupon}
+                shippingMessage={shippingMessage}
+              />
             </div>
           </div>
         </div>
