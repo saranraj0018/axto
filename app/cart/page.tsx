@@ -185,7 +185,7 @@ const page = () => {
 
   const applyCoupon = async (id?: number) => {
     if (!token || !isAuthenticated) {
-      openAuthModal(); // ✅ DIRECT CALL
+      openAuthModal();
       return;
     }
 

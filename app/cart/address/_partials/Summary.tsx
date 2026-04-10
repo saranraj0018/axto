@@ -3,14 +3,13 @@
 import { useState } from "react";
 
 interface BillSummary {
-    totalItems: number;
-    itemsAmount: number;
-    deliveryCharge: number;
-    discount: number
-    SGST: string;
-    IGST: string;
-    platformFee: number;
-    totalAmount: string;
+  totalItems: number;
+  itemsAmount: number;
+  deliveryCharge: number;
+  discount: number;
+  platformFee: number;
+  totalAmount: string;
+    taxAmount?: string;
 }
 
 interface OrderSummaryProps {
@@ -31,20 +30,14 @@ const Summary = ({ billSummary,
 
 
     const {
-        totalItems,
-        itemsAmount,
-        deliveryCharge,
-        SGST,
-        IGST,
-        discount,
-        platformFee,
-        totalAmount,
+      totalItems,
+      itemsAmount,
+      deliveryCharge,
+      discount,
+      platformFee,
+      totalAmount,
+      taxAmount,
     } = billSummary;
-
-    const igst = parseFloat(IGST || "0");
-    const sgst = parseFloat(SGST || "0");
-
-    const gst =(igst + sgst);
 
 
     const handlePayment = async () => {
@@ -137,7 +130,7 @@ const Summary = ({ billSummary,
 
             <div className="flex justify-between mb-2">
                 <span>GST</span>
-                <span>₹{gst}</span>
+                <span>₹{taxAmount}</span>
             </div>
 
             {platformFee > 0 && (
