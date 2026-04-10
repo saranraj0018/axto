@@ -20,7 +20,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const LoggedItems = () => {
+const LoggedItems = ({ closeMenu }: { closeMenu?: () => void }) => {
   const pathname = usePathname();
     const { user, logout } = useAuth();
     const router = useRouter();
@@ -112,7 +112,11 @@ const LoggedItems = () => {
                     isActive ? "bg-primary" : "bg-white"
                   }`}
                 >
-                  <Link href={items.path} className="flex gap-2">
+                  <Link 
+                    href={items.path} 
+                    className="flex gap-2"
+                    onClick={closeMenu}
+                  >
                     <div className="rounded-full scale-75 md:scale-100 py-1 px-2">
                       {items.icon}
                     </div>
@@ -131,7 +135,10 @@ const LoggedItems = () => {
           })}
           <div className="my-2 p-2 rounded-full">
             <div
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  closeMenu?.();
+                }}
                 className="flex gap-2 cursor-pointer"
             >
               <div className="py-1 px-2">{logoutIcon}</div>
