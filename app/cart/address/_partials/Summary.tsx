@@ -7,12 +7,9 @@ interface BillSummary {
   itemsAmount: number;
   deliveryCharge: number;
   discount: number;
-  SGST: string;
-  IGST: string;
-  CGST: string;
   platformFee: number;
   totalAmount: string;
-  taxAmount: string;
+    taxAmount?: string;
 }
 
 interface OrderSummaryProps {
@@ -36,20 +33,11 @@ const Summary = ({ billSummary,
       totalItems,
       itemsAmount,
       deliveryCharge,
-      SGST,
-      IGST,
-      CGST,
       discount,
       platformFee,
       totalAmount,
       taxAmount,
     } = billSummary;
-
-    const igst = parseFloat(IGST || "0");
-    const sgst = parseFloat(SGST || "0");
-    const csgst = parseFloat(CGST || "0");
-
-    const gst =(igst + sgst + csgst).toFixed(2);
 
 
     const handlePayment = async () => {

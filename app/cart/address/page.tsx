@@ -22,8 +22,7 @@ type BillSummary = {
     totalItems: number;
     itemsAmount: number;
     deliveryCharge: number;
-    SGST: string;
-    IGST: string;
+    taxAmount?: string;
     discount: number;
     platformFee: number;
     totalAmount: string;
