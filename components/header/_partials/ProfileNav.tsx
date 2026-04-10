@@ -39,7 +39,7 @@ const ProfileNav = () => {
             transition-all duration-300 origin-top animate-slideDown w-max z-50
           "
         >
-          <LoggedItems />
+          <LoggedItems closeMenu={() => setIsOpen(false)} />
         </div>
       )}
     </div>
