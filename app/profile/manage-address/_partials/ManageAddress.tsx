@@ -72,7 +72,11 @@ const ManageAddress = () => {
                 const data = await res.json();
 
                 if (data[0]?.Status === "Success") {
-                    const postOffice = data[0].PostOffice[0];
+                    const offices = data[0].PostOffice || [];
+                    const postOffice =
+                        offices.find(
+                            (office: { BranchType: string; }) => office.BranchType === "Sub Post Office"
+                        ) || offices[0];
                     setEditForm((prev: any) => ({
                         ...prev,
                         city: postOffice.Name,

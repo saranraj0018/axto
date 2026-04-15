@@ -42,20 +42,27 @@ const AddAddress = ({loadAddresses,}: { loadAddresses: () => void;
         const res = await fetch(
             `https://api.postalpincode.in/pincode/${zipCode}`
         );
+
         const data = await res.json();
 
         if (data[0]?.Status === "Success") {
-          const postOffice = data[0].PostOffice[0];
+          const offices = data[0].PostOffice || [];
 
-          // 🔥 Use Division for correct TN district
+          // Prefer Sub Post Office
+          const postOffice =
+              offices.find(
+                  (office: { BranchType: string; }) => office.BranchType === "Sub Post Office"
+              ) || offices[0];
+
           setCity(postOffice.Name);
           setState(postOffice.State);
           setCountry(postOffice.Country);
         } else {
-          toast.error("Invalid Pincode");
+          toast.error("Invalid Pin code");
         }
       } catch (error) {
         console.error(error);
+        toast.error("Something went wrong");
       }
     };
 
