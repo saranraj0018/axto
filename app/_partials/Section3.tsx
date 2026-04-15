@@ -48,7 +48,7 @@ const Section3 = () => {
 
   return (
     <>
-      <div className="my-10 space-y-2 md:space-y-1">
+      <div className="my-3 md:my-10 space-y-2 md:space-y-1">
         <h2 className="text-center text-md md:text-2xl font-medium">
           Shop by <span className="text-primary">Category</span>
         </h2>
@@ -58,7 +58,7 @@ const Section3 = () => {
         </p>
 
         {/* Cards */}
-        <div className="grid grid-cols-12 gap-3 mt-8">
+        <div className="grid grid-cols-12 gap-3 mt-3">
           {visibleItems.map((item) => (
             <div key={item.id} className="col-span-6 md:col-span-4">
               <Link href={`/shop/category/${slugify(item.name.toLowerCase())}`}>

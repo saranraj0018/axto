@@ -92,7 +92,7 @@ const Section4 = () => {
   if (!BSProductItems.length) return null;
 
   return (
-    <div className="my-14 space-y-2 relative">
+    <div className="my-3 md:my-10 space-y-2 relative">
       <h2 className="text-center text-md md:text-2xl font-medium">
         Best <span className="text-primary">Sellers</span>
       </h2>
@@ -193,7 +193,7 @@ const Section4 = () => {
                           Out of Stock
                         </button>
                       ) : (
-                        <div className="grid grid-cols-2 gap-2 w-full">
+                        <div className="grid grid-cols-2 gap-1 md:gap-2 w-full">
                           {/* Add to Cart */}
                           <button
                             type="button"
@@ -212,7 +212,7 @@ const Section4 = () => {
                                 },
                               );
                             }}
-                            className="w-full px-3 py-2 rounded-full text-[10px] md:text-[12px] lg:text-[14px] border transition font-medium text-center bg-white text-primary border-primary hover:bg-primary hover:text-white"
+                            className="w-full px-1 md:px-3 py-1 md:py-2 rounded-full text-[8px] md:text-[12px] lg:text-[14px] border transition font-medium text-center bg-white text-primary border-primary hover:bg-primary hover:text-white"
                             disabled={loadingId === item.id}
                           >
                             {loadingId === item.id ? "Adding..." : "+ Add"}
@@ -242,7 +242,7 @@ const Section4 = () => {
                                 console.error("Buy now error:", error);
                               }
                             }}
-                            className="w-full px-3 py-2 rounded-full text-[10px] md:text-[12px] lg:text-[14px] border transition font-medium text-center bg-primary text-white border-primary hover:bg-white hover:text-primary"
+                            className="w-full px-1 md:px-3 py-1 md:py-2 rounded-full text-[8px] md:text-[12px] lg:text-[14px] border transition font-medium text-center bg-primary text-white border-primary hover:bg-white hover:text-primary"
                             disabled={loadingId === item.id}
                           >
                             {loadingId === item.id
@@ -261,7 +261,7 @@ const Section4 = () => {
                         onClick={(e) => {
                           if (item.is_out_of_stock) e.preventDefault();
                         }}
-                        className={`w-full px-4 py-2 rounded-full text-[10px] md:text-[12px] lg:text-[14px] border transition font-medium inline-block text-center ${
+                        className={`w-full px-1 md:px-3 py-1 md:py-2 rounded-full text-[8px] md:text-[12px] lg:text-[14px] border transition font-medium inline-block text-center ${
                           item.is_out_of_stock
                             ? "bg-gray-300 text-gray-600 border-gray-300 cursor-not-allowed pointer-events-none"
                             : "bg-primary hover:bg-white text-white hover:text-primary border-primary hover:border-primary"
