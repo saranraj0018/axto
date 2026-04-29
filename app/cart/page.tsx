@@ -515,11 +515,11 @@ const page = () => {
               </div>
             </div>
 
-            <Link href="/shop">
-              <button className="axto-orange-btn w-full md:w-1/4 mt-3 mb-6 md:mb-0">
-                Continue To Shop
-              </button>
-            </Link>
+            <div className="flex justify-end">
+                <Link href="/shop" className="axto-orange-btn w-full md:w-1/4 mt-3 mb-6 md:mb-0 text-center">
+                        Continue To Shop
+                </Link>
+            </div>
           </div>
 
           {/* RIGHT SECTION */}

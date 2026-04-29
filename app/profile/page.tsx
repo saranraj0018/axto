@@ -115,9 +115,9 @@ const Page = () => {
 
             <div className="flex gap-2">
               <img
-                  src={user?.image || "/img/profile/Male-Avatar.png"}
-                  alt="Profile"
-                  className="w-20 h-20 rounded-full object-cover"
+                src={user?.image || "/img/profile/Male-Avatar.png"}
+                alt="Profile"
+                className="w-20 h-20 rounded-full object-cover"
               />
               <div className="my-auto space-y-2">
                 <div className="flex gap-2">
@@ -138,12 +138,8 @@ const Page = () => {
             </div>
 
             {/* Controlled Form */}
-            <form className="my-3"  onSubmit={profileSubmit}>
-              <input
-                  type="hidden"
-                  name="user_id"
-                  value={form.id}
-              />
+            <form className="my-3" onSubmit={profileSubmit}>
+              <input type="hidden" name="user_id" value={form.id} />
               <label className="text-sm font-medium">User Name</label>
               <br />
               <input
@@ -153,7 +149,9 @@ const Page = () => {
                 value={form.name}
                 onChange={handleChange}
               />
-              {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
+              {errors.name && (
+                <p className="text-red-600 text-sm">{errors.name}</p>
+              )}
               <br />
 
               <label className="text-sm font-medium">Mobile Number</label>
@@ -165,7 +163,9 @@ const Page = () => {
                 value={form.phone}
                 onChange={handleChange}
               />
-              {errors.phone && <p className="text-red-600 text-sm">{errors.phone}</p>}
+              {errors.phone && (
+                <p className="text-red-600 text-sm">{errors.phone}</p>
+              )}
               <br />
 
               <label className="text-sm font-medium">Email</label>
@@ -177,7 +177,26 @@ const Page = () => {
                 value={form.email}
                 onChange={handleChange}
               />
-              {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-red-600 text-sm">{errors.email}</p>
+              )}
+              <br />
+
+              <label className="text-sm font-medium">
+                GST Number <span>(Optional)</span>
+              </label>
+              <br />
+              <input
+                type="text"
+                placeholder="Enter The GST Number"
+                name="name"
+                className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
+                // value={form.name}
+                onChange={handleChange}
+              />
+              {errors.name && (
+                <p className="text-red-600 text-sm">{errors.name}</p>
+              )}
               <br />
 
               <label className="text-sm font-medium">Update Password</label>
@@ -187,7 +206,7 @@ const Page = () => {
                 name="password"
                 className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <br />
 
