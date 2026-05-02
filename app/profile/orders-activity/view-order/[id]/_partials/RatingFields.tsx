@@ -34,12 +34,13 @@ const RatingFields = ({ orderId }: { orderId: string }) => {
           body: formData,
         }
     );
-      if (res.status === 413){
-          toast.error('image size must be 2 Mb below')
+
+
+    const data = await res.json();
+      if (res.status === 409) {
+          toast.error(data.message);
           return;
       }
-    const data = await res.json();
-
 
 
     if (data.status) {
