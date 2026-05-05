@@ -20,6 +20,10 @@ const Userform = ({ onSuccess }: Props) => {
     const [isForgotOpen, setIsForgotOpen] = useState(false);
     const [isResetOpen, setIsResetOpen] = useState(false);
     const [resetContact, setResetContact] = useState("");
+    const [isOtpOpen, setIsOtpOpen] = useState(false);
+    const [otp, setOtp] = useState("");
+    const [otpError, setOtpError] = useState("");
+    const [resendLoading, setResendLoading] = useState(false);
 
     const { login } = useAuth();
 
@@ -360,7 +364,8 @@ const Userform = ({ onSuccess }: Props) => {
 
                             setResetContact(contact);
                             setIsForgotOpen(false);
-                            setIsResetOpen(true);
+                            setIsOtpOpen(true); // open OTP screen instead
+                            toast.success("OTP sent successfully");
                         } catch {
                             toast.error("Server error");
                         } finally {
@@ -399,7 +404,113 @@ const Userform = ({ onSuccess }: Props) => {
                 </p>
             </div>
         )}
+        {isOtpOpen && (
+            <div>
+                <h2 className="text-2xl font-medium">Verify OTP</h2>
 
+                <form
+                    className="my-3"
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+
+                        if (!otp) {
+                            setOtpError("OTP is required");
+                            return;
+                        }
+
+                        setIsLoading(true);
+                        try {
+                            const res = await fetch(
+                                `${process.env.NEXT_PUBLIC_API_URL}/api/user/verify-otp`,
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Accept": "application/json",
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        contact: resetContact,
+                                        otp: otp,
+                                    }),
+                                }
+                            );
+
+                            const data = await res.json();
+
+                            if (!res.ok) {
+                                setOtpError(data.message || "Invalid OTP");
+                                return;
+                            }
+
+                            toast.success("OTP verified");
+                            setIsOtpOpen(false);
+                            setIsResetOpen(true);
+                        } catch {
+                            toast.error("Server error");
+                        } finally {
+                            setIsLoading(false);
+                        }
+                    }}
+                >
+                    <input
+                        type="text"
+                        placeholder="Enter OTP"
+                        className="my-2 w-full p-2 rounded-md"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                    />
+
+                    {otpError && <p className="text-red-600 text-sm">{otpError}</p>}
+
+                    <button className="w-full bg-primary text-white py-2 rounded-3xl mt-4">
+                        Verify OTP
+                    </button>
+                </form>
+
+                {/* Resend OTP */}
+                <p
+                    className="text-[12px] text-primary cursor-pointer mt-2"
+                    onClick={async () => {
+                        setResendLoading(true);
+                        try {
+                            const res = await fetch(
+                                `${process.env.NEXT_PUBLIC_API_URL}/api/user/resend-otp`,
+                                {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ contact: resetContact }),
+                                }
+                            );
+
+                            const data = await res.json();
+
+                            if (!res.ok) {
+                                toast.error(data.message || "Failed to resend OTP");
+                                return;
+                            }
+
+                            toast.success("OTP resent successfully");
+                        } catch {
+                            toast.error("Server error");
+                        } finally {
+                            setResendLoading(false);
+                        }
+                    }}
+                >
+                    {resendLoading ? "Resending..." : "Resend OTP"}
+                </p>
+
+                <p
+                    className="text-[12px] cursor-pointer text-primary mt-2"
+                    onClick={() => {
+                        setIsOtpOpen(false);
+                        setIsForgotOpen(true);
+                    }}
+                >
+                    Back
+                </p>
+            </div>
+        )}
         {isResetOpen && (
             <div>
                 <h2 className="text-2xl font-medium">Reset Password</h2>

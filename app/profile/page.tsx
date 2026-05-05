@@ -19,6 +19,7 @@ const Page = () => {
     name: "",
     phone: "",
     email: "",
+    gst_no:"",
   });
 
   const [password, setPassword] = useState("");
@@ -32,6 +33,7 @@ const Page = () => {
       name: user.name ?? "",
       phone: user.phone ? String(user.phone) : "",
       email: user.email ?? "",
+      gst_no: user.gst_no ?? "",
     });
   }, [user]);
 
@@ -48,6 +50,7 @@ const Page = () => {
     const name = formData.get("name")?.toString().trim();
     const phone = formData.get("phone")?.toString().trim();
     const email = formData.get("email")?.toString().trim();
+    const gst_no = formData.get("gst_no")?.toString().trim();
     const password = formData.get("password")?.toString().trim();
 
     let newErrors: any = {};
@@ -91,6 +94,7 @@ const Page = () => {
         name,
         email,
         phone: Number(phone),
+        gst_no: gst_no ?? user?.gst_no,
         image: data.user?.image ?? user?.image,
       });
     } catch (e) {
@@ -189,14 +193,12 @@ const Page = () => {
               <input
                 type="text"
                 placeholder="Enter The GST Number"
-                name="name"
+                value={form.gst_no}
+                name="gst_no"
                 className="my-2 w-full md:w-1/2 outline-1 text-sm outline-gray-200 hover:outline-orange-300 p-2 rounded-3xl"
                 // value={form.name}
                 onChange={handleChange}
               />
-              {errors.name && (
-                <p className="text-red-600 text-sm">{errors.name}</p>
-              )}
               <br />
 
               <label className="text-sm font-medium">Update Password</label>

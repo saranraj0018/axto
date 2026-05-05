@@ -6,6 +6,7 @@ type User = {
     id?: number;
     name?: string;
     email?: string;
+    gst_no?: string;
     phone?: number;
     image?: string;
 };
