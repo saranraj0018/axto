@@ -6,18 +6,26 @@ const page = () => {
   return (
     <>
       <header className="sticky top-0 px-0 lg:px-[5em] xl:px-[5em] 2xl:px-[10em] pt-4 pb-0 md:pb-2 lg:pb-4 bg-white z-10">
-        <div className="grid grid-cols-12 gap-3">
+        <div className="grid grid-cols-12 gap-3 items-center max-w-[1400px] mx-auto">
+          {/* Logo */}
           <div className="col-span-8 lg:col-span-3">
             <Link href="/">
-              <img src="/img/axto_logo.png" alt="" className="w-3/5 md:w-2/5 lg:w-3/5 ps-3 md:px-0" />
+              <img
+                src="/img/axto_logo.png"
+                alt="Logo"
+                className="w-3/5 md:w-2/5 lg:w-3/5 ps-3 md:px-0"
+              />
             </Link>
           </div>
+
+          {/* Navigation */}
           <div className="col-span-4 lg:col-span-5 my-auto">
             <Nav />
           </div>
-          <div className="col-span-12 lg:col-span-4 bg-zinc-100 md:bg-white p-1 md:p-2 lg:p-0">
-          <IconNav/>
 
+          {/* Icons */}
+          <div className="col-span-12 lg:col-span-4 bg-zinc-100 md:bg-white p-1 md:p-2 lg:p-0">
+            <IconNav />
           </div>
         </div>
       </header>

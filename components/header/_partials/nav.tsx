@@ -54,10 +54,10 @@ const Nav = () => {
   ];
 
   return (
-    <nav className="w-full bg-white relative z-50">
+    <nav className="w-full relative z-50">
       {/* DESKTOP MENU */}
       <div className="hidden lg:flex justify-end gap-10 px-4 md:px-8">
-        <ul className="flex gap-10">
+        <ul className="flex gap-8 md:gap-6 lg:gap-8">
           {menuItems.map((item, i) => (
             <li key={i} className="relative group">
               {/* Parent text */}
