@@ -14,6 +14,7 @@ type Order = {
   title: string;
   price: number;
   track_id:string;
+  courier:string;
   invoice_url?: string;
   view_order_url?: string;
 };
@@ -89,6 +90,9 @@ const OrderData: React.FC = () => {
               <p className="font-semibold mt-1">₹{order.price}</p>
               <h3 className="text-secondary text-[11px] md:text-[13px]">
                 Track ID: {order.track_id}
+              </h3>
+              <h3 className="text-secondary text-[11px] md:text-[13px]">
+                Courier Name: {order.courier}
               </h3>
             </div>
           </div>
