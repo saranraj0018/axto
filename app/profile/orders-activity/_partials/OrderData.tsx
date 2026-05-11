@@ -10,6 +10,7 @@ type Order = {
   status: string;
   image: string;
   item_code: string;
+  created_at: string;
   title: string;
   price: number;
   track_id:string;
@@ -67,6 +68,9 @@ const OrderData: React.FC = () => {
 
             {/* Product Details */}
             <div className="w-2/3">
+              <h3 className="text-secondary text-[11px] md:text-[13px] mr-96">
+                Order#: {order.order_id}
+              </h3>
               <div className="font-medium text-[11px] md:text-lg flex gap-1">
                 <div className="scale-75 md:scale-100">{GreenOrderBoxIcon}</div>
                 <div>{order.status}</div>
@@ -74,6 +78,9 @@ const OrderData: React.FC = () => {
               <div className="my-1 md:my-3">
                 <h3 className="text-secondary text-[11px] md:text-[13px]">
                   ITEM CODE: {order.item_code}
+                </h3>
+                <h3 className="text-secondary text-[11px] md:text-[13px]">
+                  Order placed: {order.created_at}
                 </h3>
                 <p className="font-medium text-[10px] md:text-[13px]">
                   {order.title}

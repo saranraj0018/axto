@@ -75,7 +75,8 @@ const Summary = ({ billSummary,
             }
 
             const cashfree = (window as any).Cashfree({
-                mode: "production", // change to production later
+                mode: "sandbox", // change to production later
+                // mode: "production", // change to production later
             });
 
             cashfree.checkout({
