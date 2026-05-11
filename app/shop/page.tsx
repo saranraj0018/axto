@@ -40,7 +40,7 @@ const ShopPage = ({ initialCategory, initialBrand }: ShopPageProps) => {
     brand: string[];
     discount: string[];
     ratings: string[];
-    price: number[];
+    price: number[] | [];
     search: string;
     sort: string;
   };
@@ -50,7 +50,7 @@ const ShopPage = ({ initialCategory, initialBrand }: ShopPageProps) => {
     brand: initialBrand ? [initialBrand] : [],
     discount: [],
     ratings: [],
-    price: [0, 0],
+    price: [],
     search: "",
     sort: "",
   });

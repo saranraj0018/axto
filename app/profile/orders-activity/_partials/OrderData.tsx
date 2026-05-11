@@ -10,9 +10,11 @@ type Order = {
   status: string;
   image: string;
   item_code: string;
+  created_at: string;
   title: string;
   price: number;
   track_id:string;
+  courier:string;
   invoice_url?: string;
   view_order_url?: string;
 };
@@ -52,56 +54,88 @@ const OrderData: React.FC = () => {
     <div className="space-y-6">
       {orders.map((order) => (
         <div
-            key={order.id}
-          className="grid grid-cols-12 gap-3 border border-gray-300 rounded-2xl p-4"
+          key={order.id}
+          className="border border-gray-200 rounded-2xl p-3 md:p-5 bg-white"
         >
-          <div className="col-span-12 lg:col-span-9 flex gap-3">
-            {/* Product Image */}
-            <div className="w-1/3 md:w-auto ">
-              <img
+          <div className="flex flex-col lg:flex-row gap-4 justify-between">
+            {/* Left Content */}
+            <div className="flex gap-4 items-start w-full lg:w-full">
+              {/* Product Image */}
+              <div className="w-[20%] h-[80%] min-w-[110px] flex items-start">
+                <img
                   src={order.image}
                   alt={order.title}
-                className="w-full md:w-30 h-auto md:h-30 object-cover rounded"
-              />
-            </div>
-
-            {/* Product Details */}
-            <div className="w-2/3">
-              <div className="font-medium text-[11px] md:text-lg flex gap-1">
-                <div className="scale-75 md:scale-100">{GreenOrderBoxIcon}</div>
-                <div>{order.status}</div>
+                  className="w-full h-full max-h-[170px] object-cover rounded-xl"
+                />
               </div>
-              <div className="my-1 md:my-3">
-                <h3 className="text-secondary text-[11px] md:text-[13px]">
-                  ITEM CODE: {order.item_code}
-                </h3>
-                <p className="font-medium text-[10px] md:text-[13px]">
-                  {order.title}
-                </p>
+
+              {/* Details */}
+              <div className="w-[80%] flex flex-col">
+                {/* Top */}
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-[11px] md:text-[13px] text-gray-500">
+                      ITEM CODE: {order.item_code}
+                    </span>
+
+                    <span className="text-[11px] md:text-[13px] text-[#FF6A00] font-semibold">
+                      Order #: {order.order_id}
+                    </span>
+                  </div>
+
+                  <div className="flex items-start gap-2 text-[13px] md:text-[16px] font-semibold mt-1">
+                    <div className="scale-75 md:scale-100">
+                      {GreenOrderBoxIcon}
+                    </div>
+
+                    <span>{order.status}</span>
+                  </div>
+
+                  <div className="text-[11px] md:text-[13px] text-gray-500">
+                    Order placed:
+                  </div>
+
+                  <h3 className="text-[13px] md:text-[17px] font-medium text-black line-clamp-2 mb-2">
+                    {order.title}
+                  </h3>
+                </div>
+
+                {/* Price */}
+                <div className="text-[18px] md:text-[22px] font-bold text-black mb-2">
+                  ₹{order.price}
+                </div>
+
+                {/* Track */}
+                <span className="text-[11px] md:text-[13px] text-gray-500">
+                  Track ID: {order.track_id}
+                </span>
+
+                {/* Bottom */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                  <h3 className="text-secondary text-[11px] md:text-[13px]">
+                    Courier Name: {order.courier}
+                  </h3>
+
+                  {/* Buttons */}
+                  <div className="flex flex-wrap items-center gap-2 md:justify-end">
+                    <a
+                      href={`${process.env.NEXT_PUBLIC_API_URL}/api/user/invoice/${order.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-full border border-[#FF6A00] text-[#FF6A00] hover:bg-[#FF6A00] hover:text-white transition text-[12px] md:text-[14px] font-medium"
+                    >
+                      Download Invoice
+                    </a>
+
+                    <Link
+                      href={`/profile/orders-activity/view-order/${order.order_details_id}`}
+                      className="px-4 py-2 rounded-full bg-secondary text-white hover:opacity-90 transition text-[12px] md:text-[14px] font-medium text-center"
+                    >
+                      View Order
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <p className="font-semibold mt-1">₹{order.price}</p>
-              <h3 className="text-secondary text-[11px] md:text-[13px]">
-                Track ID: {order.track_id}
-              </h3>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="col-span-12 lg:col-span-3 my-auto">
-            <div className="md:mt-2 flex justify-end lg:flex-col gap-2">
-
-              <a
-                  href={`${process.env.NEXT_PUBLIC_API_URL}/api/user/invoice/${order.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="axto-white-btn text-center block"
-              >
-                Download Invoice
-              </a>
-              <Link href={`/profile/orders-activity/view-order/${order.order_details_id}`} className="bg-white hover:bg-secondary text-secondary hover:text-white px-3 py-1 text-[10px] md:text-[15px] cursor-pointer rounded-3xl border border-secondary hover:border-white transition text-center"
-              >
-                  View Order
-                </Link>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "@/context/AuthContext";
 import { Eye, EyeOff } from "lucide-react"; // or react-icons/fi
@@ -24,6 +24,31 @@ const Userform = ({ onSuccess }: Props) => {
     const [otp, setOtp] = useState("");
     const [otpError, setOtpError] = useState("");
     const [resendLoading, setResendLoading] = useState(false);
+    const [countdown, setCountdown] = useState(300); // 5 mins = 300 sec
+    const [isTimerActive, setIsTimerActive] = useState(false);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+
+        if (isTimerActive && countdown > 0) {
+            timer = setInterval(() => {
+                setCountdown((prev) => prev - 1);
+            }, 1000);
+        }
+
+        if (countdown === 0) {
+            setIsTimerActive(false);
+        }
+
+        return () => clearInterval(timer);
+    }, [isTimerActive, countdown]);
+
+    const formatTime = (seconds: number) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+
+        return `${mins}:${secs.toString().padStart(2, "0")}`;
+    };
 
     const { login } = useAuth();
 
@@ -361,7 +386,8 @@ const Userform = ({ onSuccess }: Props) => {
                                 toast.error(data.message || "User not found");
                                 return;
                             }
-
+                            setCountdown(300);
+                            setIsTimerActive(true);
                             setResetContact(contact);
                             setIsForgotOpen(false);
                             setIsOtpOpen(true); // open OTP screen instead
@@ -388,8 +414,8 @@ const Userform = ({ onSuccess }: Props) => {
                         <p className="text-red-600 text-sm">{errors.contact}</p>
                     )}
 
-                    <button className="w-full bg-primary text-white py-2 rounded-3xl mt-4">
-                        Verify
+                    <button disabled={isLoading} className="w-full bg-primary text-white py-2 rounded-3xl mt-4">
+                         {isLoading ? 'Processing...' : 'Verify'}
                     </button>
                 </form>
 
@@ -462,14 +488,20 @@ const Userform = ({ onSuccess }: Props) => {
 
                     {otpError && <p className="text-red-600 text-sm">{otpError}</p>}
 
-                    <button className="w-full bg-primary text-white py-2 rounded-3xl mt-4">
-                        Verify OTP
+                    <button disabled={isLoading} className="w-full bg-primary text-white py-2 rounded-3xl mt-4">
+                         {isLoading ? 'Processing...' : 'Verify OTP'}
                     </button>
                 </form>
 
                 {/* Resend OTP */}
-                <p
-                    className="text-[12px] text-primary cursor-pointer mt-2"
+                <button
+                    type="button"
+                    disabled={countdown > 0}
+                    className={`text-[12px] mt-2 ${
+                        countdown > 0
+                            ? "text-gray-400 cursor-not-allowed"
+                            : "text-primary cursor-pointer"
+                    }`}
                     onClick={async () => {
                         setResendLoading(true);
                         try {
@@ -488,7 +520,8 @@ const Userform = ({ onSuccess }: Props) => {
                                 toast.error(data.message || "Failed to resend OTP");
                                 return;
                             }
-
+                            setCountdown(300);
+                            setIsTimerActive(true);
                             toast.success("OTP resent successfully");
                         } catch {
                             toast.error("Server error");
@@ -497,8 +530,12 @@ const Userform = ({ onSuccess }: Props) => {
                         }
                     }}
                 >
-                    {resendLoading ? "Resending..." : "Resend OTP"}
-                </p>
+                    {resendLoading
+                        ? "Resending..."
+                        : countdown > 0
+                            ? `Resend OTP in ${formatTime(countdown)}`
+                            : "Resend OTP"}
+                </button>
 
                 <p
                     className="text-[12px] cursor-pointer text-primary mt-2"
