@@ -34,21 +34,31 @@ const Reviews: React.FC<ReviewsProps> = ({ reviews = [] }) => {
 
   return (
       <div>
-        <div className="my-5 grid grid-cols-12 gap-3">
+        <div className="my-5 grid grid-cols-1 md:grid-cols-12 gap-6">
+
           {/* Rating Summary */}
-          <div className="col-span-12 md:col-span-6">
-            <div className="flex flex-col md:flex-row gap-5">
-              <div className="w-full md:w-1/2">
-                <h2 className="text-[180px] md:text-[200px] text-black font-medium flex">
-                  {averageRating}
-                  <span className="text-[30px] mt-45">/5</span>
-                </h2>
-                <p className="text-secondary text-lg -mt-8">
+          <div className="md:col-span-6">
+            <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+
+              {/* Rating Number */}
+              <div className="w-full sm:w-1/2 text-center sm:text-left">
+                <div className="flex items-start justify-center sm:justify-start">
+                  <h2 className="text-[80px] sm:text-[120px] md:text-[120px] lg:text-[150px] leading-none text-black font-medium">
+                    {averageRating}
+                  </h2>
+
+                  <span className="text-[18px] sm:text-[24px] md:text-[30px] mt-3 sm:mt-5 md:mt-10 lg:mt-14">
+              /5
+            </span>
+                </div>
+
+                <p className="text-secondary text-sm sm:text-base md:text-lg mt-2">
                   ({totalReviews} Reviews)
                 </p>
               </div>
 
-              <div className="w-full md:w-1/2 my-auto">
+              {/* Progress Bar */}
+              <div className="w-full sm:w-1/2 my-auto">
                 <ProgressBar
                     total={totalReviews}
                     ratings={ratingCounts}
@@ -58,12 +68,11 @@ const Reviews: React.FC<ReviewsProps> = ({ reviews = [] }) => {
           </div>
 
           {/* All Reviews */}
-          <div className="col-span-12 md:col-span-6 my-auto">
+          <div className="md:col-span-6">
             <AllReviews reviews={reviews} />
           </div>
+
         </div>
-
-
       </div>
   );
 };

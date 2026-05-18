@@ -37,7 +37,7 @@ const Content: React.FC<ContentProps> = ({ products }) => {
                 <div className="shadow-md rounded-2xl overflow-hidden flex flex-col w-full h-full bg-white">
                   {/* IMAGE SECTION */}
                   <div className="space-y-5 bg-[#F4F4F4] p-2 relative">
-                    <div className="flex justify-between w-full px-2 absolute top-2 left-0 right-0 z-10">
+                    <div className="flex justify-between w-full px-2 absolute top-2 left-0 right-0 z-5">
                       {isOutOfStock ? (
                         <p className="text-white bg-red-500 w-max px-3 py-1 text-[10px] md:text-sm rounded-3xl h-max">
                           Out of Stock
