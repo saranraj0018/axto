@@ -57,7 +57,7 @@ const ShopPage = ({ initialCategory, initialBrand }: ShopPageProps) => {
 
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(4);
+  const [productsPerPage, setProductsPerPage] = useState(9);
 
   /* Fetch products */
   useEffect(() => {
