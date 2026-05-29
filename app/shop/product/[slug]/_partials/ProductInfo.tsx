@@ -165,7 +165,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           ₹{salePrice}
           {product?.tax_type?.toLowerCase() === "inclusive" && (
             <p className="text-[12px]">
-              (Inclusive of all taxes)
+              (Including Tax)
             </p>
           )}
         </span>
