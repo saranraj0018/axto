@@ -105,6 +105,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   const discount =
     product.type === "variant" ? activeVariant?.discount : product.discount;
 
+  /** taxtype **/
+  const taxType = product.tax_type;
+
   /** ---------- FIX COUNT IF STOCK LOWER ---------- */
   useEffect(() => {
     if (count > currentStock && currentStock > 0) {
@@ -158,7 +161,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
       {/* ---------- PRICE ---------- */}
       <div className="flex items-center gap-2 mb-4 flex-wrap">
-        <span className="text-xl font-medium">₹{salePrice}</span>
+        <span className="text-xl font-medium">
+          ₹{salePrice}
+          {product?.tax_type?.toLowerCase() === "inclusive" && (
+            <p className="text-[12px]">
+              (Inclusive of all taxes)
+            </p>
+          )}
+        </span>
 
         {regularPrice > salePrice && (
           <span className="text-[14px] line-through text-secondary">
