@@ -96,11 +96,16 @@ const ShopPage = ({ initialCategory, initialBrand }: ShopPageProps) => {
       );
     }
 
+    const slugify = (text: string) =>
+        text
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, "-");
 
     if (filters.category.length > 0) {
       temp = temp.filter((p) =>
           p.category?.some((cat: string) =>
-              filters.category.includes(cat)
+              filters.category.includes(slugify(cat))
           )
       );
     }
