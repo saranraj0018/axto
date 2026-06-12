@@ -35,6 +35,37 @@ const Section4 = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
 
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      next();
+    }
+
+    if (isRightSwipe) {
+      prev();
+    }
+  };
+
   const slugify = (text: string) =>
     text
       .toLowerCase()
@@ -78,14 +109,18 @@ const Section4 = () => {
   }, []);
 
   const next = () => {
-    if (!BSProductItems.length) return;
-    setCurrentIndex((prev) => (prev + 1) % BSProductItems.length);
+    setCurrentIndex((prev) =>
+        prev >= BSProductItems.length - itemsPerView
+            ? 0
+            : prev + 1
+    );
   };
 
   const prev = () => {
-    if (!BSProductItems.length) return;
     setCurrentIndex((prev) =>
-      prev === 0 ? BSProductItems.length - 1 : prev - 1,
+        prev === 0
+            ? BSProductItems.length - itemsPerView
+            : prev - 1
     );
   };
 
@@ -101,12 +136,17 @@ const Section4 = () => {
         Explore our top scooter accessories, selected for you!
       </p>
 
-      <div className="relative overflow-hidden">
+      <div
+          className="relative overflow-hidden"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+      >
         <div
-          className="flex transition-transform duration-500"
-          style={{
-            transform: `translateX(-${(currentIndex * 100) / itemsPerView}%)`,
-          }}
+            className="flex transition-transform duration-500 touch-pan-y"
+            style={{
+              transform: `translateX(-${(currentIndex * 100) / itemsPerView}%)`,
+            }}
         >
           {BSProductItems.map((item) => (
             <div
@@ -282,7 +322,7 @@ const Section4 = () => {
         {/* LEFT BUTTON */}
         <button
           onClick={prev}
-          className="absolute top-1/2 left-0 -translate-y-1/2 bg-white shadow px-4 py-3 rounded-full z-10"
+          className="absolute top-1/2 left-1 md:left-0 -translate-y-1/2 bg-white shadow w-8 h-8 md:w-auto md:h-auto md:px-4 md:py-3 rounded-full z-10 flex items-center justify-center"
         >
           {LeftArrowIcon}
         </button>
@@ -290,7 +330,7 @@ const Section4 = () => {
         {/* RIGHT BUTTON */}
         <button
           onClick={next}
-          className="absolute top-1/2 right-0 -translate-y-1/2 bg-white shadow px-4 py-3 rounded-full z-10"
+          className="absolute top-1/2 right-1 md:right-0 -translate-y-1/2 bg-white shadow w-8 h-8 md:w-auto md:h-auto md:px-4 md:py-3 rounded-full z-10 flex items-center justify-center"
         >
           {RightArrowIcon}
         </button>
